@@ -1,0 +1,7 @@
+personas_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: PersonasBundle:Default:index }
+
+PersonasBundle_persona:
+        resource: "@PersonasBundle/Resources/config/routing/persona.yml"
+        prefix:   /persona

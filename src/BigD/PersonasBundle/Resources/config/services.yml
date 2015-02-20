@@ -1,0 +1,7 @@
+parameters:
+#    personas.example.class: BigD\PersonasBundle\Example
+
+services:
+#    personas.example:
+#        class: %personas.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

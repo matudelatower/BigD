@@ -1,0 +1,22 @@
+app:
+    resource: "@AppBundle/Resources/config/routing.yml"
+    prefix:   /
+
+usuarios:
+    resource: "@UsuariosBundle/Resources/config/routing.yml"
+    prefix:   /usuarios
+
+ubicacion:
+    resource: "@UbicacionBundle/Resources/config/routing.yml"
+    prefix:   /ubicacion
+
+theme:
+    resource: "@ThemeBundle/Resources/config/routing.yml"
+    prefix:   /theme
+
+personas:
+    resource: "@PersonasBundle/Resources/config/routing.yml"
+    prefix:   /personas
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
