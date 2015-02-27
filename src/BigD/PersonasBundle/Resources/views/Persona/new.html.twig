@@ -1,15 +1,67 @@
-{% extends '::base.html.twig' %}
-
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+{% set title = 'Nueva Persona' %}
+{% block title %}
+{{ title }}
+{% endblock %}
 {% block body -%}
-    <h1>Persona creation</h1>
+    <h4 class="page-header">{{ title }}</h4>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">            
+            <div class="box-header">
+                <div class="box-name ui-draggable-handle">
+                    <i class="fa fa-search"></i>
+                    <span>Alta de Persona</span>
+                </div>
+            </div>
+            <div class="box-content">
+                <h4 class="page-header">Registration form</h4>
+                <form class="form-horizontal" role="form" action="{{ path('persona_create') }}" method="post">
+                    <div class="form-group">
+                        {{ form_label(form.nombre) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.nombre) }}
+                        </div>
+                        {{ form_label(form.apellido) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.apellido) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.numeroDocumento) }}
+                        <div class="col-sm-2">
+                            {{ form_widget(form.tipoDocumento) }}
+                        </div>
+                        <div class="col-sm-2">
+                            {{ form_widget(form.numeroDocumento) }}
+                        </div>
+                        {{ form_label(form.cuitCuil) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.cuitCuil) }}
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        {{ form_label(form.fechaNacimiento) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.fechaNacimiento) }}
+                        </div>
+                        {{ form_label(form.sexo) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.sexo) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3">
+                            <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Guardar</button>
+                            <a class="btn btn-default" href="{{ path('persona') }}">
+                                Volver
+                            </a>
+                        </div>
 
-    {{ form(form) }}
+                    </div>
+                    {{form_rest(form)}}
+                </form>
+            </div>
+        </div>
+    </div>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('persona') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
 {% endblock %}

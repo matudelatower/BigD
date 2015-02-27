@@ -4,7 +4,6 @@ namespace BigD\PersonasBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use BigD\PersonasBundle\Entity\Persona;
 use BigD\PersonasBundle\Form\PersonaType;
 
@@ -12,29 +11,27 @@ use BigD\PersonasBundle\Form\PersonaType;
  * Persona controller.
  *
  */
-class PersonaController extends Controller
-{
+class PersonaController extends Controller {
 
     /**
      * Lists all Persona entities.
      *
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('PersonasBundle:Persona')->findAll();
 
         return $this->render('PersonasBundle:Persona:index.html.twig', array(
-            'entities' => $entities,
+                    'entities' => $entities,
         ));
     }
+
     /**
      * Creates a new Persona entity.
      *
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $entity = new Persona();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
@@ -43,13 +40,16 @@ class PersonaController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
+            $this->get('session')->getFlashBag()->add(
+                    'success', 'Persona Creada correctamente.'
+            );
 
             return $this->redirect($this->generateUrl('persona_show', array('id' => $entity->getId())));
         }
 
         return $this->render('PersonasBundle:Persona:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+                    'entity' => $entity,
+                    'form' => $form->createView(),
         ));
     }
 
@@ -60,14 +60,8 @@ class PersonaController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Persona $entity)
-    {
-        $form = $this->createForm(new PersonaType(), $entity, array(
-            'action' => $this->generateUrl('persona_create'),
-            'method' => 'POST',
-        ));
-
-        $form->add('submit', 'submit', array('label' => 'Create'));
+    private function createCreateForm(Persona $entity) {
+        $form = $this->createForm(new PersonaType(), $entity);
 
         return $form;
     }
@@ -76,14 +70,13 @@ class PersonaController extends Controller
      * Displays a form to create a new Persona entity.
      *
      */
-    public function newAction()
-    {
+    public function newAction() {
         $entity = new Persona();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return $this->render('PersonasBundle:Persona:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+                    'entity' => $entity,
+                    'form' => $form->createView(),
         ));
     }
 
@@ -91,8 +84,7 @@ class PersonaController extends Controller
      * Finds and displays a Persona entity.
      *
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('PersonasBundle:Persona')->find($id);
@@ -100,12 +92,23 @@ class PersonaController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Persona entity.');
         }
-
-        $deleteForm = $this->createDeleteForm($id);
+        $parametro = array(
+            "nombre" => $entity->getNombre(),
+            "apellido" => $entity->getApellido(),
+        );
+        foreach ($entity->getDomicilio() as $domicilio) {
+            if ($domicilio->getPrincipal()) {
+                $parametro['calle'] = $domicilio->getCalle();
+                $parametro['numero'] = $domicilio->getNumero();
+                $parametro['ciudad'] = $domicilio->getLocalidad()->getDescripcion();
+                $parametro['provincia'] = $domicilio->getLocalidad()->getDepartamento()->getProvincia()->getDescripcion();
+                $parametro['pais'] = $domicilio->getLocalidad()->getDepartamento()->getProvincia()->getPais()->getDescripcion();
+            }
+        }
 
         return $this->render('PersonasBundle:Persona:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'parametro' => $parametro
         ));
     }
 
@@ -113,8 +116,7 @@ class PersonaController extends Controller
      * Displays a form to edit an existing Persona entity.
      *
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('PersonasBundle:Persona')->find($id);
@@ -124,39 +126,32 @@ class PersonaController extends Controller
         }
 
         $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+
 
         return $this->render('PersonasBundle:Persona:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'form' => $editForm->createView(),
         ));
     }
 
     /**
-    * Creates a form to edit a Persona entity.
-    *
-    * @param Persona $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Persona $entity)
-    {
-        $form = $this->createForm(new PersonaType(), $entity, array(
-            'action' => $this->generateUrl('persona_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-        ));
-
-        $form->add('submit', 'submit', array('label' => 'Update'));
+     * Creates a form to edit a Persona entity.
+     *
+     * @param Persona $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Persona $entity) {
+        $form = $this->createForm(new PersonaType(), $entity);
 
         return $form;
     }
+
     /**
      * Edits an existing Persona entity.
      *
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('PersonasBundle:Persona')->find($id);
@@ -165,28 +160,29 @@ class PersonaController extends Controller
             throw $this->createNotFoundException('Unable to find Persona entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
+            $this->get('session')->getFlashBag()->add(
+                    'success', 'Persona Actualizada correctamente.'
+            );
 
             return $this->redirect($this->generateUrl('persona_edit', array('id' => $id)));
         }
 
         return $this->render('PersonasBundle:Persona:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'form' => $editForm->createView(),
         ));
     }
+
     /**
      * Deletes a Persona entity.
      *
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -212,13 +208,13 @@ class PersonaController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('persona_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
+                        ->setAction($this->generateUrl('persona_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->getForm()
         ;
     }
+
 }

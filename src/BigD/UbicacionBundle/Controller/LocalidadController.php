@@ -25,6 +25,12 @@ class LocalidadController extends Controller
 
         $entities = $em->getRepository('UbicacionBundle:Localidad')->findAll();
 
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+                $entities, 
+                $this->get('request')->query->get('page', 1)/* page number */, 
+                10/* limit per page */
+        );
         return $this->render('UbicacionBundle:Localidad:index.html.twig', array(
             'entities' => $entities,
         ));
@@ -36,15 +42,18 @@ class LocalidadController extends Controller
     public function createAction(Request $request)
     {
         $entity = new Localidad();
-        $form = $this->createCreateForm($entity);
+        $form = $this->createForm(new LocalidadType(), $entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-
-            return $this->redirect($this->generateUrl('localidad_show', array('id' => $entity->getId())));
+            $this->get('session')->getFlashBag()->add(
+                    'success', 'Localidad Creado correctamente.'
+            );
+            
+            return $this->redirect($this->generateUrl('localidad_edit', array('id' => $entity->getId())));
         }
 
         return $this->render('UbicacionBundle:Localidad:new.html.twig', array(
@@ -78,8 +87,8 @@ class LocalidadController extends Controller
      */
     public function newAction()
     {
-        $entity = new Localidad();
-        $form   = $this->createCreateForm($entity);
+        $entity = new Localidad();        
+        $form   = $this->createForm(new LocalidadType(), $entity);
 
         return $this->render('UbicacionBundle:Localidad:new.html.twig', array(
             'entity' => $entity,
@@ -122,14 +131,14 @@ class LocalidadController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Localidad entity.');
         }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+        
+        $editForm = $this->createForm(new LocalidadType(), $entity);
+        
 
         return $this->render('UbicacionBundle:Localidad:edit.html.twig', array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form'   => $editForm->createView(),
+            
         ));
     }
 
@@ -165,20 +174,23 @@ class LocalidadController extends Controller
             throw $this->createNotFoundException('Unable to find Localidad entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        
+        $editForm =  $this->createForm(new LocalidadType(), $entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
+            $this->get('session')->getFlashBag()->add(
+                    'success', 'Localidad Actualizado correctamente.'
+            );
 
             return $this->redirect($this->generateUrl('localidad_edit', array('id' => $id)));
         }
 
         return $this->render('UbicacionBundle:Localidad:edit.html.twig', array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form'   => $editForm->createView(),
+            
         ));
     }
     /**

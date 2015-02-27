@@ -3,6 +3,7 @@
 namespace BigD\UbicacionBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Provincia
@@ -36,26 +37,58 @@ class Provincia {
     private $codigo;
 
     /**
-     * @ORM\OneToMany(targetEntity="Localidad", mappedBy="provincia")
+     * @ORM\OneToMany(targetEntity="Departamento", mappedBy="provincia")
      */
-    private $localidad;
+    private $departamento;
 
     /** @ORM\ManyToOne(targetEntity="Pais")
      *  @ORM\JoinColumn(name="pais_id", referencedColumnName="id")
      */
     private $pais;
 
+    /**
+     * @var datetime $creado
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="creado", type="datetime")
+     */
+    private $creado;
+
+    /**
+     * @var datetime $actualizado
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="actualizado",type="datetime")
+     */
+    private $actualizado;
+
+    /**
+     * @var integer $creadoPor
+     *
+     * @Gedmo\Blameable(on="create")
+     * @ORM\ManyToOne(targetEntity="BigD\UsuariosBundle\Entity\Usuario")
+     * @ORM\JoinColumn(name="creado_por", referencedColumnName="id", nullable=true)
+     */
+    private $creadoPor;
+
+    /**
+     * @var integer $actualizadoPor
+     *
+     * @Gedmo\Blameable(on="update")
+     * @ORM\ManyToOne(targetEntity="BigD\UsuariosBundle\Entity\Usuario")
+     * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
+     */
+    private $actualizadoPor;
+
     public function __toString() {
         return $this->descripcion;
     }
-    
-    
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
-        $this->localidad = new \Doctrine\Common\Collections\ArrayCollection();
+    public function __construct() {
+        $this->departamento = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -63,8 +96,7 @@ class Provincia {
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -74,8 +106,7 @@ class Provincia {
      * @param string $descripcion
      * @return Provincia
      */
-    public function setDescripcion($descripcion)
-    {
+    public function setDescripcion($descripcion) {
         $this->descripcion = $descripcion;
 
         return $this;
@@ -86,8 +117,7 @@ class Provincia {
      *
      * @return string 
      */
-    public function getDescripcion()
-    {
+    public function getDescripcion() {
         return $this->descripcion;
     }
 
@@ -97,8 +127,7 @@ class Provincia {
      * @param string $codigo
      * @return Provincia
      */
-    public function setCodigo($codigo)
-    {
+    public function setCodigo($codigo) {
         $this->codigo = $codigo;
 
         return $this;
@@ -109,42 +138,80 @@ class Provincia {
      *
      * @return string 
      */
-    public function getCodigo()
-    {
+    public function getCodigo() {
         return $this->codigo;
     }
 
     /**
-     * Add localidad
+     * Set creado
      *
-     * @param \BigD\UbicacionBundle\Entity\Localidad $localidad
+     * @param \DateTime $creado
      * @return Provincia
      */
-    public function addLocalidad(\BigD\UbicacionBundle\Entity\Localidad $localidad)
-    {
-        $this->localidad[] = $localidad;
+    public function setCreado($creado) {
+        $this->creado = $creado;
 
         return $this;
     }
 
     /**
-     * Remove localidad
+     * Get creado
      *
-     * @param \BigD\UbicacionBundle\Entity\Localidad $localidad
+     * @return \DateTime 
      */
-    public function removeLocalidad(\BigD\UbicacionBundle\Entity\Localidad $localidad)
-    {
-        $this->localidad->removeElement($localidad);
+    public function getCreado() {
+        return $this->creado;
     }
 
     /**
-     * Get localidad
+     * Set actualizado
+     *
+     * @param \DateTime $actualizado
+     * @return Provincia
+     */
+    public function setActualizado($actualizado) {
+        $this->actualizado = $actualizado;
+
+        return $this;
+    }
+
+    /**
+     * Get actualizado
+     *
+     * @return \DateTime 
+     */
+    public function getActualizado() {
+        return $this->actualizado;
+    }
+
+    /**
+     * Add departamento
+     *
+     * @param \BigD\UbicacionBundle\Entity\Departamento $departamento
+     * @return Provincia
+     */
+    public function addDepartamento(\BigD\UbicacionBundle\Entity\Departamento $departamento) {
+        $this->departamento[] = $departamento;
+
+        return $this;
+    }
+
+    /**
+     * Remove departamento
+     *
+     * @param \BigD\UbicacionBundle\Entity\Departamento $departamento
+     */
+    public function removeDepartamento(\BigD\UbicacionBundle\Entity\Departamento $departamento) {
+        $this->departamento->removeElement($departamento);
+    }
+
+    /**
+     * Get departamento
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getLocalidad()
-    {
-        return $this->localidad;
+    public function getDepartamento() {
+        return $this->departamento;
     }
 
     /**
@@ -153,8 +220,7 @@ class Provincia {
      * @param \BigD\UbicacionBundle\Entity\Pais $pais
      * @return Provincia
      */
-    public function setPais(\BigD\UbicacionBundle\Entity\Pais $pais = null)
-    {
+    public function setPais(\BigD\UbicacionBundle\Entity\Pais $pais = null) {
         $this->pais = $pais;
 
         return $this;
@@ -165,8 +231,50 @@ class Provincia {
      *
      * @return \BigD\UbicacionBundle\Entity\Pais 
      */
-    public function getPais()
-    {
+    public function getPais() {
         return $this->pais;
     }
+
+    /**
+     * Set creadoPor
+     *
+     * @param \BigD\UsuariosBundle\Entity\Usuario $creadoPor
+     * @return Provincia
+     */
+    public function setCreadoPor(\BigD\UsuariosBundle\Entity\Usuario $creadoPor = null) {
+        $this->creadoPor = $creadoPor;
+
+        return $this;
+    }
+
+    /**
+     * Get creadoPor
+     *
+     * @return \BigD\UsuariosBundle\Entity\Usuario 
+     */
+    public function getCreadoPor() {
+        return $this->creadoPor;
+    }
+
+    /**
+     * Set actualizadoPor
+     *
+     * @param \BigD\UsuariosBundle\Entity\Usuario $actualizadoPor
+     * @return Provincia
+     */
+    public function setActualizadoPor(\BigD\UsuariosBundle\Entity\Usuario $actualizadoPor = null) {
+        $this->actualizadoPor = $actualizadoPor;
+
+        return $this;
+    }
+
+    /**
+     * Get actualizadoPor
+     *
+     * @return \BigD\UsuariosBundle\Entity\Usuario 
+     */
+    public function getActualizadoPor() {
+        return $this->actualizadoPor;
+    }
+
 }

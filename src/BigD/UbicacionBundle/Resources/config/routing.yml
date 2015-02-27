@@ -9,6 +9,11 @@ UbicacionBundle_pais:
 UbicacionBundle_provincia:
         resource: "@UbicacionBundle/Resources/config/routing/provincia.yml"
         prefix:   /provincia
+        
+UbicacionBundle_departamento:
+        resource: "@UbicacionBundle/Resources/config/routing/departamento.yml"
+        prefix:   /departamento
+
 
 UbicacionBundle_localidad:
         resource: "@UbicacionBundle/Resources/config/routing/localidad.yml"

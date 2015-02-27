@@ -5,3 +5,7 @@ personas_homepage:
 PersonasBundle_persona:
         resource: "@PersonasBundle/Resources/config/routing/persona.yml"
         prefix:   /persona
+
+PersonasBundle_tipo_documento:
+        resource: "@PersonasBundle/Resources/config/routing/tipodocumento.yml"
+        prefix:   /tipo_documento

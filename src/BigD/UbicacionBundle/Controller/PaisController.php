@@ -25,6 +25,12 @@ class PaisController extends Controller
 
         $entities = $em->getRepository('UbicacionBundle:Pais')->findAll();
 
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+                $entities, 
+                $this->get('request')->query->get('page', 1)/* page number */, 
+                10/* limit per page */
+        );
         return $this->render('UbicacionBundle:Pais:index.html.twig', array(
             'entities' => $entities,
         ));
@@ -36,15 +42,18 @@ class PaisController extends Controller
     public function createAction(Request $request)
     {
         $entity = new Pais();
-        $form = $this->createCreateForm($entity);
+        $form = $this->createForm(new PaisType(), $entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-
-            return $this->redirect($this->generateUrl('pais_show', array('id' => $entity->getId())));
+            $this->get('session')->getFlashBag()->add(
+                    'success', 'Pais Creado correctamente.'
+            );
+            
+            return $this->redirect($this->generateUrl('pais_edit', array('id' => $entity->getId())));
         }
 
         return $this->render('UbicacionBundle:Pais:new.html.twig', array(
@@ -78,8 +87,8 @@ class PaisController extends Controller
      */
     public function newAction()
     {
-        $entity = new Pais();
-        $form   = $this->createCreateForm($entity);
+        $entity = new Pais();        
+        $form   = $this->createForm(new PaisType(), $entity);
 
         return $this->render('UbicacionBundle:Pais:new.html.twig', array(
             'entity' => $entity,
@@ -122,14 +131,14 @@ class PaisController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Pais entity.');
         }
-
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+        
+        $editForm = $this->createForm(new PaisType(), $entity);
+        
 
         return $this->render('UbicacionBundle:Pais:edit.html.twig', array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form'   => $editForm->createView(),
+            
         ));
     }
 
@@ -165,20 +174,23 @@ class PaisController extends Controller
             throw $this->createNotFoundException('Unable to find Pais entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        
+        $editForm =  $this->createForm(new PaisType(), $entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
+            $this->get('session')->getFlashBag()->add(
+                    'success', 'Pais Actualizado correctamente.'
+            );
 
             return $this->redirect($this->generateUrl('pais_edit', array('id' => $id)));
         }
 
         return $this->render('UbicacionBundle:Pais:edit.html.twig', array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'form'   => $editForm->createView(),
+            
         ));
     }
     /**

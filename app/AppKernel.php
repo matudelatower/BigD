@@ -20,6 +20,8 @@ class AppKernel extends Kernel
             new BigD\ThemeBundle\ThemeBundle(),
             new BigD\UbicacionBundle\UbicacionBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new BigD\UsuariosBundle\UsuariosBundle(),
             new BigD\AppBundle\AppBundle(),
         );

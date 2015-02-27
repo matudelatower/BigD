@@ -18,7 +18,7 @@ class LocalidadType extends AbstractType
             ->add('descripcion')
             ->add('codigo')
             ->add('codigoPostal')
-            ->add('provincia')
+            ->add('departamento')
         ;
     }
     

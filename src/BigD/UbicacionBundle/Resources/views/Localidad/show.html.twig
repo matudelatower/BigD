@@ -1,6 +1,6 @@
-{% extends '::base.html.twig' %}
+    {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
 
-{% block body -%}
+    {% block body -%}
     <h1>Localidad</h1>
 
     <table class="record_properties">
@@ -21,6 +21,14 @@
                 <th>Codigopostal</th>
                 <td>{{ entity.codigoPostal }}</td>
             </tr>
+            <tr>
+                <th>Creado</th>
+                <td>{{ entity.creado|date('Y-m-d H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Actualizado</th>
+                <td>{{ entity.actualizado|date('Y-m-d H:i:s') }}</td>
+            </tr>
         </tbody>
     </table>
 
@@ -37,4 +45,4 @@
     </li>
     <li>{{ form(delete_form) }}</li>
 </ul>
-{% endblock %}
+    {% endblock %}
