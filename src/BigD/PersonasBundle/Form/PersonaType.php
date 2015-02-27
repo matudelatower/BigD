@@ -14,22 +14,21 @@ class PersonaType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('nombre', 'text', array(                    
-                    'attr' => array(
-                        'placeholder' => 'nombre',                        
-                    )
-                ))
-                ->add('otroNombre')
+                ->add('nombre')
                 ->add('apellido')
-                ->add('otroApellido')
-                ->add('calle')
-                ->add('altura')
-                ->add('coordenada')
-                ->add('pais', 'entity', array(
-                    'class'=>'UbicacionBundle:Pais',                    
-                    'mapped' => false
+                ->add('tipoDocumento')
+                ->add('numeroDocumento')
+                ->add('cuitCuil')                
+                ->add('fechaNacimiento', 'date', array(
+                    'widget' => 'single_text',
+                    'format' => 'dd-MM-yyyy',
+                    'attr' => array(
+                        'class' => 'datepicker',
+                        'data-date-format' => 'dd-mm-yyy'
+                    ),
+                    
                 ))
-                ->add('localidad')
+                ->add('sexo')
         ;
     }
 
