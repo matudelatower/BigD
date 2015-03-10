@@ -21,21 +21,21 @@
 {# Labels #}
 
 {% block form_label %}
-{% spaceless %}
-    {% if label is not sameas(false) %}
-        {% if not compound %}
-            {% set label_attr = label_attr|merge({'for': id}) %}
+    {% spaceless %}
+        {% if label is not sameas(false) %}
+            {% if not compound %}
+                {% set label_attr = label_attr|merge({'for': id}) %}
+            {% endif %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' col-sm-2 control-label')|trim}) %}
+            {% if required %}
+                {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+            {% endif %}
+            {% if label is empty %}
+                {% set label = name|humanize %}
+            {% endif %}
+            <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>
         {% endif %}
-        {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' col-sm-2 control-label')|trim}) %}
-        {% if required %}
-            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
-        {% endif %}
-        {% if label is empty %}
-            {% set label = name|humanize %}
-        {% endif %}
-        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>
-    {% endif %}
-{% endspaceless %}
+    {% endspaceless %}
 {% endblock form_label %}
 {% block form_errors %}
     {% spaceless %}        
@@ -64,15 +64,19 @@
                    {{(form.vars.attr['class'])}}
             {% endif %}" type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
         {% endif %}
-    {% endspaceless %}
-{% endblock form_widget_simple %}
+            {% endspaceless %}
+                {% endblock form_widget_simple %}
 
                     {% block choice_widget_expanded -%}
                         <div {{ block('widget_container_attributes') }}>
                             {% for child in form %}
-                                <div class="checkbox">
-                                    {{- form_widget(child) -}}
-                                    {{- form_label(child) -}}
+                                <div class="radio">
+                                    <label>
+                                        {{- form_widget(child) -}}
+                                        {#{{- form_label(child) -}}#}
+                                        {{ child.vars.label }}
+                                        <i class="fa fa-circle-o"></i>
+                                    </label>
                                 </div>
                             {% endfor %}
                         </div>
@@ -109,29 +113,29 @@
                                                               {%endif%}" {{ block('widget_attributes') }}>{{ value }}</textarea>
                                                         {% endspaceless %}
                                                             {% endblock textarea_widget %} 
-{% block form_widget_date_simple %}
-{% spaceless %}
-    {% set type = type|default('text') %}
-    <input type="{{ type }}" class="datepicker form-control pull-right" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>   
-{% endspaceless %}
-{% endblock form_widget_date_simple %}
+                                                                {% block form_widget_date_simple %}
+                                                                    {% spaceless %}
+                                                                        {% set type = type|default('text') %}
+                                                                        <input type="{{ type }}" class="datepicker form-control pull-right" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>   
+                                                                    {% endspaceless %}
+                                                                {% endblock form_widget_date_simple %}
 
-{% block date_widget %}
-{% spaceless %}
-    {% if widget == 'single_text' %}
-        {{ block('form_widget_simple') }}
-        <span class="fa fa-calendar form-control-feedback"></span>
-    {% else %}
-        <div {{ block('widget_container_attributes') }}>
-            {{ date_pattern|replace({
+                                                                {% block date_widget %}
+                                                                    {% spaceless %}
+                                                                        {% if widget == 'single_text' %}
+                                                                            {{ block('form_widget_simple') }}
+                                                                            <span class="fa fa-calendar form-control-feedback"></span>
+                                                                        {% else %}
+                                                                            <div {{ block('widget_container_attributes') }}>
+                                                                                {{ date_pattern|replace({
                 '{{ year }}':  form_widget(form.year),
                 '{{ month }}': form_widget(form.month),
                 '{{ day }}':   form_widget(form.day),
             })|raw }}
-        </div>
-    {% endif %}
-{% endspaceless %}
-{% endblock date_widget %}
+                                                                            </div>
+                                                                        {% endif %}
+                                                                    {% endspaceless %}
+                                                                {% endblock date_widget %}
 
                                                                 {#
                                                                 {% block checkbox_widget -%}

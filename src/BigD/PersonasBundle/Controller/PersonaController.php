@@ -2,10 +2,11 @@
 
 namespace BigD\PersonasBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use BigD\PersonasBundle\Entity\Persona;
+use BigD\PersonasBundle\Form\PersonaFilterType;
 use BigD\PersonasBundle\Form\PersonaType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Persona controller.
@@ -17,13 +18,31 @@ class PersonaController extends Controller {
      * Lists all Persona entities.
      *
      */
-    public function indexAction() {
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('PersonasBundle:Persona')->findAll();
+
+        $form = $this->createForm(new PersonaFilterType());
+
+        if ($request->isMethod("post")) {
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->getData();
+                $entities = $em->getRepository('PersonasBundle:Persona')->getAcPersonas($data);
+            }
+        } else {
+            $entities = $em->getRepository('PersonasBundle:Persona')->getAcPersonas();
+        }
+
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+                $entities, $this->get('request')->query->get('page', 1)/* page number */, 10/* limit per page */
+        );
 
         return $this->render('PersonasBundle:Persona:index.html.twig', array(
                     'entities' => $entities,
+                    'form' => $form->createView(),
         ));
     }
 
