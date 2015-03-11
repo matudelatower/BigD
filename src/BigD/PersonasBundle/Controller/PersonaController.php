@@ -236,4 +236,41 @@ class PersonaController extends Controller {
         ;
     }
 
+    public function showReporteDireccionesAction(Request $request) {
+
+
+        $idPersonas = $request->get('personas');
+
+        $em = $this->getDoctrine()->getManager();
+
+        $json = array();
+
+        foreach ($idPersonas as $id) {
+
+            $entity = $em->getRepository('PersonasBundle:Persona')->find($id);
+
+            if (!$entity) {
+                throw $this->createNotFoundException('Unable to find Persona entity.');
+            }
+            $parametro = array(
+                "nombre" => $entity->getNombre(),
+                "apellido" => $entity->getApellido(),
+            );
+            foreach ($entity->getDomicilio() as $domicilio) {
+                if ($domicilio->getPrincipal()) {
+                    $parametro['calle'] = $domicilio->getCalle();
+                    $parametro['numero'] = $domicilio->getNumero();
+                    $parametro['ciudad'] = $domicilio->getLocalidad()->getDescripcion();
+                    $parametro['provincia'] = $domicilio->getLocalidad()->getDepartamento()->getProvincia()->getDescripcion();
+                    $parametro['pais'] = $domicilio->getLocalidad()->getDepartamento()->getProvincia()->getPais()->getDescripcion();
+                }
+            }
+            $json[] = $parametro;
+        }
+
+        return $this->render('PersonasBundle:Persona:showReporteDirecciones.html.twig', array(                    
+                    'arrayPersonas' => json_encode($json)
+        ));
+    }
+
 }

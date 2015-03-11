@@ -7,7 +7,7 @@
                 <div class="box-header">
                     <div class="box-name">
                         <i class="fa fa-users"></i>
-                        <span>Persona</span>
+                        <span>Direcciones</span>
                     </div>
                     <div class="box-icons">
                         <a class="collapse-link">
@@ -23,55 +23,9 @@
                     <div class="no-move"></div>
                 </div>
                 <div class="box-content">
-                    <div class="card">
-                        <h4 class="page-header">{{ entity.apellido }}, {{ entity.nombre }}</h4>
-                        <p>
-                            <span><strong>Tipo y Numero de Documento</strong></span> <br>
-                            <span>{{ entity.tipoDocumento }}: {{ entity.numeroDocumento }}</span> <br>
 
-                        </p>
-                        <p>
-                            <span><strong>CUIT/CUIL</strong></span> <br>
-                            <span>{{ entity.cuitCuil }}</span> <br>
-
-                        </p>
-                        <p>
-                            <span><strong>Fecha de Nacimiento</strong></span> <br>
-                            <span>{{ entity.fechaNacimiento|date('d-m-Y ') }}</span> <br>
-
-                        </p>
-                        <p>
-                            <span><strong>Sexo</strong></span> <br>
-                            <span>{{ entity.sexo }}</span> <br>
-                        </p>
-
-                    </div>
-                    <div class="card address">
-
-                        <h4 class="page-header">Contacto:</h4>
-                        <p>
-                            <span><strong>Numero</strong></span> <br>
-                            <span></span> <br>
-                        </p>
-
-                    </div>
-                    {% set parametro = { 'nombre': entity.nombre, 'apellido': entity.apellido } %}
                     <div class="card address">                        
                         <h4 class="page-header">Dirección:</h4>
-
-                        {% for domicilio in entity.domicilio %}
-                            <p {% if domicilio.principal %}class="bg-info"{% endif %}>
-                                {% set parametro = parametro|merge({'calle': domicilio.calle }) %}
-                                {% set parametro = parametro|merge({'numero': domicilio.numero }) %}
-                                {% set parametro = parametro|merge({'ciudad': domicilio.localidad.descripcion }) %}
-                                {% set parametro = parametro|merge({'provincia': domicilio.localidad.departamento.provincia.descripcion }) %}
-                                {% set parametro = parametro|merge({'pais': domicilio.localidad.departamento.provincia.pais.descripcion }) %}
-
-                                <span>{{ domicilio.calle }}, {{ domicilio.numero }}</span> , <span>{{ domicilio.localidad }}, {{ domicilio.localidad.departamento.provincia }}, {{ domicilio.localidad.departamento.provincia.pais }} - Fuente de Datos: <strong>{{domicilio.fuenteDatos}}</strong></span> <a href="#" class="ver-direccion" data-address="{{ parametro|json_encode }}">Ver Direccion</a>  <br> 
-
-                            </p>                        
-                        {% endfor %}
-
 
 
                         <div class="map" id="map-1" style="height: 400px;"></div>
@@ -101,6 +55,7 @@
     <script>
         function initialize(parameters) {
             address = parameters.calle + ' ' + parameters.numero + ', ' + parameters.ciudad + ', ' + parameters.provincia + ',' + parameters.pais;
+
             // I create a new google maps object to handle the request and we pass the address to it
             var geoCoder = new google.maps.Geocoder(address)
             // a new object for the request I called "request" , you can put there other parameters to specify a better search (check google api doc for details) ,
@@ -161,20 +116,72 @@
 
 
 
+
+        function inicializar(parameters, index) {
+            address = parameters.calle + ' ' + parameters.numero + ', ' + parameters.ciudad + ', ' + parameters.provincia + ',' + parameters.pais;
+
+
+            // I create a new google maps object to handle the request and we pass the address to it
+            var geoCoder = new google.maps.Geocoder(address)
+            // a new object for the request I called "request" , you can put there other parameters to specify a better search (check google api doc for details) ,
+            // on this example im going to add just the address 
+            var request = {address: address};
+            
+            geoCoder.geocode(request, function (result, status) {
+                var latlng = new google.maps.LatLng(result[0].geometry.location.lat(), result[0].geometry.location.lng());
+                if (index == 0) {
+
+
+                    // some initial values to the map  
+                    var myOptions = {
+                        zoom: 15,
+                        center: latlng,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    var map = new google.maps.Map(document.getElementById("map-1"), myOptions);
+                }
+
+//marcador con la ubicación de la Universidad
+
+                var marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map,
+                    // titulo que aparecera cuando pongamos el cursor encima
+                    title: 'Titulo',
+                    icon: 'icon.png',
+                    cursor: 'default',
+                    draggable: false
+                });
+                var marker = new google.maps.Marker({position: latlng, map: map, title: 'title'});
+            })
+
+
+
+        }
+
+
     </script>
     <script>
         $(document).ready(function () {
+            var arrayAddress = {{arrayPersonas|raw}};
+                    $.each(arrayAddress, function (k, v) {
+                        //display the key and value pair
+        {#                console.log(k + ' is ' + v);#}
 
-            initialize({{parametro|json_encode|raw}});
+                            inicializar(arrayAddress[k], k);
 
-            $('.ver-direccion').click(function (e) {
-                e.preventDefault();
-                initialize($(this).data('address'));
+                        });
+
+        {#initialize(arrayAddress[i]);#}
+
+
+                $('.ver-direccion').click(function (e) {
+                    e.preventDefault();
+                    initialize($(this).data('address'));
+                });
+
+
             });
-
-
-
-        });
     </script>
 
 

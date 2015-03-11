@@ -30,7 +30,19 @@ class PersonaRepository extends EntityRepository {
             $qb->andWhere('upper(p.numeroDocumento) LIKE upper(:numeroDocumento)')
                     ->setParameter('numeroDocumento', '%' . $filters['numeroDocumento'] . '%');
         }
-        
+        if ($filters['personaConDomicilioPrincipal']) {
+
+            if ($filters['personaConDomicilioPrincipal'] == 'S') {
+                $estado = true;
+            } elseif ($filters['personaConDomicilioPrincipal'] == 'N') {
+                $estado = false;
+            }
+
+            $qb->join('p.domicilio', 'dom');
+            $qb->andWhere('dom.principal = :principal')
+                    ->setParameter('principal', $estado);
+        }
+
         $qb->setMaxResults(1000);
 
         return $qb->getQuery()->getResult();

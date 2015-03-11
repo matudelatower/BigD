@@ -33,6 +33,16 @@ class PersonaFilterType extends AbstractType {
                     'multiple' => false,
                     'required' => false,
                 ))
+                ->add('personaConDomicilioPrincipal', 'choice', array(
+                    'empty_value' => 'Todos',
+                    'choices' => array(
+                        'S' => 'SI',
+                        'N' => 'NO'
+                    ),
+                    'expanded' => true,
+                    'multiple' => false,
+                    'required' => false,
+                ))
         ;
 
 
