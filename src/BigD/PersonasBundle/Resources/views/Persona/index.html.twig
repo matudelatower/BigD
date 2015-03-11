@@ -5,9 +5,32 @@
 {% endblock %}
 {% block javascripts %}
     <script>
+        $('.datatable-custom').dataTable({
+            "searching": false,
+            "columnDefs": [{"targets": 0, "orderable": false}],
+            "paging": false,
+            "aaSorting": [[1, "asc"]],
+            "lengthMenu": false,
+            "oLanguage": {
+                "sEmptyTable": "Sin Resultados",
+                "sInfo": "",
+                "sInfoEmpty": ""
+            }
+        });
         $(document).ready(function () {
+
+
             $('.btn-ver-ubicaciones').click(function () {
-{#                $('#form-listado-personas').submit();#}
+                $('#form-listado-personas').submit();
+            });
+
+            $('#select_all').change(function () {
+                var checkboxes = $(this).closest('form').find(':checkbox');
+                if ($(this).is(':checked')) {
+                    checkboxes.prop('checked', true);
+                } else {
+                    checkboxes.prop('checked', false);
+                }
             });
         });
     </script>
@@ -91,26 +114,42 @@
                 <div class="box-content no-padding">
                     <div id="datatable-1_wrapper" class="dataTables_wrapper form-inline">
                         <form id="form-listado-personas" target="_blank"method="post" action="{{path('show_reporte_defunciones')}}">
-                            <table  class="table table-bordered table-striped table-hover table-heading table-datatable dataTable datatable-1" role="grid" aria-describedby="datatable-1_info">
+                            <table  class="table table-bordered table-striped table-hover table-heading table-datatable dataTable datatable-custom" role="grid" aria-describedby="datatable-1_info">
                                 <thead>
                                     <tr role="row">
-                                        <th></th>
-                                        <th class="sorting_asc" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 46px;" aria-sort="ascending" aria-label="Id">Id</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Nombre</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Apellido</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Numerodocumento</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Cuitcuil</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Fechanacimiento</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Sexo</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Creado</th>
-                                        <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Actualizado</th>
-                                        <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Actions</th>
-                                    </tr>
+                                        <th >
+                                <div class="checkbox" style="width: 45px;padding-left: 0;margin: -13px;">
+                                    <label>
+                                        <input type="checkbox" id="select_all" style="clip: rect(0px, 0px, 0px, 0px);position: absolute">
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div> 
+                                </th>
+                                <th class="sorting_asc" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 46px;" aria-sort="ascending" aria-label="Id">Id</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Nombre</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Apellido</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Nº documento</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">CUIT/CUIL</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Fecha Nacimiento</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Sexo</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Creado</th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Actualizado</th>
+                                <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Actions</th>
+                                </tr>
                                 </thead>
                                 <tbody>
                                     {% for entity in entities %}
                                         <tr class="{% if loop.index is odd %} odd {% else %} even {% endif %}" role="row">
-                                            <td><input type="checkbox" name="personas[]" value="{{ entity.id }}"></td>
+                                            <td>
+
+                                                <div class="checkbox" style="padding-left: 0;margin: -13px;">
+                                                    <label>
+                                                        <input type="checkbox" name="personas[]" value="{{ entity.id }}" style="clip: rect(0px, 0px, 0px, 0px);position: absolute">
+                                                        <i class="fa fa-square-o"></i>
+                                                    </label>
+                                                </div>
+
+                                            </td>
                                             <td class="sorting_1">{{ entity.id }}</td>
                                             <td>{{ entity.nombre }}</td>
                                             <td>{{ entity.apellido }}</td>

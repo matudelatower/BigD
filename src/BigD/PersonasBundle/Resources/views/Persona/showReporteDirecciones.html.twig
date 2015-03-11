@@ -53,9 +53,23 @@
     <script type="text/javascript"   src="https://maps.google.com/maps/api/js?sensor=false;language=es"></script>
 
     <script>
-        function initialize(parameters) {
-            address = parameters.calle + ' ' + parameters.numero + ', ' + parameters.ciudad + ', ' + parameters.provincia + ',' + parameters.pais;
+        function initialize() {
+            var mapOptions = {
+                center: new google.maps.LatLng(-27.3762488, -55.9153999),
+                zoom: 15,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document.getElementById("map-1"),
+                    mapOptions);
+        }
 
+
+
+
+
+        function inicializar(parameters) {
+            console.log(parameters)
+            address = parameters.calle + ' ' + parameters.numero + ', ' + parameters.ciudad + ', ' + parameters.provincia + ',' + parameters.pais;
             // I create a new google maps object to handle the request and we pass the address to it
             var geoCoder = new google.maps.Geocoder(address)
             // a new object for the request I called "request" , you can put there other parameters to specify a better search (check google api doc for details) ,
@@ -82,8 +96,6 @@
                 };
 
 
-                // the map is created with all the information
-                var map = new google.maps.Map(document.getElementById("map-1"), myOptions);
 
                 var popup = new google.maps.InfoWindow({
                     content: 'Apellido: ' + parameters.apellido + '<br/>\n\
@@ -114,74 +126,19 @@
         }
 
 
-
-
-
-        function inicializar(parameters, index) {
-            address = parameters.calle + ' ' + parameters.numero + ', ' + parameters.ciudad + ', ' + parameters.provincia + ',' + parameters.pais;
-
-
-            // I create a new google maps object to handle the request and we pass the address to it
-            var geoCoder = new google.maps.Geocoder(address)
-            // a new object for the request I called "request" , you can put there other parameters to specify a better search (check google api doc for details) ,
-            // on this example im going to add just the address 
-            var request = {address: address};
-            
-            geoCoder.geocode(request, function (result, status) {
-                var latlng = new google.maps.LatLng(result[0].geometry.location.lat(), result[0].geometry.location.lng());
-                if (index == 0) {
-
-
-                    // some initial values to the map  
-                    var myOptions = {
-                        zoom: 15,
-                        center: latlng,
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
-                    };
-                    var map = new google.maps.Map(document.getElementById("map-1"), myOptions);
-                }
-
-//marcador con la ubicación de la Universidad
-
-                var marker = new google.maps.Marker({
-                    position: latlng,
-                    map: map,
-                    // titulo que aparecera cuando pongamos el cursor encima
-                    title: 'Titulo',
-                    icon: 'icon.png',
-                    cursor: 'default',
-                    draggable: false
-                });
-                var marker = new google.maps.Marker({position: latlng, map: map, title: 'title'});
-            })
-
-
-
-        }
-
-
     </script>
     <script>
         $(document).ready(function () {
+            initialize();
+
             var arrayAddress = {{arrayPersonas|raw}};
                     $.each(arrayAddress, function (k, v) {
-                        //display the key and value pair
-        {#                console.log(k + ' is ' + v);#}
-
-                            inicializar(arrayAddress[k], k);
-
-                        });
-
-        {#initialize(arrayAddress[i]);#}
+                        inicializar(arrayAddress[k]);
+                    });
 
 
-                $('.ver-direccion').click(function (e) {
-                    e.preventDefault();
-                    initialize($(this).data('address'));
-                });
 
-
-            });
+        });
     </script>
 
 
