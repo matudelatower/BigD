@@ -50,22 +50,20 @@
 {% endblock %}
 {% block javascripts %}   
 
-    <script type="text/javascript"   src="https://maps.google.com/maps/api/js?sensor=false;language=es"></script>
+    <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
+
 
     <script>
         function initialize() {
             var mapOptions = {
                 center: new google.maps.LatLng(-27.3762488, -55.9153999),
-                zoom: 15,
+                zoom: 10,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             map = new google.maps.Map(document.getElementById("map-1"),
                     mapOptions);
         }
-
-
-
-
 
         function inicializar(parameters) {
             console.log(parameters)
@@ -88,14 +86,6 @@
                 }
                 var latlng = new google.maps.LatLng(result[0].geometry.location.lat(), result[0].geometry.location.lng());
 
-                // some initial values to the map  
-                var myOptions = {
-                    zoom: 15,
-                    center: latlng,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-
-
 
                 var popup = new google.maps.InfoWindow({
                     content: 'Apellido: ' + parameters.apellido + '<br/>\n\
@@ -103,43 +93,32 @@
                     position: map.getCenter()
                 });
 
-                var marker = new google.maps.Marker({
-                    // definimos la poisicion de nuestra marca en el mapa
-                    position: map.getCenter(),
-                    map: map,
-                    // titulo que aparecera cuando pongamos el cursor encima
-                    title: 'Titulo',
-                    icon: 'icon.png',
-                    cursor: 'default',
-                    draggable: false
-                });
-
                 // an extra step is need it to add the mark pointing to the place selected.
                 var marker = new google.maps.Marker({position: latlng, map: map, title: 'title'});
-
+                markers.push(marker);
                 google.maps.event.addListener(marker, 'click', function () {
                     popup.open(map, marker);
                 });
 
             })
-
         }
 
 
     </script>
     <script>
         $(document).ready(function () {
+            markers = [];
             initialize();
 
             var arrayAddress = {{arrayPersonas|raw}};
                     $.each(arrayAddress, function (k, v) {
                         inicializar(arrayAddress[k]);
                     });
+        });
 
-
-
+        $(window).load(function () {
+            var markerCluster = new MarkerClusterer(map, markers);
         });
     </script>
-
 
 {% endblock javascripts %}
