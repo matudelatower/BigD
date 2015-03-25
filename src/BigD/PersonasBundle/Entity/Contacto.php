@@ -52,6 +52,11 @@ class Contacto {
      *  @ORM\JoinColumn(name="tipo_contacto_id", referencedColumnName="id")
      */
     private $tipoContacto;
+    
+    /** @ORM\ManyToOne(targetEntity="Persona", inversedBy="domicilio")
+     *  @ORM\JoinColumn(name="persona_id", referencedColumnName="id")
+     */
+    private $persona;
 
     /**
      * @var datetime $creado
@@ -285,4 +290,27 @@ class Contacto {
         return $this->actualizadoPor;
     }
 
+
+    /**
+     * Set persona
+     *
+     * @param \BigD\PersonasBundle\Entity\Persona $persona
+     * @return Contacto
+     */
+    public function setPersona(\BigD\PersonasBundle\Entity\Persona $persona = null)
+    {
+        $this->persona = $persona;
+
+        return $this;
+    }
+
+    /**
+     * Get persona
+     *
+     * @return \BigD\PersonasBundle\Entity\Persona 
+     */
+    public function getPersona()
+    {
+        return $this->persona;
+    }
 }

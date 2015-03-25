@@ -107,6 +107,11 @@ class Persona {
      * @ORM\OneToMany(targetEntity="Domicilio", mappedBy="persona")
      */
     private $domicilio;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Rodado", mappedBy="persona")
+     */
+    private $rodado;
 
     /**
      * Get id
@@ -387,5 +392,38 @@ class Persona {
     public function getDomicilio()
     {
         return $this->domicilio;
+    }
+
+    /**
+     * Add rodado
+     *
+     * @param \BigD\PersonasBundle\Entity\Rodado $rodado
+     * @return Persona
+     */
+    public function addRodado(\BigD\PersonasBundle\Entity\Rodado $rodado)
+    {
+        $this->rodado[] = $rodado;
+
+        return $this;
+    }
+
+    /**
+     * Remove rodado
+     *
+     * @param \BigD\PersonasBundle\Entity\Rodado $rodado
+     */
+    public function removeRodado(\BigD\PersonasBundle\Entity\Rodado $rodado)
+    {
+        $this->rodado->removeElement($rodado);
+    }
+
+    /**
+     * Get rodado
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRodado()
+    {
+        return $this->rodado;
     }
 }
