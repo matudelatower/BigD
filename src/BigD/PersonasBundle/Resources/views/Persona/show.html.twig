@@ -90,6 +90,33 @@
 
             </div>
         </div>
+        <div class="col-xs-4">
+            <div class="box ui-draggable ui-droppable">
+                <div class="box-header">
+                    <div class="box-name ui-draggable-handle">
+                        <i class="fa fa-user"></i>
+                        <span>Vehículos</span>
+                    </div>
+
+                    <div class="no-move"></div>
+                </div>
+                <div class="box-content">
+                    <div class="card address">
+                        {% for rodado in entity.rodado %}
+                            <div class="card">
+                                <h4>{{rodado.marcaRodado}} - {{rodado.modelo}}</h4>
+                                <p>
+                                    <span><strong>Patente: </strong></span><span>{{rodado.dominio}}</span>
+                                    <br>
+                                </p>
+                                <h4 class="page-header"></h4>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 
 

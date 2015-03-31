@@ -63,6 +63,10 @@ class MarcaRodado
      */
     private $actualizadoPor;
 
+    
+    public function __toString() {
+        return $this->descripcion;
+    }
 
     /**
      * Get id

@@ -46,7 +46,7 @@ class Rodado {
     /**
      * @var string
      *
-     * @ORM\Column(name="precio", type="decimal", scale=2, nullable=true)
+     * @ORM\Column(name="precio", type="float", nullable=true)
      */
     private $precio;
 
