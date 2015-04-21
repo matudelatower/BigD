@@ -1,3 +1,16 @@
-usuarios_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: UsuariosBundle:Default:index }
+UsuariosBundle_permisos:
+        resource: "@UsuariosBundle/Resources/config/routing/permiso.yml"
+        prefix:   /permisos
+
+UsuariosBundle_perfiles:
+        resource: "@UsuariosBundle/Resources/config/routing/perfil.yml"
+        prefix:   /perfiles
+
+UsuariosBundle_permisos_perfil:
+        resource: "@UsuariosBundle/Resources/config/routing/permisoperfil.yml"
+        prefix:   /permisos_perfil
+
+UsuariosBundle_usuarios:
+        resource: "@UsuariosBundle/Resources/config/routing/usuario.yml"
+        prefix:   /
+

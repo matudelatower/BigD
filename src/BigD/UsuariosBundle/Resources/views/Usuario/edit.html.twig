@@ -1,0 +1,80 @@
+    {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+{% set title = 'Edicion Usuario' %}
+{% block title %}
+{{ title }}
+{% endblock %}
+
+    {% block body -%}
+
+    <h4 class="page-header">Usuario</h4>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">            
+            <div class="box-header">
+                <div class="box-name ui-draggable-handle">
+                    <i class="fa fa-search"></i>
+                    <span>Edicion de Usuario</span>
+                </div>
+            </div>
+            <div class="box-content">
+                <h4 class="page-header">{{ title }}</h4>
+                <form action="{{ path('usuarios_update', { 'id': entity.id }) }}" role="form" method="post">
+                    <div class="form-group">
+                        {{ form_label(form.username) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.username) }}
+                        </div>
+                        {{ form_label(form.email) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.email) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.perfiles) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.perfiles) }}
+                        </div>
+                        {{ form_label(form.enabled) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.enabled) }}
+                        </div>                       
+                        
+                    </div>
+                    {#<div class="form-group">
+                        {{ form_label(form.plainPassword.first) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.plainPassword.first) }}
+                        </div>
+                        {{ form_label(form.plainPassword.second) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.plainPassword.second) }}
+                        </div>
+                    </div>#}
+                    {#<div class="form-group">
+                        {{ form_label(form.perfiles) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.perfiles) }}
+                        </div>
+
+                    </div>#}
+                    {{form_widget(form._token)}}
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3">
+                            <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Guardar</button>
+
+                            <a class="btn btn-success" href="{{ path('usuarios') }}">
+                                Volver
+                            </a>
+
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+
+            {% endblock %}
+
+

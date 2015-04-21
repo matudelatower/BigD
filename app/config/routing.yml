@@ -14,6 +14,10 @@ theme:
     resource: "@ThemeBundle/Resources/config/routing.yml"
     prefix:   /theme
 
+util:
+    resource: "@UtilBundle/Resources/config/routing.yml"
+    prefix:   /utils    
+
 personas:
     resource: "@PersonasBundle/Resources/config/routing.yml"
     prefix:   /personas

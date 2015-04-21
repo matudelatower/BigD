@@ -1,0 +1,30 @@
+perfiles:
+    path:     /
+    defaults: { _controller: "UsuariosBundle:Perfil:index" }
+
+perfiles_show:
+    path:     /{id}/show
+    defaults: { _controller: "UsuariosBundle:Perfil:show" }
+
+perfiles_new:
+    path:     /new
+    defaults: { _controller: "UsuariosBundle:Perfil:new" }
+
+perfiles_create:
+    path:     /create
+    defaults: { _controller: "UsuariosBundle:Perfil:create" }
+    requirements: { _method: post }
+
+perfiles_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "UsuariosBundle:Perfil:edit" }
+
+perfiles_update:
+    path:     /{id}/update
+    defaults: { _controller: "UsuariosBundle:Perfil:update" }
+    requirements: { _method: post|put }
+
+perfiles_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "UsuariosBundle:Perfil:delete" }
+    requirements: { _method: post|delete }

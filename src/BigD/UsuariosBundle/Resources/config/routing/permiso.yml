@@ -1,0 +1,30 @@
+permisos:
+    path:     /
+    defaults: { _controller: "UsuariosBundle:Permiso:index" }
+
+permisos_show:
+    path:     /{id}/show
+    defaults: { _controller: "UsuariosBundle:Permiso:show" }
+
+permisos_new:
+    path:     /new
+    defaults: { _controller: "UsuariosBundle:Permiso:new" }
+
+permisos_create:
+    path:     /create
+    defaults: { _controller: "UsuariosBundle:Permiso:create" }
+    requirements: { _method: post }
+
+permisos_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "UsuariosBundle:Permiso:edit" }
+
+permisos_update:
+    path:     /{id}/update
+    defaults: { _controller: "UsuariosBundle:Permiso:update" }
+    requirements: { _method: post|put }
+
+permisos_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "UsuariosBundle:Permiso:delete" }
+    requirements: { _method: post|delete }

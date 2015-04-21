@@ -1,0 +1,28 @@
+parameters:
+#    util.example.class: BigD\UtilBundle\Example
+
+services:
+#    util.example:
+#        class: %util.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+    form.type.jqueryautocomplete:
+        class: BigD\UtilBundle\Form\Type\JqueryAutocompleteType
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+        tags:
+            - { name: form.type, alias: jqueryautocomplete }
+            
+    form.type.bootstrapcollection:
+        class: BigD\UtilBundle\Form\Type\BootstrapCollectionType
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+        tags:
+            - { name: form.type, alias: bootstrapcollection }
+
+            
+    form.type.jqueryautocompletetext:
+        class: BigD\UtilBundle\Form\Type\JqueryAutocompleteTextType
+        tags:
+            - { name: form.type, alias: jqueryautocompletetext }
+            
+        

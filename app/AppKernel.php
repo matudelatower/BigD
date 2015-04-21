@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new BigD\UsuariosBundle\UsuariosBundle(),
             new BigD\AppBundle\AppBundle(),
+            new BigD\UtilBundle\UtilBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {            
