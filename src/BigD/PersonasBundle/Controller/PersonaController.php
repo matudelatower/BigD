@@ -107,10 +107,21 @@ class PersonaController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('PersonasBundle:Persona')->find($id);
-
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Persona entity.');
         }
+        
+        $db = $em->getConnection();
+        $query = "SELECT * FROM personas p
+              left JOIN iibb i on p.cuit_cuil=i.cuit
+              WHERE p.id=$id;";
+
+        $stmt = $db->prepare($query);
+        $params = array();
+        $stmt->execute($params);
+        $iibb = $stmt->fetchAll();
+
+        
         $parametro = array(
             "nombre" => $entity->getNombre(),
             "apellido" => $entity->getApellido(),
@@ -127,7 +138,8 @@ class PersonaController extends Controller {
 
         return $this->render('PersonasBundle:Persona:show.html.twig', array(
                     'entity' => $entity,
-                    'parametro' => $parametro
+                    'parametro' => $parametro,
+                    'iibb' => $iibb
         ));
     }
 
@@ -268,7 +280,7 @@ class PersonaController extends Controller {
             $json[] = $parametro;
         }
 
-        return $this->render('PersonasBundle:Persona:showReporteDirecciones.html.twig', array(                    
+        return $this->render('PersonasBundle:Persona:showReporteDirecciones.html.twig', array(
                     'arrayPersonas' => json_encode($json)
         ));
     }

@@ -80,15 +80,7 @@
 
                 </div>
 
-            </div>
-            <div class="form-group">
-                <div class="col-sm-9 col-sm-offset-3">                            
-                    <a class="btn btn-default" href="{{ path('persona') }}">
-                        Volver
-                    </a>
-                </div>
-
-            </div>
+            </div>            
         </div>
         <div class="col-xs-4">
             <div class="box ui-draggable ui-droppable">
@@ -118,6 +110,71 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-name">
+                        <i class="fa fa-users"></i>
+                        <span>IIBB</span>
+                    </div>
+                </div>
+                <table  class="table table-bordered table-striped table-hover table-heading table-datatable dataTable datatable-custom" role="grid" aria-describedby="datatable-1_info">
+                    <thead>
+                        <tr role="row">
+                            <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Año</th>
+                            <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Enero</th>
+                            <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Febrero</th>
+                            <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Marzo</th>
+                            <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Abril</th>
+                            <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Mayo</th>
+                            <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Junio</th>
+                            <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Julio</th>
+                            <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Agosto</th>
+                            <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Septiembre</th>
+                            <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Octubre</th>
+                            <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Noviembre</th>
+                            <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Diciembre</th>
+                            <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for iibb in iibb %}
+                            <tr class="{% if loop.index is odd %} odd {% else %} even {% endif %}" role="row">
+
+                                <td>{{ iibb.anio }}</td>
+                                <td>{{ iibb.enero }}</td>
+                                <td>{{ iibb.febrero }}</td>
+                                <td>{{ iibb.marzo }}</td>
+                                <td>{{ iibb.abril }}</td>
+                                <td>{{ iibb.mayo }}</td>
+                                <td>{{ iibb.junio }}</td>
+                                <td>{{ iibb.julio }}</td>
+                                <td>{{ iibb.agosto }}</td>                                            
+                                <td>{{ iibb.septiembre }}</td>
+                                <td>{{ iibb.octubre }}</td>
+                                <td>{{ iibb.noviembre }}</td>
+                                <td>{{ iibb.diciembre }}</td>
+                                <td>{{ iibb.total }}</td>
+
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>                
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-6 col-sm-offset-5">                            
+                <a class="btn btn-default" href="{{ path('persona') }}">
+                    Volver
+                </a>
+            </div>
+
+        </div>
+    </div>
+
 
 
 {% endblock %}
@@ -185,11 +242,6 @@
 
         }
 
-
-
-
-    </script>
-    <script>
         $(document).ready(function () {
 
             initialize({{parametro|json_encode|raw}});
@@ -201,7 +253,7 @@
 
 
 
-        });
+        });    
     </script>
 
 
