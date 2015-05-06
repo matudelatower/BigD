@@ -5,13 +5,13 @@ namespace BigD\PersonasBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * iibb
+ * IngresosBrutos
  *
- * @ORM\Table()
+ * @ORM\Table(name="ingresos_brutos")
  * @ORM\Entity
  */
-class iibb
-{
+class IngresosBrutos {
+
     /**
      * @var integer
      *
@@ -22,9 +22,9 @@ class iibb
     private $id;
 
     /**
-     * @var bigint
+     * @var string
      *
-     * @ORM\Column(name="cuit", type="bigint")
+     * @ORM\Column(name="cuit", type="string", length=255)
      */
     private $cuit;
 
@@ -140,8 +140,8 @@ class iibb
     /**
      * Set cuit
      *
-     * @param integer $cuit
-     * @return iibb
+     * @param string $cuit
+     * @return IngresosBrutos
      */
     public function setCuit($cuit)
     {
@@ -153,7 +153,7 @@ class iibb
     /**
      * Get cuit
      *
-     * @return integer 
+     * @return string 
      */
     public function getCuit()
     {
@@ -164,7 +164,7 @@ class iibb
      * Set anio
      *
      * @param integer $anio
-     * @return iibb
+     * @return IngresosBrutos
      */
     public function setAnio($anio)
     {
@@ -187,7 +187,7 @@ class iibb
      * Set enero
      *
      * @param string $enero
-     * @return iibb
+     * @return IngresosBrutos
      */
     public function setEnero($enero)
     {
@@ -210,7 +210,7 @@ class iibb
      * Set febrero
      *
      * @param string $febrero
-     * @return iibb
+     * @return IngresosBrutos
      */
     public function setFebrero($febrero)
     {
@@ -233,7 +233,7 @@ class iibb
      * Set marzo
      *
      * @param string $marzo
-     * @return iibb
+     * @return IngresosBrutos
      */
     public function setMarzo($marzo)
     {
@@ -256,7 +256,7 @@ class iibb
      * Set abril
      *
      * @param string $abril
-     * @return iibb
+     * @return IngresosBrutos
      */
     public function setAbril($abril)
     {
@@ -279,7 +279,7 @@ class iibb
      * Set mayo
      *
      * @param string $mayo
-     * @return iibb
+     * @return IngresosBrutos
      */
     public function setMayo($mayo)
     {
@@ -302,7 +302,7 @@ class iibb
      * Set junio
      *
      * @param string $junio
-     * @return iibb
+     * @return IngresosBrutos
      */
     public function setJunio($junio)
     {
@@ -325,7 +325,7 @@ class iibb
      * Set julio
      *
      * @param string $julio
-     * @return iibb
+     * @return IngresosBrutos
      */
     public function setJulio($julio)
     {
@@ -348,7 +348,7 @@ class iibb
      * Set agosto
      *
      * @param string $agosto
-     * @return iibb
+     * @return IngresosBrutos
      */
     public function setAgosto($agosto)
     {
@@ -371,7 +371,7 @@ class iibb
      * Set septiembre
      *
      * @param string $septiembre
-     * @return iibb
+     * @return IngresosBrutos
      */
     public function setSeptiembre($septiembre)
     {
@@ -394,7 +394,7 @@ class iibb
      * Set octubre
      *
      * @param string $octubre
-     * @return iibb
+     * @return IngresosBrutos
      */
     public function setOctubre($octubre)
     {
@@ -417,7 +417,7 @@ class iibb
      * Set noviembre
      *
      * @param string $noviembre
-     * @return iibb
+     * @return IngresosBrutos
      */
     public function setNoviembre($noviembre)
     {
@@ -440,7 +440,7 @@ class iibb
      * Set diciembre
      *
      * @param string $diciembre
-     * @return iibb
+     * @return IngresosBrutos
      */
     public function setDiciembre($diciembre)
     {
@@ -463,7 +463,7 @@ class iibb
      * Set total
      *
      * @param string $total
-     * @return iibb
+     * @return IngresosBrutos
      */
     public function setTotal($total)
     {
