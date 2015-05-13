@@ -111,34 +111,7 @@ class PersonaController extends Controller {
             throw $this->createNotFoundException('Unable to find Persona entity.');
         }
 
-        $db = $em->getConnection();
-        $query = "SELECT
-                ingresos_brutos.id AS id,
-                ingresos_brutos.cuit AS cuit,
-                ingresos_brutos.anio AS anio,
-                ingresos_brutos.enero AS enero,
-                ingresos_brutos.febrero AS febrero,
-                ingresos_brutos.marzo AS marzo,
-                ingresos_brutos.abril AS abril,
-                ingresos_brutos.mayo AS mayo,
-                ingresos_brutos.junio AS junio,
-                ingresos_brutos.julio AS julio,
-                ingresos_brutos.agosto AS agosto,
-                ingresos_brutos.septiembre AS septiembre,
-                ingresos_brutos.octubre AS octubre,
-                ingresos_brutos.noviembre AS noviembre,
-                ingresos_brutos.diciembre AS diciembre,
-                ingresos_brutos.total AS total
-           FROM
-                ingresos_brutos ingresos_brutos 
-                LEFT OUTER JOIN personas personas ON ingresos_brutos.cuit = personas.cuit_cuil
-           WHERE
-                personas.id=".$id;
-
-        $stmt = $db->prepare($query);
-        $params = array();
-        $stmt->execute($params);
-        $iibb = $stmt->fetchAll();
+        $iibb= $em->getRepository('PersonasBundle:Persona')->getDatosIngresosBrutosPorPersonaId($id);
 
 
         $parametro = array(

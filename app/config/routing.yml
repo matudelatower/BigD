@@ -1,3 +1,7 @@
+campanias:
+    resource: "@CampaniasBundle/Resources/config/routing.yml"
+    prefix:   /campanias
+
 app:
     resource: "@AppBundle/Resources/config/routing.yml"
     prefix:   /
