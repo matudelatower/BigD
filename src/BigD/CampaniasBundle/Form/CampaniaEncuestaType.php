@@ -17,12 +17,9 @@ class CampaniaEncuestaType extends AbstractType
         $builder
             ->add('nombre')
             ->add('descripcion')
-            ->add('slug')
-            ->add('creado')
-            ->add('actualizado')
+            ->add('slug')            
             ->add('campania')
-            ->add('creadoPor')
-            ->add('actualizadoPor')
+            
         ;
     }
     

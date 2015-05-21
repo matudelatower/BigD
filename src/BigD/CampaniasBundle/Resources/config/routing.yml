@@ -2,14 +2,18 @@ campanias_homepage:
     path:     /hello/{name}
     defaults: { _controller: CampaniasBundle:Default:index }
 
+CampaniasBundle_campanias:
+        resource: "@CampaniasBundle/Resources/config/routing/campania.yml"
+        prefix:   /campanias
+
 CampaniasBundle_campania_encuesta:
-        resource: "@CampaniasBundle/Resources/config/routing/campaniaencuesta.yml"
+        resource: "@CampaniasBundle/Resources/config/routing/encuesta.yml"
         prefix:   /campania_encuesta
         
 CampaniasBundle_opciones_respuestas:
-        resource: "@CampaniasBundle/Resources/config/routing/campaniaencuestaopcionesrespuesta.yml"
+        resource: "@CampaniasBundle/Resources/config/routing/opciones_respuesta.yml"
         prefix:   /opciones_respuestas
         
 CampaniasBundle_tipo_pregunta:
-        resource: "@CampaniasBundle/Resources/config/routing/campaniaencuestatipopregunta.yml"
+        resource: "@CampaniasBundle/Resources/config/routing/tipo_pregunta.yml"
         prefix:   /tipo_pregunta        

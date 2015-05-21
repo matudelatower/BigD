@@ -18,10 +18,6 @@ class CampaniaEncuestaOpcionesRespuestaType extends AbstractType
             ->add('obligatorio')
             ->add('textoOpcion')
             ->add('slug')
-            ->add('creado')
-            ->add('actualizado')
-            ->add('creadoPor')
-            ->add('actualizadoPor')
             ->add('campaniaEncuestaPreguntas')
         ;
     }

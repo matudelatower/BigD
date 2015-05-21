@@ -18,10 +18,7 @@ class CampaniaEncuestaTipoPreguntaType extends AbstractType
             ->add('nombre')
             ->add('descripcion')
             ->add('slug')
-            ->add('creado')
-            ->add('actualizado')
-            ->add('creadoPor')
-            ->add('actualizadoPor')
+            
         ;
     }
     
