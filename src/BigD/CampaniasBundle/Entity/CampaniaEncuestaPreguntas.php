@@ -4,13 +4,14 @@ namespace BigD\CampaniasBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+
 /**
- * CampaniaEncuesta
+ * CampaniaEncuentaPreguntas
  *
- * @ORM\Table(name="campania_encuesta")
+ * @ORM\Table(name="campania_encuesta_preguntas")
  * @ORM\Entity
  */
-class CampaniaEncuesta
+class CampaniaEncuestaPreguntas
 {
     /**
      * @var integer
@@ -24,29 +25,10 @@ class CampaniaEncuesta
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=255)
+     * @ORM\Column(name="texto_pregunta", type="string", length=255)
      */
-    private $nombre;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="string", length=255)
-     */
-    private $descripcion;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="slug", type="string", length=255)
-     */
-    private $slug;
-
-    /** @ORM\ManyToOne(targetEntity="Campania")
-     *  @ORM\JoinColumn(name="campania_id", referencedColumnName="id")
-     */
-    private $campania;
-
+    private $textoPregunta;
+    
      /**
      * @var datetime $creado
      *
@@ -80,6 +62,16 @@ class CampaniaEncuesta
      * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
      */
     private $actualizadoPor;
+
+    /** @ORM\ManyToOne(targetEntity="CampaniaEncuestaAgrupadorPregunta")
+     *  @ORM\JoinColumn(name="campania_encuesta_agrupador_pregunta_id", referencedColumnName="id")
+     */
+    private $campaniaEncuestaAgrupadorPregunta;
+    
+    /** @ORM\ManyToOne(targetEntity="CampaniaEncuestaTipoPregunta")
+     *  @ORM\JoinColumn(name="campania_encuesta_tipo_pregunta_id", referencedColumnName="id")
+     */
+    private $campaniaEncuestaTipoPregunta;
     
     /**
      * Get id
@@ -92,102 +84,33 @@ class CampaniaEncuesta
     }
 
     /**
-     * Set nombre
+     * Set textoPregunta
      *
-     * @param string $nombre
-     * @return CampaniaEncuesta
+     * @param string $textoPregunta
+     * @return CampaniaEncuentaPreguntas
      */
-    public function setNombre($nombre)
+    public function setTextoPregunta($textoPregunta)
     {
-        $this->nombre = $nombre;
+        $this->textoPregunta = $textoPregunta;
 
         return $this;
     }
 
     /**
-     * Get nombre
+     * Get textoPregunta
      *
      * @return string 
      */
-    public function getNombre()
+    public function getTextoPregunta()
     {
-        return $this->nombre;
-    }
-
-    /**
-     * Set descripcion
-     *
-     * @param string $descripcion
-     * @return CampaniaEncuesta
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-
-        return $this;
-    }
-
-    /**
-     * Get descripcion
-     *
-     * @return string 
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return CampaniaEncuesta
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set campania
-     *
-     * @param \BigD\CampaniasBundle\Entity\Campania $campania
-     * @return CampaniaEncuesta
-     */
-    public function setCampania(\BigD\CampaniasBundle\Entity\Campania $campania = null)
-    {
-        $this->campania = $campania;
-
-        return $this;
-    }
-
-    /**
-     * Get campania
-     *
-     * @return \BigD\CampaniasBundle\Entity\Campania 
-     */
-    public function getCampania()
-    {
-        return $this->campania;
+        return $this->textoPregunta;
     }
 
     /**
      * Set creado
      *
      * @param \DateTime $creado
-     * @return CampaniaEncuesta
+     * @return CampaniaEncuentaPreguntas
      */
     public function setCreado($creado)
     {
@@ -210,7 +133,7 @@ class CampaniaEncuesta
      * Set actualizado
      *
      * @param \DateTime $actualizado
-     * @return CampaniaEncuesta
+     * @return CampaniaEncuentaPreguntas
      */
     public function setActualizado($actualizado)
     {
@@ -233,7 +156,7 @@ class CampaniaEncuesta
      * Set creadoPor
      *
      * @param \BigD\UsuariosBundle\Entity\Usuario $creadoPor
-     * @return CampaniaEncuesta
+     * @return CampaniaEncuentaPreguntas
      */
     public function setCreadoPor(\BigD\UsuariosBundle\Entity\Usuario $creadoPor = null)
     {
@@ -256,7 +179,7 @@ class CampaniaEncuesta
      * Set actualizadoPor
      *
      * @param \BigD\UsuariosBundle\Entity\Usuario $actualizadoPor
-     * @return CampaniaEncuesta
+     * @return CampaniaEncuentaPreguntas
      */
     public function setActualizadoPor(\BigD\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
     {
@@ -273,5 +196,51 @@ class CampaniaEncuesta
     public function getActualizadoPor()
     {
         return $this->actualizadoPor;
+    }
+
+    /**
+     * Set campaniaEncuestaAgrupadorPregunta
+     *
+     * @param \BigD\CampaniasBundle\Entity\CampaniaEncuestaAgrupadorPregunta $campaniaEncuestaAgrupadorPregunta
+     * @return CampaniaEncuentaPreguntas
+     */
+    public function setCampaniaEncuestaAgrupadorPregunta(\BigD\CampaniasBundle\Entity\CampaniaEncuestaAgrupadorPregunta $campaniaEncuestaAgrupadorPregunta = null)
+    {
+        $this->campaniaEncuestaAgrupadorPregunta = $campaniaEncuestaAgrupadorPregunta;
+
+        return $this;
+    }
+
+    /**
+     * Get campaniaEncuestaAgrupadorPregunta
+     *
+     * @return \BigD\CampaniasBundle\Entity\CampaniaEncuestaAgrupadorPregunta 
+     */
+    public function getCampaniaEncuestaAgrupadorPregunta()
+    {
+        return $this->campaniaEncuestaAgrupadorPregunta;
+    }
+
+    /**
+     * Set campaniaEncuestaTipoPregunta
+     *
+     * @param \BigD\CampaniasBundle\Entity\CampaniaEncuestaTipoPregunta $campaniaEncuestaTipoPregunta
+     * @return CampaniaEncuentaPreguntas
+     */
+    public function setCampaniaEncuestaTipoPregunta(\BigD\CampaniasBundle\Entity\CampaniaEncuestaTipoPregunta $campaniaEncuestaTipoPregunta = null)
+    {
+        $this->campaniaEncuestaTipoPregunta = $campaniaEncuestaTipoPregunta;
+
+        return $this;
+    }
+
+    /**
+     * Get campaniaEncuestaTipoPregunta
+     *
+     * @return \BigD\CampaniasBundle\Entity\CampaniaEncuestaTipoPregunta 
+     */
+    public function getCampaniaEncuestaTipoPregunta()
+    {
+        return $this->campaniaEncuestaTipoPregunta;
     }
 }

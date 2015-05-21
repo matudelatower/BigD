@@ -3,7 +3,7 @@
 namespace BigD\CampaniasBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * CampaniaEncuestaAgrupadorPregunta
  *
@@ -49,6 +49,40 @@ class CampaniaEncuestaAgrupadorPregunta
      */
     private $slug;
 
+     /**
+     * @var datetime $creado
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(name="creado", type="datetime")
+     */
+    private $creado;
+
+    /**
+     * @var datetime $actualizado
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(name="actualizado",type="datetime")
+     */
+    private $actualizado;
+
+    /**
+     * @var integer $creadoPor
+     *
+     * @Gedmo\Blameable(on="create")
+     * @ORM\ManyToOne(targetEntity="BigD\UsuariosBundle\Entity\Usuario")
+     * @ORM\JoinColumn(name="creado_por", referencedColumnName="id", nullable=true)
+     */
+    private $creadoPor;
+
+    /**
+     * @var integer $actualizadoPor
+     *
+     * @Gedmo\Blameable(on="update")
+     * @ORM\ManyToOne(targetEntity="BigD\UsuariosBundle\Entity\Usuario")
+     * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
+     */
+    private $actualizadoPor;
+    
     /** @ORM\ManyToOne(targetEntity="CampaniaEncuesta")
      *  @ORM\JoinColumn(name="campania_encuesta_id", referencedColumnName="id")
      */
@@ -154,5 +188,120 @@ class CampaniaEncuestaAgrupadorPregunta
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * Set creado
+     *
+     * @param \DateTime $creado
+     * @return CampaniaEncuestaAgrupadorPregunta
+     */
+    public function setCreado($creado)
+    {
+        $this->creado = $creado;
+
+        return $this;
+    }
+
+    /**
+     * Get creado
+     *
+     * @return \DateTime 
+     */
+    public function getCreado()
+    {
+        return $this->creado;
+    }
+
+    /**
+     * Set actualizado
+     *
+     * @param \DateTime $actualizado
+     * @return CampaniaEncuestaAgrupadorPregunta
+     */
+    public function setActualizado($actualizado)
+    {
+        $this->actualizado = $actualizado;
+
+        return $this;
+    }
+
+    /**
+     * Get actualizado
+     *
+     * @return \DateTime 
+     */
+    public function getActualizado()
+    {
+        return $this->actualizado;
+    }
+
+    /**
+     * Set creadoPor
+     *
+     * @param \BigD\UsuariosBundle\Entity\Usuario $creadoPor
+     * @return CampaniaEncuestaAgrupadorPregunta
+     */
+    public function setCreadoPor(\BigD\UsuariosBundle\Entity\Usuario $creadoPor = null)
+    {
+        $this->creadoPor = $creadoPor;
+
+        return $this;
+    }
+
+    /**
+     * Get creadoPor
+     *
+     * @return \BigD\UsuariosBundle\Entity\Usuario 
+     */
+    public function getCreadoPor()
+    {
+        return $this->creadoPor;
+    }
+
+    /**
+     * Set actualizadoPor
+     *
+     * @param \BigD\UsuariosBundle\Entity\Usuario $actualizadoPor
+     * @return CampaniaEncuestaAgrupadorPregunta
+     */
+    public function setActualizadoPor(\BigD\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
+    {
+        $this->actualizadoPor = $actualizadoPor;
+
+        return $this;
+    }
+
+    /**
+     * Get actualizadoPor
+     *
+     * @return \BigD\UsuariosBundle\Entity\Usuario 
+     */
+    public function getActualizadoPor()
+    {
+        return $this->actualizadoPor;
+    }
+
+    /**
+     * Set campaniaEncuesta
+     *
+     * @param \BigD\CampaniasBundle\Entity\CampaniaEncuesta $campaniaEncuesta
+     * @return CampaniaEncuestaAgrupadorPregunta
+     */
+    public function setCampaniaEncuesta(\BigD\CampaniasBundle\Entity\CampaniaEncuesta $campaniaEncuesta = null)
+    {
+        $this->campaniaEncuesta = $campaniaEncuesta;
+
+        return $this;
+    }
+
+    /**
+     * Get campaniaEncuesta
+     *
+     * @return \BigD\CampaniasBundle\Entity\CampaniaEncuesta 
+     */
+    public function getCampaniaEncuesta()
+    {
+        return $this->campaniaEncuesta;
     }
 }
