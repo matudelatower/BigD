@@ -1,0 +1,30 @@
+opciones_respuestas:
+    path:     /
+    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaOpcionesRespuesta:index" }
+
+opciones_respuestas_show:
+    path:     /{id}/show
+    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaOpcionesRespuesta:show" }
+
+opciones_respuestas_new:
+    path:     /new
+    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaOpcionesRespuesta:new" }
+
+opciones_respuestas_create:
+    path:     /create
+    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaOpcionesRespuesta:create" }
+    requirements: { _method: post }
+
+opciones_respuestas_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaOpcionesRespuesta:edit" }
+
+opciones_respuestas_update:
+    path:     /{id}/update
+    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaOpcionesRespuesta:update" }
+    requirements: { _method: post|put }
+
+opciones_respuestas_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaOpcionesRespuesta:delete" }
+    requirements: { _method: post|delete }
