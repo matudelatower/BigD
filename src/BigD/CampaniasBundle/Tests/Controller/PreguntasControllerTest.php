@@ -4,7 +4,7 @@ namespace BigD\CampaniasBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class OpcionesRespuestaControllerTest extends WebTestCase
+class PreguntasControllerTest extends WebTestCase
 {
     /*
     public function testCompleteScenario()
@@ -13,13 +13,13 @@ class OpcionesRespuestaControllerTest extends WebTestCase
         $client = static::createClient();
 
         // Create a new entry in the database
-        $crawler = $client->request('GET', '/opciones_respuestas/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /opciones_respuestas/");
+        $crawler = $client->request('GET', '/preguntas/');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /preguntas/");
         $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
 
         // Fill in the form and submit it
         $form = $crawler->selectButton('Create')->form(array(
-            'bigd_campaniasbundle_campaniaencuestaopcionesrespuesta[field_name]'  => 'Test',
+            'bigd_campaniasbundle_preguntas[field_name]'  => 'Test',
             // ... other fields to fill
         ));
 
@@ -33,7 +33,7 @@ class OpcionesRespuestaControllerTest extends WebTestCase
         $crawler = $client->click($crawler->selectLink('Edit')->link());
 
         $form = $crawler->selectButton('Update')->form(array(
-            'bigd_campaniasbundle_campaniaencuestaopcionesrespuesta[field_name]'  => 'Foo',
+            'bigd_campaniasbundle_preguntas[field_name]'  => 'Foo',
             // ... other fields to fill
         ));
 

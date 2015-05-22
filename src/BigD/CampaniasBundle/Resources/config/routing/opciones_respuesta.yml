@@ -1,30 +1,30 @@
 opciones_respuestas:
     path:     /
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaOpcionesRespuesta:index" }
+    defaults: { _controller: "CampaniasBundle:OpcionesRespuesta:index" }
 
 opciones_respuestas_show:
     path:     /{id}/show
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaOpcionesRespuesta:show" }
+    defaults: { _controller: "CampaniasBundle:OpcionesRespuesta:show" }
 
 opciones_respuestas_new:
     path:     /new
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaOpcionesRespuesta:new" }
+    defaults: { _controller: "CampaniasBundle:OpcionesRespuesta:new" }
 
 opciones_respuestas_create:
     path:     /create
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaOpcionesRespuesta:create" }
+    defaults: { _controller: "CampaniasBundle:OpcionesRespuesta:create" }
     requirements: { _method: post }
 
 opciones_respuestas_edit:
     path:     /{id}/edit
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaOpcionesRespuesta:edit" }
+    defaults: { _controller: "CampaniasBundle:OpcionesRespuesta:edit" }
 
 opciones_respuestas_update:
     path:     /{id}/update
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaOpcionesRespuesta:update" }
+    defaults: { _controller: "CampaniasBundle:OpcionesRespuesta:update" }
     requirements: { _method: post|put }
 
 opciones_respuestas_delete:
     path:     /{id}/delete
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaOpcionesRespuesta:delete" }
+    defaults: { _controller: "CampaniasBundle:OpcionesRespuesta:delete" }
     requirements: { _method: post|delete }

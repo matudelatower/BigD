@@ -1,23 +1,27 @@
-{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
-{% set title = 'Alta Campania' %}
+    {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+{% set title = 'Alta Encuesta' %}
 {% block title %}
-    {{ title }}
+{{ title }}
 {% endblock %}
-{% block body -%}
+    {% block body -%}
 
-    <h4 class="page-header">Campania</h4>
+    <h4 class="page-header">Encuesta</h4>
     <div class="row">
         <div class="col-xs-12 col-sm-12">            
             <div class="box-header">
                 <div class="box-name ui-draggable-handle">
                     <i class="fa fa-search"></i>
-                    <span>Alta de Campania</span>
+                    <span>Alta de Encuesta</span>
                 </div>
             </div>
             <div class="box-content">
-                <h4 class="page-header">{{ title }}</h4>
-                <form class="form-horizontal" role="form" action="{{ path('campanias_create') }}" role="form" method="post">
+                <h4 class="page-header">Datos</h4>
+                <form class="form-horizontal" role="form" action="{{ path('campania_encuesta_create') }}" role="form" method="post">
                     <div class="form-group">
+                        {{ form_label(form.campania) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.campania) }}
+                        </div>
                         {{ form_label(form.nombre) }}
                         <div class="col-sm-4">
                             {{ form_widget(form.nombre) }}
@@ -26,13 +30,17 @@
                         <div class="col-sm-4">
                             {{ form_widget(form.descripcion) }}
                         </div>
+                        {{ form_label(form.slug) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.slug) }}
+                        </div>
                     </div>
-                    {{ form_rest(form) }}
+                    {{ form_widget(form._token) }}
                     <div class="form-group">
                         <div class="col-sm-9 col-sm-offset-3">
                             <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Guardar</button>
 
-                            <a class="btn btn-success" href="{{ path('campanias') }}">
+                            <a class="btn btn-success" href="{{ path('campania_encuesta') }}">
                                 Volver
                             </a>
 
@@ -46,4 +54,4 @@
     </div>
 
 
-{% endblock %}
+            {% endblock %}

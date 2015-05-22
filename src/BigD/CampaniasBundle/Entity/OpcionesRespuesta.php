@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Campania
+ * OpcionesRespuesta
  *
- * @ORM\Table(name="campania")
- * @ORM\Entity(repositoryClass="BigD\CampaniasBundle\Entity\CampaniaRepository")
+ * @ORM\Table(name="campania_encuesta_opciones_respuesta")
+ * @ORM\Entity
  */
-class Campania {
-
+class OpcionesRespuesta
+{
     /**
      * @var integer
      *
@@ -23,20 +23,27 @@ class Campania {
     private $id;
 
     /**
-     * @var string
+     * @var boolean
      *
-     * @ORM\Column(name="nombre", type="string", length=255)
+     * @ORM\Column(name="obligatorio", type="boolean")
      */
-    private $nombre;
+    private $obligatorio;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=255)
+     * @ORM\Column(name="textoOpcion", type="string", length=255)
      */
-    private $descripcion;
+    private $textoOpcion;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string", length=255)
+     */
+    private $slug;
+
+     /**
      * @var datetime $creado
      *
      * @Gedmo\Timestampable(on="create")
@@ -70,67 +77,96 @@ class Campania {
      */
     private $actualizadoPor;
     
-    public function __toString() {
-        return $this->nombre;
-    }
+    
+    /** @ORM\ManyToOne(targetEntity="Preguntas")
+     *  @ORM\JoinColumn(name="campania_encuesta_preguntas_id", referencedColumnName="id")
+     */
+    private $preguntas;
 
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
-     * Set nombre
+     * Set obligatorio
      *
-     * @param string $nombre
-     * @return Campania
+     * @param boolean $obligatorio
+     * @return OpcionesRespuesta
      */
-    public function setNombre($nombre) {
-        $this->nombre = $nombre;
+    public function setObligatorio($obligatorio)
+    {
+        $this->obligatorio = $obligatorio;
 
         return $this;
     }
 
     /**
-     * Get nombre
+     * Get obligatorio
      *
-     * @return string 
+     * @return boolean 
      */
-    public function getNombre() {
-        return $this->nombre;
+    public function getObligatorio()
+    {
+        return $this->obligatorio;
     }
 
     /**
-     * Set descripcion
+     * Set textoOpcion
      *
-     * @param string $descripcion
-     * @return Campania
+     * @param string $textoOpcion
+     * @return OpcionesRespuesta
      */
-    public function setDescripcion($descripcion) {
-        $this->descripcion = $descripcion;
+    public function setTextoOpcion($textoOpcion)
+    {
+        $this->textoOpcion = $textoOpcion;
 
         return $this;
     }
 
     /**
-     * Get descripcion
+     * Get textoOpcion
      *
      * @return string 
      */
-    public function getDescripcion() {
-        return $this->descripcion;
+    public function getTextoOpcion()
+    {
+        return $this->textoOpcion;
     }
 
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return OpcionesRespuesta
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
 
     /**
      * Set creado
      *
      * @param \DateTime $creado
-     * @return Campania
+     * @return OpcionesRespuesta
      */
     public function setCreado($creado)
     {
@@ -153,7 +189,7 @@ class Campania {
      * Set actualizado
      *
      * @param \DateTime $actualizado
-     * @return Campania
+     * @return OpcionesRespuesta
      */
     public function setActualizado($actualizado)
     {
@@ -176,7 +212,7 @@ class Campania {
      * Set creadoPor
      *
      * @param \BigD\UsuariosBundle\Entity\Usuario $creadoPor
-     * @return Campania
+     * @return OpcionesRespuesta
      */
     public function setCreadoPor(\BigD\UsuariosBundle\Entity\Usuario $creadoPor = null)
     {
@@ -199,7 +235,7 @@ class Campania {
      * Set actualizadoPor
      *
      * @param \BigD\UsuariosBundle\Entity\Usuario $actualizadoPor
-     * @return Campania
+     * @return OpcionesRespuesta
      */
     public function setActualizadoPor(\BigD\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
     {
@@ -216,5 +252,28 @@ class Campania {
     public function getActualizadoPor()
     {
         return $this->actualizadoPor;
+    }
+
+    /**
+     * Set preguntas
+     *
+     * @param \BigD\CampaniasBundle\Entity\Preguntas $preguntas
+     * @return OpcionesRespuesta
+     */
+    public function setPreguntas(\BigD\CampaniasBundle\Entity\Preguntas $preguntas = null)
+    {
+        $this->preguntas = $preguntas;
+
+        return $this;
+    }
+
+    /**
+     * Get preguntas
+     *
+     * @return \BigD\CampaniasBundle\Entity\Preguntas 
+     */
+    public function getPreguntas()
+    {
+        return $this->preguntas;
     }
 }

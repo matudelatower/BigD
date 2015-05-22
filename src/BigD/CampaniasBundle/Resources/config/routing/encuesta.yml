@@ -1,30 +1,30 @@
 campania_encuesta:
     path:     /
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuesta:index" }
+    defaults: { _controller: "CampaniasBundle:Encuesta:index" }
 
 campania_encuesta_show:
     path:     /{id}/show
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuesta:show" }
+    defaults: { _controller: "CampaniasBundle:Encuesta:show" }
 
 campania_encuesta_new:
     path:     /new
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuesta:new" }
+    defaults: { _controller: "CampaniasBundle:Encuesta:new" }
 
 campania_encuesta_create:
     path:     /create
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuesta:create" }
+    defaults: { _controller: "CampaniasBundle:Encuesta:create" }
     requirements: { _method: post }
 
 campania_encuesta_edit:
     path:     /{id}/edit
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuesta:edit" }
+    defaults: { _controller: "CampaniasBundle:Encuesta:edit" }
 
 campania_encuesta_update:
     path:     /{id}/update
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuesta:update" }
+    defaults: { _controller: "CampaniasBundle:Encuesta:update" }
     requirements: { _method: post|put }
 
 campania_encuesta_delete:
     path:     /{id}/delete
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuesta:delete" }
+    defaults: { _controller: "CampaniasBundle:Encuesta:delete" }
     requirements: { _method: post|delete }

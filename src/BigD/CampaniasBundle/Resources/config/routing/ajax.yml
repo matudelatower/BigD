@@ -1,0 +1,3 @@
+agregar_preguntas:
+    path:     /agregar_preguntas
+    defaults: { _controller: CampaniasBundle:Ajax:agregarPreguntas }

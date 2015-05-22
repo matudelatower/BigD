@@ -1,30 +1,30 @@
 tipo_pregunta:
     path:     /
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaTipoPregunta:index" }
+    defaults: { _controller: "CampaniasBundle:TipoPregunta:index" }
 
 tipo_pregunta_show:
     path:     /{id}/show
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaTipoPregunta:show" }
+    defaults: { _controller: "CampaniasBundle:TipoPregunta:show" }
 
 tipo_pregunta_new:
     path:     /new
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaTipoPregunta:new" }
+    defaults: { _controller: "CampaniasBundle:TipoPregunta:new" }
 
 tipo_pregunta_create:
     path:     /create
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaTipoPregunta:create" }
+    defaults: { _controller: "CampaniasBundle:TipoPregunta:create" }
     requirements: { _method: post }
 
 tipo_pregunta_edit:
     path:     /{id}/edit
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaTipoPregunta:edit" }
+    defaults: { _controller: "CampaniasBundle:TipoPregunta:edit" }
 
 tipo_pregunta_update:
     path:     /{id}/update
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaTipoPregunta:update" }
+    defaults: { _controller: "CampaniasBundle:TipoPregunta:update" }
     requirements: { _method: post|put }
 
 tipo_pregunta_delete:
     path:     /{id}/delete
-    defaults: { _controller: "CampaniasBundle:CampaniaEncuestaTipoPregunta:delete" }
+    defaults: { _controller: "CampaniasBundle:TipoPregunta:delete" }
     requirements: { _method: post|delete }

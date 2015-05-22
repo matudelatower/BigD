@@ -4,7 +4,7 @@ namespace BigD\CampaniasBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class CampaniaEncuestaControllerTest extends WebTestCase
+class EncuestaControllerTest extends WebTestCase
 {
     /*
     public function testCompleteScenario()

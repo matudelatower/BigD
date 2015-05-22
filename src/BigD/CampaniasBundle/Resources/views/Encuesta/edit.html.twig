@@ -1,0 +1,166 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+{% set title = 'Edicion Encuesta' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block body -%}
+    <!-- Modal -->
+    <div class="modal fade" id="modal-agregar-pregunta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Agregar Pregunta</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+    {% set agrupador_prototype %}
+        <td>{{ form_widget(form.agrupador.vars.prototype.nombre) }}</td>
+        <td>{{ form_widget(form.agrupador.vars.prototype.descripcion) }}</td>
+        <td>{{ form_widget(form.agrupador.vars.prototype.multiple) }}</td>
+        <td>{{ form_widget(form.agrupador.vars.prototype.slug) }}</td>
+        <td>
+            <button class="btn btn-default btn-app-sm btn-circle" type="button">
+                <i class="fa fa-trash"></i>
+            </button>
+            <button class="btn btn-default btn-app-sm btn-circle btn-agregar-pregunta" type="button" title="Agregar Pregunta">
+                <i class="fa fa-plus"></i>
+            </button>
+        </td>
+
+    {% endset %}
+
+    <h4 class="page-header">Encuesta</h4>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">            
+            <div class="box-header">
+                <div class="box-name ui-draggable-handle">
+                    <i class="fa fa-search"></i>
+                    <span>Alta de Encuesta</span>
+                </div>
+            </div>
+            <div class="box-content">
+                <h4 class="page-header">{{ title }}</h4>
+                <form action="{{ path('campania_encuesta_update', { 'id': entity.id }) }}" role="form" method="post">
+                    <div class="form-group">
+                        {{ form_label(form.campania) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.campania) }}
+                        </div>
+                        {{ form_label(form.nombre) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.nombre) }}
+                        </div>
+                        {{ form_label(form.descripcion) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.descripcion) }}
+                        </div>
+                        {{ form_label(form.slug) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.slug) }}
+                        </div>
+                        {{ form_label(form.agrupador) }}
+                        <div class="col-sm-10">
+                            {#{{ form_widget(form.agrupador) }}#}
+                            <table class="table table-striped table-bordered" id="table-agrupador" data-prototype="{{ agrupador_prototype |e }}">
+
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Descripcion</th>
+                                        <th>Multiple</th>
+                                        <th>Slug</th>
+                                        <th style="width: 50px;">Accion</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                            <button class="btn btn-default" id="agregar-agrupador" type="button">
+                                <span>
+                                    <i class="fa fa-plus"></i>
+                                </span>
+                                Agregar item
+                            </button>
+                        </div>
+                    </div>
+                    <div class="hidden">
+                        {{ form_rest(form) }}            
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3">
+                            <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Guardar</button>
+
+                            <a class="btn btn-success" href="{{ path('campania_encuesta') }}">
+                                Volver
+                            </a>
+
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    <script type="text/javascript">
+
+        var itemCantTableAgrupador = {{ itemsCount | default(0)}};
+                $(document).ready(function () {
+
+            $('#agregar-agrupador').click(function () {
+
+                var itemList = $('#table-agrupador');
+
+
+                var newWidget = itemList.data('prototype');
+                newWidget = newWidget.replace(/__name__/g, itemCantTableAgrupador);
+                var newTr = $('<tr item="' + itemCantTableAgrupador + '"></tr>').html(newWidget);
+                itemCantTableAgrupador++;
+                newTr.appendTo(itemList);
+
+
+                $(this).trigger('clicked');
+                return false;
+            });
+
+
+
+
+        });
+        $(document).on("click", ".btn-agregar-pregunta", function () {
+        {#        $(".btn-agregar-pregunta").click(function () {#}
+
+                $.ajax({
+                    method: "POST",
+                    url: "{{path('agregar_preguntas')}}",
+                    data: {id: "John"},
+                    success: function (data) {
+                        $('#modal-agregar-pregunta .modal-body').html(data);
+                        $('#modal-agregar-pregunta').modal('toggle');
+                    }
+                });
+            });
+    </script>
+
+{% endblock javascripts %}
+

@@ -1,10 +1,10 @@
-    {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
 {% set title = 'Edicion Campania' %}
 {% block title %}
-{{ title }}
+    {{ title }}
 {% endblock %}
 
-    {% block body -%}
+{% block body -%}
 
     <h4 class="page-header">Campania</h4>
     <div class="row">
@@ -18,9 +18,17 @@
             <div class="box-content">
                 <h4 class="page-header">{{ title }}</h4>
                 <form action="{{ path('campanias_update', { 'id': entity.id }) }}" role="form" method="post">
-                    <div class="box-body">
-                        {{ form_widget(form) }}
+                    <div class="form-group">
+                        {{ form_label(form.nombre) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.nombre) }}
+                        </div>
+                        {{ form_label(form.descripcion) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.descripcion) }}
+                        </div>
                     </div>
+                    {{ form_rest(form) }}
                     <div class="form-group">
                         <div class="col-sm-9 col-sm-offset-3">
                             <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Guardar</button>
@@ -39,6 +47,6 @@
     </div>
 
 
-            {% endblock %}
+{% endblock %}
 
 

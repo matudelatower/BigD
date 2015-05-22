@@ -23,6 +23,21 @@
                         <script src="http://getbootstrap.com/docs-assets/js/html5shiv.js"></script>
                         <script src="http://getbootstrap.com/docs-assets/js/respond.min.js"></script>
         <![endif]-->
+        {% block stylesheets %}
+        {% endblock stylesheets %}
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!--<script src="http://code.jquery.com/jquery.js"></script>-->
+        <script src="{{asset('bundles/theme/devoops/plugins/jquery/jquery.min.js')}}"></script>
+        <script src="{{asset('bundles/theme/devoops/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="{{asset('bundles/theme/devoops/plugins/bootstrap/bootstrap.min.js')}}"></script>
+        <script src="{{asset('bundles/theme/devoops/plugins/justified-gallery/jquery.justifiedGallery.min.js')}}"></script>
+        <script src="{{asset('bundles/theme/devoops/plugins/tinymce/tinymce.min.js')}}"></script>
+        <script src="{{asset('bundles/theme/devoops/plugins/tinymce/jquery.tinymce.min.js')}}"></script>
+        <script src="{{asset('bundles/theme/devoops/plugins/datatables/jquery.dataTables.js')}}"></script>
+        <script src="{{asset('bundles/theme/devoops/plugins/datatables/dataTables.bootstrap.js')}}"></script>
+        <script src="{{asset('bundles/theme/js/BigD.js')}}" type="text/javascript"></script>
+        <script src="{{asset('bundles/theme/js/jquery.blockUI.js')}}" type="text/javascript"></script>
         {% if form is defined %}
             {% form_theme form 'ThemeBundle:Default:forms_rows.html.twig' %}
         {% endif %}
@@ -170,20 +185,9 @@
                 </div>
             </div>
             <!--End Container-->
-            <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-            <!--<script src="http://code.jquery.com/jquery.js"></script>-->
-            <script src="{{asset('bundles/theme/devoops/plugins/jquery/jquery.min.js')}}"></script>
-            <script src="{{asset('bundles/theme/devoops/plugins/jquery-ui/jquery-ui.min.js')}}"></script>
-            <!-- Include all compiled plugins (below), or include individual files as needed -->
-            <script src="{{asset('bundles/theme/devoops/plugins/bootstrap/bootstrap.min.js')}}"></script>
-            <script src="{{asset('bundles/theme/devoops/plugins/justified-gallery/jquery.justifiedGallery.min.js')}}"></script>
-            <script src="{{asset('bundles/theme/devoops/plugins/tinymce/tinymce.min.js')}}"></script>
-            <script src="{{asset('bundles/theme/devoops/plugins/tinymce/jquery.tinymce.min.js')}}"></script>
-            <script src="{{asset('bundles/theme/devoops/plugins/datatables/jquery.dataTables.js')}}"></script>
-            <script src="{{asset('bundles/theme/devoops/plugins/datatables/dataTables.bootstrap.js')}}"></script>
-            <script src="{{asset('bundles/theme/js/BigD.js')}}" type="text/javascript"></script>
+
             {% block javascripts %}
-                
+
             {% endblock javascripts %}
 
             <!-- All functions for this theme + document.ready processing -->
@@ -217,128 +221,137 @@
                 $(document).ready(function () {
 
 
+//ajax start
+                    $(document).ajaxStart(function () {
+                        $.blockUI(
+                                {message: '<div class="progress progress-striped active"><div class="progress-bar" style="width: 100%"></div></div>',
+                                    css: {backgroundColor: 'none', border: 'none'}
+                                }
+                        )
+                    });
+                    $(document).ajaxStop($.unblockUI);
+
                     //Datepicker
                     $(".datepicker").datepicker({
                         onSelect: function (dateText, inst) {
                             //validaFecha(this);
-                        },{#                        showOn: "button",#}{#                        buttonImage: "{{ asset('bundles/theme/images/iconos/calendar.png') }}",#}
-                {#                        buttonImageOnly: true,#}
-                            dateFormat: "dd-mm-yy",
-                            dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
-                            monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
-                            monthNamesShort: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],{#                        yearRange: "1900:+10Y",#}
-                            yearRange: "1900:+10Y",
-                            maxDate: "today",
-                            changeMonth: true,
-                            changeYear: true,
-                            showOtherMonths: true,
-                            selectOtherMonths: true,
-                            nextText: "Siguiente",
-                            prevText: "Anterior"
-                        });
+                        },{#                        showOn: "button",#}{#                        buttonImage: "{{ asset('bundles/theme/images/iconos/calendar.png') }}",#}{#                        buttonImageOnly: true,#}
+                        dateFormat: "dd-mm-yy",
+                        dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                        monthNames: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+                        monthNamesShort: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],{#                        yearRange: "1900:+10Y",#}
+                        yearRange: "1900:+10Y",
+                        maxDate: "today",
+                        changeMonth: true,
+                        changeYear: true,
+                        showOtherMonths: true,
+                        selectOtherMonths: true,
+                        nextText: "Siguiente",
+                        prevText: "Anterior"
+                    });
 
-                        $(".datepicker").datepicker("option", "showAnim", 'slideDown');
+                    $(".datepicker").datepicker("option", "showAnim", 'slideDown');
 
-                        $('body').on('click', '.show-sidebar', function (e) {
-                            e.preventDefault();
-                            $('div#main').toggleClass('sidebar-show');
-                            setTimeout(MessagesMenuWidth, 250);
-                        });
+                    $('body').on('click', '.show-sidebar', function (e) {
+                        e.preventDefault();
+                        $('div#main').toggleClass('sidebar-show');
+                        setTimeout(MessagesMenuWidth, 250);
+                    });
 
-                        $('.main-menu').on('click', 'a', function (e) {
-                            var parents = $(this).parents('li');
-                            var li = $(this).closest('li.dropdown');
-                            var another_items = $('.main-menu li').not(parents);
-                            another_items.find('a').removeClass('active');
-                            another_items.find('a').removeClass('active-parent');
-                            if ($(this).hasClass('dropdown-toggle') || $(this).closest('li').find('ul').length == 0) {
+                    $('.main-menu').on('click', 'a', function (e) {
+                        var parents = $(this).parents('li');
+                        var li = $(this).closest('li.dropdown');
+                        var another_items = $('.main-menu li').not(parents);
+                        another_items.find('a').removeClass('active');
+                        another_items.find('a').removeClass('active-parent');
+                        if ($(this).hasClass('dropdown-toggle') || $(this).closest('li').find('ul').length == 0) {
 
-                                $(this).addClass('active-parent');
-                                var current = $(this).next();
-                                if (current.is(':visible')) {
-                                    li.find("ul.dropdown-menu").slideUp('fast');
-                                    li.find("ul.dropdown-menu a").removeClass('active')
-                                }
-                                else {
-                                    another_items.find("ul.dropdown-menu").slideUp('fast');
-                                    current.slideDown('fast');
-                                }
+                            $(this).addClass('active-parent');
+                            var current = $(this).next();
+                            if (current.is(':visible')) {
+                                li.find("ul.dropdown-menu").slideUp('fast');
+                                li.find("ul.dropdown-menu a").removeClass('active')
                             }
                             else {
-                                if (li.find('a.dropdown-toggle').hasClass('active-parent')) {
-                                    var pre = $(this).closest('ul.dropdown-menu');
-                                    pre.find("li.dropdown").not($(this).closest('li')).find('ul.dropdown-menu').slideUp('fast');
-                                }
+                                another_items.find("ul.dropdown-menu").slideUp('fast');
+                                current.slideDown('fast');
                             }
-                            if ($(this).attr('href') == '#') {
-                                e.preventDefault();
+                        }
+                        else {
+                            if (li.find('a.dropdown-toggle').hasClass('active-parent')) {
+                                var pre = $(this).closest('ul.dropdown-menu');
+                                pre.find("li.dropdown").not($(this).closest('li')).find('ul.dropdown-menu').slideUp('fast');
                             }
-                        });
-                        var height = window.innerHeight - 49;
-                        $('#main').css('min-height', height)
-                                .on('click', '.expand-link', function (e) {
-                                    var body = $('body');
-                                    e.preventDefault();
-                                    var box = $(this).closest('div.box');
-                                    var button = $(this).find('i');
-                                    button.toggleClass('fa-expand').toggleClass('fa-compress');
-                                    box.toggleClass('expanded');
-                                    body.toggleClass('body-expanded');
-                                    var timeout = 0;
-                                    if (body.hasClass('body-expanded')) {
-                                        timeout = 100;
-                                    }
-                                    setTimeout(function () {
-                                        box.toggleClass('expanded-padding');
-                                    }, timeout);
-                                    setTimeout(function () {
-                                        box.resize();
-                                        box.find('[id^=map-]').resize();
-                                    }, timeout + 50);
-                                })
-                                .on('click', '.collapse-link', function (e) {
-                                    e.preventDefault();
-                                    var box = $(this).closest('div.box');
-                                    var button = $(this).find('i');
-                                    var content = box.find('div.box-content');
-                                    content.slideToggle('fast');
-                                    button.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
-                                    setTimeout(function () {
-                                        box.resize();
-                                        box.find('[id^=map-]').resize();
-                                    }, 50);
-                                })
-                                .on('click', '.close-link', function (e) {
-                                    e.preventDefault();
-                                    var content = $(this).closest('div.box');
-                                    content.remove();
-                                });
-                        $('#locked-screen').on('click', function (e) {
+                        }
+                        if ($(this).attr('href') == '#') {
                             e.preventDefault();
-                            $('body').addClass('body-screensaver');
-                            $('#screensaver').addClass("show");
-                            ScreenSaver();
-                        });
-                        $('body').on('click', 'a.close-link', function (e) {
-                            e.preventDefault();
-                            CloseModalBox();
-                        });
-                        $('#top-panel').on('click', 'a', function (e) {
-                            if ($(this).hasClass('ajax-link')) {
-                                e.preventDefault();
-                                if ($(this).hasClass('add-full')) {
-                                    $('#content').addClass('full-content');
-                                }
-                                else {
-                                    $('#content').removeClass('full-content');
-                                }
-                                var url = $(this).attr('href');
-                                window.location.hash = url;
-                                LoadAjaxContent(url);
-                            }
-                        });
-
+                        }
                     });
+                    var height = window.innerHeight - 49;
+                    $('#main').css('min-height', height)
+                            .on('click', '.expand-link', function (e) {
+                                var body = $('body');
+                                e.preventDefault();
+                                var box = $(this).closest('div.box');
+                                var button = $(this).find('i');
+                                button.toggleClass('fa-expand').toggleClass('fa-compress');
+                                box.toggleClass('expanded');
+                                body.toggleClass('body-expanded');
+                                var timeout = 0;
+                                if (body.hasClass('body-expanded')) {
+                                    timeout = 100;
+                                }
+                                setTimeout(function () {
+                                    box.toggleClass('expanded-padding');
+                                }, timeout);
+                                setTimeout(function () {
+                                    box.resize();
+                                    box.find('[id^=map-]').resize();
+                                }, timeout + 50);
+                            })
+                            .on('click', '.collapse-link', function (e) {
+                                e.preventDefault();
+                                var box = $(this).closest('div.box');
+                                var button = $(this).find('i');
+                                var content = box.find('div.box-content');
+                                content.slideToggle('fast');
+                                button.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
+                                setTimeout(function () {
+                                    box.resize();
+                                    box.find('[id^=map-]').resize();
+                                }, 50);
+                            })
+                            .on('click', '.close-link', function (e) {
+                                e.preventDefault();
+                                var content = $(this).closest('div.box');
+                                content.remove();
+                            });
+                    $('#locked-screen').on('click', function (e) {
+                        e.preventDefault();
+                        $('body').addClass('body-screensaver');
+                        $('#screensaver').addClass("show");
+                        ScreenSaver();
+                    });
+                    $('body').on('click', 'a.close-link', function (e) {
+                        e.preventDefault();
+                        CloseModalBox();
+                    });
+                    $('#top-panel').on('click', 'a', function (e) {
+                        if ($(this).hasClass('ajax-link')) {
+                            e.preventDefault();
+                            if ($(this).hasClass('add-full')) {
+                                $('#content').addClass('full-content');
+                            }
+                            else {
+                                $('#content').removeClass('full-content');
+                            }
+                            var url = $(this).attr('href');
+                            window.location.hash = url;
+                            LoadAjaxContent(url);
+                        }
+                    });
+
+                });
             </script>
     </body>
 </html>

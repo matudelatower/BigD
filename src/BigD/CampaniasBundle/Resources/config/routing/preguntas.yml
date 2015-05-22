@@ -1,0 +1,30 @@
+preguntas:
+    path:     /
+    defaults: { _controller: "CampaniasBundle:Preguntas:index" }
+
+preguntas_show:
+    path:     /{id}/show
+    defaults: { _controller: "CampaniasBundle:Preguntas:show" }
+
+preguntas_new:
+    path:     /new
+    defaults: { _controller: "CampaniasBundle:Preguntas:new" }
+
+preguntas_create:
+    path:     /create
+    defaults: { _controller: "CampaniasBundle:Preguntas:create" }
+    requirements: { _method: post }
+
+preguntas_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "CampaniasBundle:Preguntas:edit" }
+
+preguntas_update:
+    path:     /{id}/update
+    defaults: { _controller: "CampaniasBundle:Preguntas:update" }
+    requirements: { _method: post|put }
+
+preguntas_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "CampaniasBundle:Preguntas:delete" }
+    requirements: { _method: post|delete }

@@ -8,7 +8,7 @@ CampaniasBundle_campanias:
 
 CampaniasBundle_campania_encuesta:
         resource: "@CampaniasBundle/Resources/config/routing/encuesta.yml"
-        prefix:   /campania_encuesta
+        prefix:   /encuestas
         
 CampaniasBundle_opciones_respuestas:
         resource: "@CampaniasBundle/Resources/config/routing/opciones_respuesta.yml"
@@ -16,4 +16,14 @@ CampaniasBundle_opciones_respuestas:
         
 CampaniasBundle_tipo_pregunta:
         resource: "@CampaniasBundle/Resources/config/routing/tipo_pregunta.yml"
-        prefix:   /tipo_pregunta        
+        prefix:   /tipos_pregunta
+
+CampaniasBundle_preguntas:
+        resource: "@CampaniasBundle/Resources/config/routing/preguntas.yml"
+        prefix:   /preguntas
+
+CampaniasBundle_ajax:
+        resource: "@CampaniasBundle/Resources/config/routing/ajax.yml"
+        prefix:   /ajax
+        
+

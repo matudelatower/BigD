@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Campania
+ * Encuesta
  *
- * @ORM\Table(name="campania")
- * @ORM\Entity(repositoryClass="BigD\CampaniasBundle\Entity\CampaniaRepository")
+ * @ORM\Table(name="campania_encuesta")
+ * @ORM\Entity
  */
-class Campania {
+class Encuesta {
 
     /**
      * @var integer
@@ -35,6 +35,18 @@ class Campania {
      * @ORM\Column(name="descripcion", type="string", length=255)
      */
     private $descripcion;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string", length=255)
+     */
+    private $slug;
+
+    /** @ORM\ManyToOne(targetEntity="Campania")
+     *  @ORM\JoinColumn(name="campania_id", referencedColumnName="id")
+     */
+    private $campania;
 
     /**
      * @var datetime $creado
@@ -69,9 +81,23 @@ class Campania {
      * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
      */
     private $actualizadoPor;
-    
+
+    /**
+     * @ORM\OneToMany(targetEntity="AgrupadorPregunta", mappedBy="encuesta",cascade={"persist"})
+     * 
+     */
+    private $agrupador;
+
     public function __toString() {
         return $this->nombre;
+    }
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->agrupador = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -79,7 +105,8 @@ class Campania {
      *
      * @return integer 
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -87,9 +114,10 @@ class Campania {
      * Set nombre
      *
      * @param string $nombre
-     * @return Campania
+     * @return Encuesta
      */
-    public function setNombre($nombre) {
+    public function setNombre($nombre)
+    {
         $this->nombre = $nombre;
 
         return $this;
@@ -100,7 +128,8 @@ class Campania {
      *
      * @return string 
      */
-    public function getNombre() {
+    public function getNombre()
+    {
         return $this->nombre;
     }
 
@@ -108,9 +137,10 @@ class Campania {
      * Set descripcion
      *
      * @param string $descripcion
-     * @return Campania
+     * @return Encuesta
      */
-    public function setDescripcion($descripcion) {
+    public function setDescripcion($descripcion)
+    {
         $this->descripcion = $descripcion;
 
         return $this;
@@ -121,16 +151,39 @@ class Campania {
      *
      * @return string 
      */
-    public function getDescripcion() {
+    public function getDescripcion()
+    {
         return $this->descripcion;
     }
 
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Encuesta
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
 
     /**
      * Set creado
      *
      * @param \DateTime $creado
-     * @return Campania
+     * @return Encuesta
      */
     public function setCreado($creado)
     {
@@ -153,7 +206,7 @@ class Campania {
      * Set actualizado
      *
      * @param \DateTime $actualizado
-     * @return Campania
+     * @return Encuesta
      */
     public function setActualizado($actualizado)
     {
@@ -173,10 +226,33 @@ class Campania {
     }
 
     /**
+     * Set campania
+     *
+     * @param \BigD\CampaniasBundle\Entity\Campania $campania
+     * @return Encuesta
+     */
+    public function setCampania(\BigD\CampaniasBundle\Entity\Campania $campania = null)
+    {
+        $this->campania = $campania;
+
+        return $this;
+    }
+
+    /**
+     * Get campania
+     *
+     * @return \BigD\CampaniasBundle\Entity\Campania 
+     */
+    public function getCampania()
+    {
+        return $this->campania;
+    }
+
+    /**
      * Set creadoPor
      *
      * @param \BigD\UsuariosBundle\Entity\Usuario $creadoPor
-     * @return Campania
+     * @return Encuesta
      */
     public function setCreadoPor(\BigD\UsuariosBundle\Entity\Usuario $creadoPor = null)
     {
@@ -199,7 +275,7 @@ class Campania {
      * Set actualizadoPor
      *
      * @param \BigD\UsuariosBundle\Entity\Usuario $actualizadoPor
-     * @return Campania
+     * @return Encuesta
      */
     public function setActualizadoPor(\BigD\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
     {
@@ -216,5 +292,38 @@ class Campania {
     public function getActualizadoPor()
     {
         return $this->actualizadoPor;
+    }
+
+    /**
+     * Add agrupador
+     *
+     * @param \BigD\CampaniasBundle\Entity\AgrupadorPregunta $agrupador
+     * @return Encuesta
+     */
+    public function addAgrupador(\BigD\CampaniasBundle\Entity\AgrupadorPregunta $agrupador)
+    {
+        $this->agrupador[] = $agrupador;
+
+        return $this;
+    }
+
+    /**
+     * Remove agrupador
+     *
+     * @param \BigD\CampaniasBundle\Entity\AgrupadorPregunta $agrupador
+     */
+    public function removeAgrupador(\BigD\CampaniasBundle\Entity\AgrupadorPregunta $agrupador)
+    {
+        $this->agrupador->removeElement($agrupador);
+    }
+
+    /**
+     * Get agrupador
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAgrupador()
+    {
+        return $this->agrupador;
     }
 }
