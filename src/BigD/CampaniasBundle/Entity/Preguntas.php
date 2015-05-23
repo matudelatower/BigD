@@ -11,8 +11,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="campania_encuesta_preguntas")
  * @ORM\Entity
  */
-class Preguntas
-{
+class Preguntas {
+
     /**
      * @var integer
      *
@@ -28,8 +28,8 @@ class Preguntas
      * @ORM\Column(name="texto_pregunta", type="string", length=255)
      */
     private $textoPregunta;
-    
-     /**
+
+    /**
      * @var datetime $creado
      *
      * @Gedmo\Timestampable(on="create")
@@ -67,12 +67,34 @@ class Preguntas
      *  @ORM\JoinColumn(name="campania_encuesta_agrupador_pregunta_id", referencedColumnName="id")
      */
     private $agrupadorPregunta;
-    
+
     /** @ORM\ManyToOne(targetEntity="TipoPregunta")
      *  @ORM\JoinColumn(name="campania_encuesta_tipo_pregunta_id", referencedColumnName="id")
      */
     private $tipoPregunta;
+
+    /**
+     * 
+     * @var boolean
+     * 
+     * @ORM\Column(name="requerido", type="boolean")
+     */
+    private $requerido;
     
+    /**
+     * @ORM\OneToMany(targetEntity="OpcionesRespuesta", mappedBy="preguntas",cascade={"persist"})
+     * 
+     */
+    private $opcionRespuesta;
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->opcionRespuesta = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     /**
      * Get id
      *
@@ -87,7 +109,7 @@ class Preguntas
      * Set textoPregunta
      *
      * @param string $textoPregunta
-     * @return CampaniaEncuentaPreguntas
+     * @return Preguntas
      */
     public function setTextoPregunta($textoPregunta)
     {
@@ -110,7 +132,7 @@ class Preguntas
      * Set creado
      *
      * @param \DateTime $creado
-     * @return CampaniaEncuentaPreguntas
+     * @return Preguntas
      */
     public function setCreado($creado)
     {
@@ -133,7 +155,7 @@ class Preguntas
      * Set actualizado
      *
      * @param \DateTime $actualizado
-     * @return CampaniaEncuentaPreguntas
+     * @return Preguntas
      */
     public function setActualizado($actualizado)
     {
@@ -153,10 +175,33 @@ class Preguntas
     }
 
     /**
+     * Set requerido
+     *
+     * @param boolean $requerido
+     * @return Preguntas
+     */
+    public function setRequerido($requerido)
+    {
+        $this->requerido = $requerido;
+
+        return $this;
+    }
+
+    /**
+     * Get requerido
+     *
+     * @return boolean 
+     */
+    public function getRequerido()
+    {
+        return $this->requerido;
+    }
+
+    /**
      * Set creadoPor
      *
      * @param \BigD\UsuariosBundle\Entity\Usuario $creadoPor
-     * @return CampaniaEncuentaPreguntas
+     * @return Preguntas
      */
     public function setCreadoPor(\BigD\UsuariosBundle\Entity\Usuario $creadoPor = null)
     {
@@ -179,7 +224,7 @@ class Preguntas
      * Set actualizadoPor
      *
      * @param \BigD\UsuariosBundle\Entity\Usuario $actualizadoPor
-     * @return CampaniaEncuentaPreguntas
+     * @return Preguntas
      */
     public function setActualizadoPor(\BigD\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
     {
@@ -202,7 +247,7 @@ class Preguntas
      * Set agrupadorPregunta
      *
      * @param \BigD\CampaniasBundle\Entity\AgrupadorPregunta $agrupadorPregunta
-     * @return CampaniaEncuentaPreguntas
+     * @return Preguntas
      */
     public function setAgrupadorPregunta(\BigD\CampaniasBundle\Entity\AgrupadorPregunta $agrupadorPregunta = null)
     {
@@ -225,7 +270,7 @@ class Preguntas
      * Set tipoPregunta
      *
      * @param \BigD\CampaniasBundle\Entity\TipoPregunta $tipoPregunta
-     * @return CampaniaEncuentaPreguntas
+     * @return Preguntas
      */
     public function setTipoPregunta(\BigD\CampaniasBundle\Entity\TipoPregunta $tipoPregunta = null)
     {
@@ -242,5 +287,38 @@ class Preguntas
     public function getTipoPregunta()
     {
         return $this->tipoPregunta;
+    }
+
+    /**
+     * Add opcionRespuesta
+     *
+     * @param \BigD\CampaniasBundle\Entity\OpcionesRespuesta $opcionRespuesta
+     * @return Preguntas
+     */
+    public function addOpcionRespuestum(\BigD\CampaniasBundle\Entity\OpcionesRespuesta $opcionRespuesta)
+    {
+        $this->opcionRespuesta[] = $opcionRespuesta;
+
+        return $this;
+    }
+
+    /**
+     * Remove opcionRespuesta
+     *
+     * @param \BigD\CampaniasBundle\Entity\OpcionesRespuesta $opcionRespuesta
+     */
+    public function removeOpcionRespuestum(\BigD\CampaniasBundle\Entity\OpcionesRespuesta $opcionRespuesta)
+    {
+        $this->opcionRespuesta->removeElement($opcionRespuesta);
+    }
+
+    /**
+     * Get opcionRespuesta
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOpcionRespuesta()
+    {
+        return $this->opcionRespuesta;
     }
 }

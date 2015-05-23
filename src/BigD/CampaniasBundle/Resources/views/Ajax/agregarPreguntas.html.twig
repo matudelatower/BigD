@@ -1,14 +1,22 @@
-<form class="form-horizontal" role="form" role="form" method="post">
+{% if form is defined %}
+    {% form_theme form 'ThemeBundle:Default:forms_rows.html.twig' %}
+{% endif %}
+<form class="form-horizontal" id="form-agregar-pregunta" role="form" role="form" method="post">
 
     <div class="form-group">
         {{ form_label(form.textoPregunta) }}
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             {{ form_widget(form.textoPregunta) }}
         </div>
+
+
+    </div>
+    <div class="form-group">
+
         {{ form_label(form.tipoPregunta) }}
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             {{ form_widget(form.tipoPregunta) }}
         </div>
-        
+
     </div>
 </form>

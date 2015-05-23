@@ -23,16 +23,9 @@ class OpcionesRespuesta
     private $id;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="obligatorio", type="boolean")
-     */
-    private $obligatorio;
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="textoOpcion", type="string", length=255)
+     * @ORM\Column(name="texto_opcion", type="string", length=255)
      */
     private $textoOpcion;
 
@@ -78,10 +71,10 @@ class OpcionesRespuesta
     private $actualizadoPor;
     
     
-    /** @ORM\ManyToOne(targetEntity="Preguntas")
+    /** @ORM\ManyToOne(targetEntity="Preguntas", inversedBy="opcionRespuesta")
      *  @ORM\JoinColumn(name="campania_encuesta_preguntas_id", referencedColumnName="id")
      */
-    private $preguntas;
+    private $preguntas;        
 
     /**
      * Get id
@@ -91,29 +84,6 @@ class OpcionesRespuesta
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set obligatorio
-     *
-     * @param boolean $obligatorio
-     * @return OpcionesRespuesta
-     */
-    public function setObligatorio($obligatorio)
-    {
-        $this->obligatorio = $obligatorio;
-
-        return $this;
-    }
-
-    /**
-     * Get obligatorio
-     *
-     * @return boolean 
-     */
-    public function getObligatorio()
-    {
-        return $this->obligatorio;
     }
 
     /**
