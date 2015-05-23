@@ -4,7 +4,6 @@ namespace BigD\CampaniasBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use BigD\CampaniasBundle\Entity\Encuesta;
 use BigD\CampaniasBundle\Form\EncuestaType;
 
@@ -12,35 +11,31 @@ use BigD\CampaniasBundle\Form\EncuestaType;
  * Encuesta controller.
  *
  */
-class EncuestaController extends Controller
-{
+class EncuestaController extends Controller {
 
     /**
      * Lists all Encuesta entities.
      *
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('CampaniasBundle:Encuesta')->findAll();
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
-                $entities, 
-                $this->get('request')->query->get('page', 1)/* page number */, 
-                10/* limit per page */
+                $entities, $this->get('request')->query->get('page', 1)/* page number */, 10/* limit per page */
         );
         return $this->render('CampaniasBundle:Encuesta:index.html.twig', array(
-            'entities' => $entities,
+                    'entities' => $entities,
         ));
     }
+
     /**
      * Creates a new Encuesta entity.
      *
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         $entity = new Encuesta();
         $form = $this->createForm(new EncuestaType(), $entity);
         $form->handleRequest($request);
@@ -52,13 +47,13 @@ class EncuestaController extends Controller
             $this->get('session')->getFlashBag()->add(
                     'success', 'Encuesta Creado correctamente.'
             );
-            
+
             return $this->redirect($this->generateUrl('campania_encuesta_edit', array('id' => $entity->getId())));
         }
 
         return $this->render('CampaniasBundle:Encuesta:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+                    'entity' => $entity,
+                    'form' => $form->createView(),
         ));
     }
 
@@ -69,8 +64,7 @@ class EncuestaController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Encuesta $entity)
-    {
+    private function createCreateForm(Encuesta $entity) {
         $form = $this->createForm(new EncuestaType(), $entity, array(
             'action' => $this->generateUrl('campania_encuesta_create'),
             'method' => 'POST',
@@ -85,14 +79,13 @@ class EncuestaController extends Controller
      * Displays a form to create a new Encuesta entity.
      *
      */
-    public function newAction()
-    {
-        $entity = new Encuesta();        
-        $form   = $this->createForm(new EncuestaType(), $entity);
+    public function newAction() {
+        $entity = new Encuesta();
+        $form = $this->createForm(new EncuestaType(), $entity);
 
         return $this->render('CampaniasBundle:Encuesta:new.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+                    'entity' => $entity,
+                    'form' => $form->createView(),
         ));
     }
 
@@ -100,8 +93,7 @@ class EncuestaController extends Controller
      * Finds and displays a Encuesta entity.
      *
      */
-    public function showAction($id)
-    {
+    public function showAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('CampaniasBundle:Encuesta')->find($id);
@@ -113,8 +105,8 @@ class EncuestaController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('CampaniasBundle:Encuesta:show.html.twig', array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+                    'entity' => $entity,
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -122,8 +114,7 @@ class EncuestaController extends Controller
      * Displays a form to edit an existing Encuesta entity.
      *
      */
-    public function editAction($id)
-    {
+    public function editAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('CampaniasBundle:Encuesta')->find($id);
@@ -131,26 +122,24 @@ class EncuestaController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Encuesta entity.');
         }
-        
+
         $editForm = $this->createForm(new EncuestaType(), $entity);
-        
+
 
         return $this->render('CampaniasBundle:Encuesta:edit.html.twig', array(
-            'entity'      => $entity,
-            'form'   => $editForm->createView(),
-            
+                    'entity' => $entity,
+                    'form' => $editForm->createView(),
         ));
     }
 
     /**
-    * Creates a form to edit a Encuesta entity.
-    *
-    * @param Encuesta $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
-    private function createEditForm(Encuesta $entity)
-    {
+     * Creates a form to edit a Encuesta entity.
+     *
+     * @param Encuesta $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Encuesta $entity) {
         $form = $this->createForm(new EncuestaType(), $entity, array(
             'action' => $this->generateUrl('campania_encuesta_update', array('id' => $entity->getId())),
             'method' => 'PUT',
@@ -160,25 +149,34 @@ class EncuestaController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Encuesta entity.
      *
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
-
+        /* @var $entity Encuesta */
         $entity = $em->getRepository('CampaniasBundle:Encuesta')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Encuesta entity.');
         }
 
-        
-        $editForm =  $this->createForm(new EncuestaType(), $entity);
+
+        $editForm = $this->createForm(new EncuestaType(), $entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+            $agrupadores = $entity->getAgrupador();
+
+            foreach ($entity->getAgrupador() as $oAgrupador) {
+                $oAgrupador->setEncuesta($entity);
+                foreach ($oAgrupador->getPreguntas() as $pregunta) {
+                    $pregunta->setAgrupadorPregunta($oAgrupador);
+                }
+            }
+
             $em->flush();
             $this->get('session')->getFlashBag()->add(
                     'success', 'Encuesta Actualizado correctamente.'
@@ -188,17 +186,16 @@ class EncuestaController extends Controller
         }
 
         return $this->render('CampaniasBundle:Encuesta:edit.html.twig', array(
-            'entity'      => $entity,
-            'form'   => $editForm->createView(),
-            
+                    'entity' => $entity,
+                    'form' => $editForm->createView(),
         ));
     }
+
     /**
      * Deletes a Encuesta entity.
      *
      */
-    public function deleteAction(Request $request, $id)
-    {
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -224,13 +221,13 @@ class EncuestaController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('campania_encuesta_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
+                        ->setAction($this->generateUrl('campania_encuesta_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->getForm()
         ;
     }
+
 }

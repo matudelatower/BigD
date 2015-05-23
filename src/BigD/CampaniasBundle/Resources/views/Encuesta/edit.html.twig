@@ -8,19 +8,21 @@
     <!-- Modal -->
     <div class="modal fade" id="modal-agregar-pregunta" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Agregar Pregunta</h4>
-                </div>
-                <div class="modal-body">
+            <form class="form-horizontal" id="form-agregar-pregunta" role="form" role="form" method="post" action="{{path('guardar_preguntas')}}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Agregar Pregunta</h4>
+                    </div>
+                    <div class="modal-body">
 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary btn-guardar"><i class="fa fa-save"></i> Guardar</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary"><i class="fa fa-save"></i> Guardar</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>    
 
@@ -85,6 +87,22 @@
                                 </thead>
 
                                 <tbody>
+                                    {% for agrupador in form.agrupador %}
+                                        <tr>
+                                            <td>{{ form_widget(agrupador.nombre) }}</td>
+                                            <td>{{ form_widget(agrupador.descripcion) }}</td>
+                                            <td>{{ form_widget(agrupador.multiple) }}</td>
+                                            <td>{{ form_widget(agrupador.slug) }}</td>
+                                            <td>
+                                                <button class="btn btn-default btn-app-sm btn-circle" type="button">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                                <button class="btn btn-default btn-app-sm btn-circle btn-agregar-pregunta" type="button" title="Agregar Pregunta">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
 
                                 </tbody>
                             </table>
@@ -96,6 +114,9 @@
                             </button>
                         </div>
                     </div>
+                    <div class="hidden" id="preguntas-agregadas">
+
+                    </div>        
                     <div class="hidden">
                         {{ form_rest(form) }}            
                     </div>
@@ -124,7 +145,7 @@
 {% block javascripts %}
     <script type="text/javascript">
 
-        var itemCantTableAgrupador = {{ itemsCount | default(0)}};
+        var itemCantTableAgrupador = {{ entity.agrupador.count +1| default(0)}};
                 $(document).ready(function () {
 
             $('#agregar-agrupador').click(function () {
@@ -149,17 +170,38 @@
         });
         $(document).on("click", ".btn-agregar-pregunta", function () {
         {#        $(".btn-agregar-pregunta").click(function () {#}
-
+                var agrupadorId = $(this).parents("tr").attr("item");
                 $.ajax({
                     method: "POST",
                     url: "{{path('agregar_preguntas')}}",
-                    data: {id: "John"},
+                    data: {agrupadorId: agrupadorId},
                     success: function (data) {
                         $('#modal-agregar-pregunta .modal-body').html(data);
                         $('#modal-agregar-pregunta').modal('toggle');
                     }
                 });
             });
+
+       
+            $(document).on("submit", "#form-agregar-pregunta", function (e) {
+
+                e.preventDefault()
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    dataType: 'json',
+                    data: $(this).serialize(),
+                    success: function (data) {
+
+                        console.log(data);
+                        $("#preguntas-agregadas").append((data));
+     
+                        $('#modal-agregar-pregunta').modal('toggle');
+                    }
+                });
+            })
+
+
     </script>
 
 {% endblock javascripts %}

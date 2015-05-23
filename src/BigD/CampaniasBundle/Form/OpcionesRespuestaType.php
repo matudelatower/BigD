@@ -15,10 +15,9 @@ class OpcionesRespuestaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('obligatorio')
             ->add('textoOpcion')
-            ->add('slug')
-            ->add('campaniaPreguntas')
+//            ->add('slug')
+//            ->add('campaniaPreguntas')
         ;
     }
     

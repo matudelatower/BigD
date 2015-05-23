@@ -17,6 +17,13 @@ class PreguntasType extends AbstractType {
                 ->add('textoPregunta')
 //                ->add('agrupadorPregunta')
                 ->add('tipoPregunta')
+                ->add('requerido')
+                ->add('opcionRespuesta', 'bootstrapcollection', array(
+                    'type' => new OpcionesRespuestaType(),
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => true
+                ))
         ;
     }
 

@@ -63,13 +63,13 @@ class Preguntas {
      */
     private $actualizadoPor;
 
-    /** @ORM\ManyToOne(targetEntity="AgrupadorPregunta")
+    /** @ORM\ManyToOne(targetEntity="AgrupadorPregunta", inversedBy="preguntas")
      *  @ORM\JoinColumn(name="campania_encuesta_agrupador_pregunta_id", referencedColumnName="id")
      */
     private $agrupadorPregunta;
 
     /** @ORM\ManyToOne(targetEntity="TipoPregunta")
-     *  @ORM\JoinColumn(name="campania_encuesta_tipo_pregunta_id", referencedColumnName="id")
+     *  @ORM\JoinColumn(name="campania_encuesta_tipo_pregunta_id", referencedColumnName="id", nullable=false)
      */
     private $tipoPregunta;
 
@@ -77,21 +77,20 @@ class Preguntas {
      * 
      * @var boolean
      * 
-     * @ORM\Column(name="requerido", type="boolean")
+     * @ORM\Column(name="requerido", type="boolean", nullable=true)
      */
     private $requerido;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="OpcionesRespuesta", mappedBy="preguntas",cascade={"persist"})
      * 
      */
     private $opcionRespuesta;
-    
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->opcionRespuesta = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -100,8 +99,7 @@ class Preguntas {
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -111,8 +109,7 @@ class Preguntas {
      * @param string $textoPregunta
      * @return Preguntas
      */
-    public function setTextoPregunta($textoPregunta)
-    {
+    public function setTextoPregunta($textoPregunta) {
         $this->textoPregunta = $textoPregunta;
 
         return $this;
@@ -123,8 +120,7 @@ class Preguntas {
      *
      * @return string 
      */
-    public function getTextoPregunta()
-    {
+    public function getTextoPregunta() {
         return $this->textoPregunta;
     }
 
@@ -134,8 +130,7 @@ class Preguntas {
      * @param \DateTime $creado
      * @return Preguntas
      */
-    public function setCreado($creado)
-    {
+    public function setCreado($creado) {
         $this->creado = $creado;
 
         return $this;
@@ -146,8 +141,7 @@ class Preguntas {
      *
      * @return \DateTime 
      */
-    public function getCreado()
-    {
+    public function getCreado() {
         return $this->creado;
     }
 
@@ -157,8 +151,7 @@ class Preguntas {
      * @param \DateTime $actualizado
      * @return Preguntas
      */
-    public function setActualizado($actualizado)
-    {
+    public function setActualizado($actualizado) {
         $this->actualizado = $actualizado;
 
         return $this;
@@ -169,8 +162,7 @@ class Preguntas {
      *
      * @return \DateTime 
      */
-    public function getActualizado()
-    {
+    public function getActualizado() {
         return $this->actualizado;
     }
 
@@ -180,8 +172,7 @@ class Preguntas {
      * @param boolean $requerido
      * @return Preguntas
      */
-    public function setRequerido($requerido)
-    {
+    public function setRequerido($requerido) {
         $this->requerido = $requerido;
 
         return $this;
@@ -192,8 +183,7 @@ class Preguntas {
      *
      * @return boolean 
      */
-    public function getRequerido()
-    {
+    public function getRequerido() {
         return $this->requerido;
     }
 
@@ -203,8 +193,7 @@ class Preguntas {
      * @param \BigD\UsuariosBundle\Entity\Usuario $creadoPor
      * @return Preguntas
      */
-    public function setCreadoPor(\BigD\UsuariosBundle\Entity\Usuario $creadoPor = null)
-    {
+    public function setCreadoPor(\BigD\UsuariosBundle\Entity\Usuario $creadoPor = null) {
         $this->creadoPor = $creadoPor;
 
         return $this;
@@ -215,8 +204,7 @@ class Preguntas {
      *
      * @return \BigD\UsuariosBundle\Entity\Usuario 
      */
-    public function getCreadoPor()
-    {
+    public function getCreadoPor() {
         return $this->creadoPor;
     }
 
@@ -226,8 +214,7 @@ class Preguntas {
      * @param \BigD\UsuariosBundle\Entity\Usuario $actualizadoPor
      * @return Preguntas
      */
-    public function setActualizadoPor(\BigD\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
-    {
+    public function setActualizadoPor(\BigD\UsuariosBundle\Entity\Usuario $actualizadoPor = null) {
         $this->actualizadoPor = $actualizadoPor;
 
         return $this;
@@ -238,8 +225,7 @@ class Preguntas {
      *
      * @return \BigD\UsuariosBundle\Entity\Usuario 
      */
-    public function getActualizadoPor()
-    {
+    public function getActualizadoPor() {
         return $this->actualizadoPor;
     }
 
@@ -249,8 +235,7 @@ class Preguntas {
      * @param \BigD\CampaniasBundle\Entity\AgrupadorPregunta $agrupadorPregunta
      * @return Preguntas
      */
-    public function setAgrupadorPregunta(\BigD\CampaniasBundle\Entity\AgrupadorPregunta $agrupadorPregunta = null)
-    {
+    public function setAgrupadorPregunta(\BigD\CampaniasBundle\Entity\AgrupadorPregunta $agrupadorPregunta = null) {
         $this->agrupadorPregunta = $agrupadorPregunta;
 
         return $this;
@@ -261,8 +246,7 @@ class Preguntas {
      *
      * @return \BigD\CampaniasBundle\Entity\AgrupadorPregunta 
      */
-    public function getAgrupadorPregunta()
-    {
+    public function getAgrupadorPregunta() {
         return $this->agrupadorPregunta;
     }
 
@@ -272,8 +256,7 @@ class Preguntas {
      * @param \BigD\CampaniasBundle\Entity\TipoPregunta $tipoPregunta
      * @return Preguntas
      */
-    public function setTipoPregunta(\BigD\CampaniasBundle\Entity\TipoPregunta $tipoPregunta = null)
-    {
+    public function setTipoPregunta(\BigD\CampaniasBundle\Entity\TipoPregunta $tipoPregunta = null) {
         $this->tipoPregunta = $tipoPregunta;
 
         return $this;
@@ -284,8 +267,7 @@ class Preguntas {
      *
      * @return \BigD\CampaniasBundle\Entity\TipoPregunta 
      */
-    public function getTipoPregunta()
-    {
+    public function getTipoPregunta() {
         return $this->tipoPregunta;
     }
 
@@ -295,8 +277,7 @@ class Preguntas {
      * @param \BigD\CampaniasBundle\Entity\OpcionesRespuesta $opcionRespuesta
      * @return Preguntas
      */
-    public function addOpcionRespuestum(\BigD\CampaniasBundle\Entity\OpcionesRespuesta $opcionRespuesta)
-    {
+    public function addOpcionRespuestum(\BigD\CampaniasBundle\Entity\OpcionesRespuesta $opcionRespuesta) {
         $this->opcionRespuesta[] = $opcionRespuesta;
 
         return $this;
@@ -307,8 +288,7 @@ class Preguntas {
      *
      * @param \BigD\CampaniasBundle\Entity\OpcionesRespuesta $opcionRespuesta
      */
-    public function removeOpcionRespuestum(\BigD\CampaniasBundle\Entity\OpcionesRespuesta $opcionRespuesta)
-    {
+    public function removeOpcionRespuestum(\BigD\CampaniasBundle\Entity\OpcionesRespuesta $opcionRespuesta) {
         $this->opcionRespuesta->removeElement($opcionRespuesta);
     }
 
@@ -317,8 +297,8 @@ class Preguntas {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getOpcionRespuesta()
-    {
+    public function getOpcionRespuesta() {
         return $this->opcionRespuesta;
     }
+
 }

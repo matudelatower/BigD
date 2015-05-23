@@ -19,7 +19,12 @@ class AgrupadorPreguntaType extends AbstractType
             ->add('descripcion')
             ->add('multiple')
             ->add('slug')            
-//            ->add('encuesta')
+            ->add('preguntas', "collection", array(
+                'type' => new PreguntasType(),
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => true
+            ))            
         ;
     }
     

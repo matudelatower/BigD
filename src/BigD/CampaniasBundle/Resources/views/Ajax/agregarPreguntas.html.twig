@@ -1,22 +1,51 @@
 {% if form is defined %}
     {% form_theme form 'ThemeBundle:Default:forms_rows.html.twig' %}
 {% endif %}
-<form class="form-horizontal" id="form-agregar-pregunta" role="form" role="form" method="post">
+<input type="hidden" name="agrupador_id" value="{{agrupadorId}}">
 
-    <div class="form-group">
-        {{ form_label(form.textoPregunta) }}
-        <div class="col-sm-6">
-            {{ form_widget(form.textoPregunta) }}
-        </div>
-
-
+<div class="form-group">
+    {{ form_label(form.textoPregunta) }}
+    <div class="col-sm-6">
+        {{ form_widget(form.textoPregunta) }}
     </div>
-    <div class="form-group">
 
-        {{ form_label(form.tipoPregunta) }}
-        <div class="col-sm-6">
-            {{ form_widget(form.tipoPregunta) }}
-        </div>
 
+</div>
+<div class="form-group">
+
+    {{ form_label(form.tipoPregunta) }}
+    <div class="col-sm-6">
+        {{ form_widget(form.tipoPregunta) }}
     </div>
-</form>
+
+</div>
+<div class="form-group">
+
+    {{ form_label(form.requerido) }}
+    <div class="col-sm-6">
+        {{ form_widget(form.requerido) }}
+    </div>
+
+</div>
+<div class="form-group opciones-respuesta hidden">
+
+    {{ form_label(form.opcionRespuesta) }}
+    <div class="col-sm-6">
+        {{ form_widget(form.opcionRespuesta) }}
+    </div>
+
+</div>
+        {{form_widget(form._token)}}
+<script>
+    $(document).ready(function () {
+        $("#{{form.tipoPregunta.vars.id}}").change(function () {
+            if ($(this).val() != 1) {
+                $(".opciones-respuesta").show();
+                $(".opciones-respuesta").removeClass("hidden");
+            } else {
+                $(".opciones-respuesta").hide();
+
+            }
+        });
+    });
+</script>

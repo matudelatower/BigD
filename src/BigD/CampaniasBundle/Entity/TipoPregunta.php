@@ -11,8 +11,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="campania_encuesta_tipo_pregunta")
  * @ORM\Entity
  */
-class TipoPregunta
-{
+class TipoPregunta {
+
     /**
      * @var integer
      *
@@ -43,7 +43,7 @@ class TipoPregunta
      */
     private $slug;
 
-     /**
+    /**
      * @var datetime $creado
      *
      * @Gedmo\Timestampable(on="create")
@@ -76,11 +76,19 @@ class TipoPregunta
      * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
      */
     private $actualizadoPor;
-    
+
+    /**
+     * 
+     * @var boolean
+     * 
+     * @ORM\Column(name="muestra_opciones", type="boolean", nullable=true)
+     */
+    private $muestraOpciones;
+
     public function __toString() {
         return $this->nombre;
     }
-    
+
     /**
      * Get id
      *
@@ -204,6 +212,29 @@ class TipoPregunta
     public function getActualizado()
     {
         return $this->actualizado;
+    }
+
+    /**
+     * Set muestraOpciones
+     *
+     * @param boolean $muestraOpciones
+     * @return TipoPregunta
+     */
+    public function setMuestraOpciones($muestraOpciones)
+    {
+        $this->muestraOpciones = $muestraOpciones;
+
+        return $this;
+    }
+
+    /**
+     * Get muestraOpciones
+     *
+     * @return boolean 
+     */
+    public function getMuestraOpciones()
+    {
+        return $this->muestraOpciones;
     }
 
     /**

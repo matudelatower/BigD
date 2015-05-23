@@ -17,6 +17,7 @@ class TipoPreguntaType extends AbstractType
         $builder
             ->add('nombre')
             ->add('descripcion')
+            ->add('muestraOpciones')
             ->add('slug')
             
         ;

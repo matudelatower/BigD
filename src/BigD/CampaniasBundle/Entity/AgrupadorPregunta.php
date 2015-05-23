@@ -89,6 +89,20 @@ class AgrupadorPregunta
     private $encuesta;
     
     /**
+     * @ORM\OneToMany(targetEntity="Preguntas", mappedBy="agrupadorPregunta",cascade={"persist"})
+     * 
+     */
+    private $preguntas;
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->preguntas = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -303,5 +317,38 @@ class AgrupadorPregunta
     public function getEncuesta()
     {
         return $this->encuesta;
+    }
+
+    /**
+     * Add preguntas
+     *
+     * @param \BigD\CampaniasBundle\Entity\Preguntas $preguntas
+     * @return AgrupadorPregunta
+     */
+    public function addPregunta(\BigD\CampaniasBundle\Entity\Preguntas $preguntas)
+    {
+        $this->preguntas[] = $preguntas;
+
+        return $this;
+    }
+
+    /**
+     * Remove preguntas
+     *
+     * @param \BigD\CampaniasBundle\Entity\Preguntas $preguntas
+     */
+    public function removePregunta(\BigD\CampaniasBundle\Entity\Preguntas $preguntas)
+    {
+        $this->preguntas->removeElement($preguntas);
+    }
+
+    /**
+     * Get preguntas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPreguntas()
+    {
+        return $this->preguntas;
     }
 }

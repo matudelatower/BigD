@@ -64,23 +64,23 @@
                    {{(form.vars.attr['class'])}}
             {% endif %}" type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
         {% endif %}
-            {% endspaceless %}
-                {% endblock form_widget_simple %}
+    {% endspaceless %}
+{% endblock form_widget_simple %}
 
-                    {% block choice_widget_expanded -%}
-                        <div {{ block('widget_container_attributes') }}>
-                            {% for child in form %}
-                                <div class="radio">
-                                    <label>
-                                        {{- form_widget(child) -}}
-                                        {#{{- form_label(child) -}}#}
-                                        {{ child.vars.label }}
-                                        <i class="fa fa-circle-o"></i>
-                                    </label>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        {%- endblock choice_widget_expanded %}
+{% block choice_widget_expanded -%}
+    <div {{ block('widget_container_attributes') }}>
+        {% for child in form %}
+            <div class="radio">
+                <label>
+                    {{- form_widget(child) -}}
+                    {#{{- form_label(child) -}}#}
+                    {{ child.vars.label }}
+                    <i class="fa fa-circle-o"></i>
+                </label>
+            </div>
+        {% endfor %}
+    </div>
+{%- endblock choice_widget_expanded %}
 
                         {% block choice_widget_collapsed %}
                             {% spaceless %}
@@ -137,7 +137,14 @@
                                                                     {% endspaceless %}
                                                                 {% endblock date_widget %}
 
-                                                                {#
-                                                                {% block checkbox_widget -%}
-                                                                    <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
-                                                                {%- endblock checkbox_widget %}#}
+
+{% block checkbox_widget %}
+    {% spaceless %}
+        <div class="checkbox">
+            <label  for="{{ id }}">
+                <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />{{ label|trans }}
+                <i class="fa fa-square-o small"></i>
+            </label>
+        </div>
+    {% endspaceless %}
+{% endblock checkbox_widget %}
