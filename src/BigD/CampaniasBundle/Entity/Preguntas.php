@@ -82,7 +82,7 @@ class Preguntas {
     private $requerido;
 
     /**
-     * @ORM\OneToMany(targetEntity="OpcionesRespuesta", mappedBy="preguntas",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="OpcionesRespuesta", mappedBy="preguntas",cascade={"remove", "persist"})
      * 
      */
     private $opcionRespuesta;

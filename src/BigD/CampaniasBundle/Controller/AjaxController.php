@@ -14,6 +14,7 @@ class AjaxController extends Controller {
     public function agregarPreguntasAction(Request $request) {
 
         $agrupadorId = $request->get("agrupadorId");
+        $itemId = $request->get("itemId");
 
         $pregunta = new Preguntas();
         $form = $this->createForm(new PreguntasType(), $pregunta);
@@ -22,23 +23,36 @@ class AjaxController extends Controller {
         return $this->render('CampaniasBundle:Ajax:agregarPreguntas.html.twig', array(
                     "form" => $form->createView(),
                     "agrupadorId" => $agrupadorId,
+                    "itemId" => $itemId,
         ));
     }
 
     public function guardarPreguntasAction(Request $request) {
         $agrupadorId = $request->get("agrupador_id");
+        $itemId = $request->get("item_id");
 
         $preguntas = new Preguntas();
 
         $form = $this->createForm(new PreguntasType(), $preguntas);
         $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+
+
+        $agrupador = $em->getRepository('CampaniasBundle:AgrupadorPregunta')->find($agrupadorId);
+        if (!$agrupador) {
+            $cantidadPreguntas = 0;
+        } else {
+            $cantidadPreguntas = (count($agrupador->getPreguntas()) + 1);
+        }
+
+
 
 
         $html = $this->render("CampaniasBundle:Ajax:tpl_preguntas.html.twig", array(
                     "form" => $form->createView(),
                 ))->getContent()
         ;
-        $valor = "bigd_campaniasbundle_campaniaencuesta[agrupador][$agrupadorId][preguntas][0]";
+        $valor = "bigd_campaniasbundle_campaniaencuesta[agrupador][$agrupadorId][preguntas][$cantidadPreguntas]";
 
         $pregunta = str_replace($form->getName(), $valor, $html);
         $pregunta = strstr($pregunta, "<script", true);

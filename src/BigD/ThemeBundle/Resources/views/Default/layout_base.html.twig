@@ -224,8 +224,10 @@
 //ajax start
                     $(document).ajaxStart(function () {
                         $.blockUI(
-                                {message: '<div class="progress progress-striped active"><div class="progress-bar progress-bar-info" style="width: 100%"></div></div>',
-                                    css: {backgroundColor: 'none', border: 'none'}
+                                {
+                                    message: '<div class="progress progress-striped active"><div class="progress-bar progress-bar-info" style="width: 100%"></div></div>',
+                                    css: {backgroundColor: 'none', border: 'none'},
+                                    baseZ: 2002,
                                 }
                         )
                     });

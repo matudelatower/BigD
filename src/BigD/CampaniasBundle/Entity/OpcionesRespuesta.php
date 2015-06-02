@@ -11,8 +11,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="campania_encuesta_opciones_respuesta")
  * @ORM\Entity
  */
-class OpcionesRespuesta
-{
+class OpcionesRespuesta {
+
     /**
      * @var integer
      *
@@ -32,11 +32,11 @@ class OpcionesRespuesta
     /**
      * @var string
      *
-     * @ORM\Column(name="slug", type="string", length=255)
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
      */
     private $slug;
 
-     /**
+    /**
      * @var datetime $creado
      *
      * @Gedmo\Timestampable(on="create")
@@ -69,20 +69,18 @@ class OpcionesRespuesta
      * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
      */
     private $actualizadoPor;
-    
-    
+
     /** @ORM\ManyToOne(targetEntity="Preguntas", inversedBy="opcionRespuesta")
      *  @ORM\JoinColumn(name="campania_encuesta_preguntas_id", referencedColumnName="id")
      */
-    private $preguntas;        
+    private $preguntas;
 
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -92,8 +90,7 @@ class OpcionesRespuesta
      * @param string $textoOpcion
      * @return OpcionesRespuesta
      */
-    public function setTextoOpcion($textoOpcion)
-    {
+    public function setTextoOpcion($textoOpcion) {
         $this->textoOpcion = $textoOpcion;
 
         return $this;
@@ -104,8 +101,7 @@ class OpcionesRespuesta
      *
      * @return string 
      */
-    public function getTextoOpcion()
-    {
+    public function getTextoOpcion() {
         return $this->textoOpcion;
     }
 
@@ -115,8 +111,7 @@ class OpcionesRespuesta
      * @param string $slug
      * @return OpcionesRespuesta
      */
-    public function setSlug($slug)
-    {
+    public function setSlug($slug) {
         $this->slug = $slug;
 
         return $this;
@@ -127,8 +122,7 @@ class OpcionesRespuesta
      *
      * @return string 
      */
-    public function getSlug()
-    {
+    public function getSlug() {
         return $this->slug;
     }
 
@@ -138,8 +132,7 @@ class OpcionesRespuesta
      * @param \DateTime $creado
      * @return OpcionesRespuesta
      */
-    public function setCreado($creado)
-    {
+    public function setCreado($creado) {
         $this->creado = $creado;
 
         return $this;
@@ -150,8 +143,7 @@ class OpcionesRespuesta
      *
      * @return \DateTime 
      */
-    public function getCreado()
-    {
+    public function getCreado() {
         return $this->creado;
     }
 
@@ -161,8 +153,7 @@ class OpcionesRespuesta
      * @param \DateTime $actualizado
      * @return OpcionesRespuesta
      */
-    public function setActualizado($actualizado)
-    {
+    public function setActualizado($actualizado) {
         $this->actualizado = $actualizado;
 
         return $this;
@@ -173,8 +164,7 @@ class OpcionesRespuesta
      *
      * @return \DateTime 
      */
-    public function getActualizado()
-    {
+    public function getActualizado() {
         return $this->actualizado;
     }
 
@@ -184,8 +174,7 @@ class OpcionesRespuesta
      * @param \BigD\UsuariosBundle\Entity\Usuario $creadoPor
      * @return OpcionesRespuesta
      */
-    public function setCreadoPor(\BigD\UsuariosBundle\Entity\Usuario $creadoPor = null)
-    {
+    public function setCreadoPor(\BigD\UsuariosBundle\Entity\Usuario $creadoPor = null) {
         $this->creadoPor = $creadoPor;
 
         return $this;
@@ -196,8 +185,7 @@ class OpcionesRespuesta
      *
      * @return \BigD\UsuariosBundle\Entity\Usuario 
      */
-    public function getCreadoPor()
-    {
+    public function getCreadoPor() {
         return $this->creadoPor;
     }
 
@@ -207,8 +195,7 @@ class OpcionesRespuesta
      * @param \BigD\UsuariosBundle\Entity\Usuario $actualizadoPor
      * @return OpcionesRespuesta
      */
-    public function setActualizadoPor(\BigD\UsuariosBundle\Entity\Usuario $actualizadoPor = null)
-    {
+    public function setActualizadoPor(\BigD\UsuariosBundle\Entity\Usuario $actualizadoPor = null) {
         $this->actualizadoPor = $actualizadoPor;
 
         return $this;
@@ -219,8 +206,7 @@ class OpcionesRespuesta
      *
      * @return \BigD\UsuariosBundle\Entity\Usuario 
      */
-    public function getActualizadoPor()
-    {
+    public function getActualizadoPor() {
         return $this->actualizadoPor;
     }
 
@@ -230,8 +216,7 @@ class OpcionesRespuesta
      * @param \BigD\CampaniasBundle\Entity\Preguntas $preguntas
      * @return OpcionesRespuesta
      */
-    public function setPreguntas(\BigD\CampaniasBundle\Entity\Preguntas $preguntas = null)
-    {
+    public function setPreguntas(\BigD\CampaniasBundle\Entity\Preguntas $preguntas = null) {
         $this->preguntas = $preguntas;
 
         return $this;
@@ -242,8 +227,8 @@ class OpcionesRespuesta
      *
      * @return \BigD\CampaniasBundle\Entity\Preguntas 
      */
-    public function getPreguntas()
-    {
+    public function getPreguntas() {
         return $this->preguntas;
     }
+
 }

@@ -84,7 +84,7 @@ class Encuesta {
 
     /**
      * @ORM\OneToMany(targetEntity="AgrupadorPregunta", mappedBy="encuesta",cascade={"persist"})
-     * 
+     * @ORM\OrderBy({"id" = "ASC"})
      */
     private $agrupador;
 

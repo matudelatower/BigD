@@ -41,6 +41,66 @@
         </td>
 
     {% endset %}
+    {% set preguntas_prototype %}
+
+        <td colspan="4">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    {{ form_label(form.agrupador.vars.prototype.preguntas.vars.prototype.textoPregunta) }}
+                    <div class="col-sm-6">
+                        {{ form_widget(form.agrupador.vars.prototype.preguntas.vars.prototype.textoPregunta) }}
+                    </div>
+
+
+                </div>
+                <div class="form-group">
+
+                    {{ form_label(form.agrupador.vars.prototype.preguntas.vars.prototype.tipoPregunta) }}
+                    <div class="col-sm-6">
+                        {{ form_widget(form.agrupador.vars.prototype.preguntas.vars.prototype.tipoPregunta) }}
+                    </div>
+
+                </div>
+                <div class="form-group">
+
+                    {{ form_label(form.agrupador.vars.prototype.preguntas.vars.prototype.requerido) }}
+                    <div class="col-sm-6">
+                        {{ form_widget(form.agrupador.vars.prototype.preguntas.vars.prototype.requerido) }}
+                    </div>
+
+                </div>
+                <div class="form-group opciones-respuesta hidden">
+
+                    {{ form_label(form.agrupador.vars.prototype.preguntas.vars.prototype.opcionRespuesta) }}
+                    <div class="col-sm-6">
+                        {{ form_widget(form.agrupador.vars.prototype.preguntas.vars.prototype.opcionRespuesta) }}
+                    </div>
+
+                </div>
+                <script>
+                    $(document).ready(function () {
+                        $("#{{form.agrupador.vars.prototype.preguntas.vars.prototype.tipoPregunta.vars.id}}").change(function () {
+                            if ($(this).val() != 1) {
+                                $(this).parents("div .form-horizontal").find(".opciones-respuesta").show();
+                                $(this).parents("div .form-horizontal").find(".opciones-respuesta").removeClass("hidden");
+
+                            } else {
+                                $(this).parents("div .form-horizontal").find(".opciones-respuesta").hide();
+
+                            }
+                        });
+                    });
+                </script>
+            </div>
+        </td> 
+        <td>
+            <button class="btn btn-default btn-app-sm btn-circle btn-eliminar-pregunta" type="button">
+                <i class="fa fa-trash"></i>
+            </button>
+
+        </td>
+
+    {% endset %}
 
     <h4 class="page-header">Encuesta</h4>
     <div class="row">
@@ -74,7 +134,7 @@
                         {{ form_label(form.agrupador) }}
                         <div class="col-sm-10">
                             {#{{ form_widget(form.agrupador) }}#}
-                            <table class="table table-striped table-bordered" id="table-agrupador" data-prototype="{{ agrupador_prototype |e }}">
+                            <table class="table table-striped table-bordered" id="table-agrupador" data-prototype="{{ agrupador_prototype |e }}" data-prototype-preguntas="{{preguntas_prototype | e}}">
 
                                 <thead>
                                     <tr>
@@ -87,21 +147,82 @@
                                 </thead>
 
                                 <tbody>
+
                                     {% for agrupador in form.agrupador %}
-                                        <tr>
+                                        <tr item="{{loop.index0}}" data-agrupador-id="{{agrupador.vars.data.id}}" data-cant-preguntas="{{ agrupador.preguntas.count }}">
                                             <td>{{ form_widget(agrupador.nombre) }}</td>
                                             <td>{{ form_widget(agrupador.descripcion) }}</td>
                                             <td>{{ form_widget(agrupador.multiple) }}</td>
                                             <td>{{ form_widget(agrupador.slug) }}</td>
                                             <td>
-                                                <button class="btn btn-default btn-app-sm btn-circle" type="button">
+                                                <button class="btn btn-default btn-app-sm btn-circle btn-eliminar-agrupador" type="button">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                                 <button class="btn btn-default btn-app-sm btn-circle btn-agregar-pregunta" type="button" title="Agregar Pregunta">
                                                     <i class="fa fa-plus"></i>
                                                 </button>
                                             </td>
-                                        </tr>
+                                        </tr>                                    
+                                        {% for pregunta in agrupador.preguntas %}
+                                            <tr class="pregunta {{agrupador.vars.data.id}}">
+                                                <td colspan="4">
+                                                    <div class="form-horizontal">
+                                                        <div class="form-group">
+                                                            {{ form_label(pregunta.textoPregunta) }}
+                                                            <div class="col-sm-6">
+                                                                {{ form_widget(pregunta.textoPregunta) }}
+                                                            </div>
+
+
+                                                        </div>
+                                                        <div class="form-group">
+
+                                                            {{ form_label(pregunta.tipoPregunta) }}
+                                                            <div class="col-sm-6">
+                                                                {{ form_widget(pregunta.tipoPregunta) }}
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="form-group">
+
+                                                            {{ form_label(pregunta.requerido) }}
+                                                            <div class="col-sm-6">
+                                                                {{ form_widget(pregunta.requerido) }}
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="form-group opciones-respuesta {% if pregunta.opcionRespuesta.count == 0 %}hidden{% endif %}">
+
+                                                            {{ form_label(pregunta.opcionRespuesta) }}
+                                                            <div class="col-sm-6">
+                                                                {{ form_widget(pregunta.opcionRespuesta) }}
+                                                            </div>
+
+                                                        </div>
+                                                        <script>
+                                                            $(document).ready(function () {
+                                                                $("#{{pregunta.tipoPregunta.vars.id}}").change(function () {
+                                                                    if ($(this).val() != 1) {
+                                                                        $(this).parents("div .form-horizontal").find(".opciones-respuesta").show();
+                                                                        $(this).parents("div .form-horizontal").find(".opciones-respuesta").removeClass("hidden");
+
+                                                                    } else {
+                                                                        $(this).parents("div .form-horizontal").find(".opciones-respuesta").hide();
+
+                                                                    }
+                                                                });
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-default btn-app-sm btn-circle btn-eliminar-pregunta" type="button">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}                                        
                                     {% endfor %}
 
                                 </tbody>
@@ -110,7 +231,7 @@
                                 <span>
                                     <i class="fa fa-plus"></i>
                                 </span>
-                                Agregar item
+                                Agregar Agrupador
                             </button>
                         </div>
                     </div>
@@ -146,16 +267,17 @@
     <script type="text/javascript">
 
         var itemCantTableAgrupador = {{ entity.agrupador.count +1| default(0)}};
+                var idLastAgrupador = {{form.agrupador.vars.data.first.id | default(0)}};
                 $(document).ready(function () {
 
             $('#agregar-agrupador').click(function () {
 
                 var itemList = $('#table-agrupador');
 
-
+                idLastAgrupador = idLastAgrupador + 1;
                 var newWidget = itemList.data('prototype');
                 newWidget = newWidget.replace(/__name__/g, itemCantTableAgrupador);
-                var newTr = $('<tr item="' + itemCantTableAgrupador + '"></tr>').html(newWidget);
+                var newTr = $('<tr data-cant-preguntas="0" data-agrupador-id="' + idLastAgrupador + '" item="' + itemCantTableAgrupador + '"></tr>').html(newWidget);
                 itemCantTableAgrupador++;
                 newTr.appendTo(itemList);
 
@@ -169,37 +291,50 @@
 
         });
         $(document).on("click", ".btn-agregar-pregunta", function () {
-        {#        $(".btn-agregar-pregunta").click(function () {#}
-                var agrupadorId = $(this).parents("tr").attr("item");
-                $.ajax({
-                    method: "POST",
-                    url: "{{path('agregar_preguntas')}}",
-                    data: {agrupadorId: agrupadorId},
-                    success: function (data) {
-                        $('#modal-agregar-pregunta .modal-body').html(data);
-                        $('#modal-agregar-pregunta').modal('toggle');
-                    }
-                });
-            });
+            var itemList = $('#table-agrupador');
+            var index = $(this).parents("tr").attr("item");
+            var cantPreguntas = $(this).parents("tr").data("cant-preguntas");
+            var idAgrupador = $(this).parents("tr").data("agrupador-id");
 
-       
-            $(document).on("submit", "#form-agregar-pregunta", function (e) {
 
-                e.preventDefault()
-                $.ajax({
-                    url: $(this).attr('action'),
-                    type: $(this).attr('method'),
-                    dataType: 'json',
-                    data: $(this).serialize(),
-                    success: function (data) {
+            if (cantPreguntas == undefined) {
+                cantPreguntas = 0;
+            } else {
+                cantPreguntas = cantPreguntas + 1;
+            }
 
-                        console.log(data);
-                        $("#preguntas-agregadas").append((data));
-     
-                        $('#modal-agregar-pregunta').modal('toggle');
-                    }
-                });
-            })
+            var newWidget = itemList.data('prototype-preguntas');
+            newWidget = newWidget.replace(/__name__/g, index);
+
+            newWidget = newWidget.replace(/__pregunta__/g, cantPreguntas);
+            var newTr = $('<tr class="pregunta ' + idAgrupador + '"></tr>').html(newWidget);
+
+
+            $(this).parents("tr").data("cant-preguntas", cantPreguntas);
+
+            if ($('.' + idAgrupador + ':last').length) {
+                $('.' + idAgrupador + ':last').after(newTr);
+            } else {
+                newTr.appendTo(itemList);
+            }
+
+
+
+            $(this).trigger('clicked');
+            return false;
+        });
+
+        $(document).on("click", ".btn-eliminar-agrupador", function () {
+            var agrupadorToDeleteId = $(this).parents("tr").data("agrupador-id");
+            $(".pregunta." + agrupadorToDeleteId).remove();
+            $(this).parents("tr").remove();
+
+        });
+
+        $(document).on("click", ".btn-eliminar-pregunta", function () {
+            $(this).parents("tr").remove();
+        });
+
 
 
     </script>

@@ -2,10 +2,11 @@
 
 namespace BigD\CampaniasBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use BigD\CampaniasBundle\Entity\Encuesta;
 use BigD\CampaniasBundle\Form\EncuestaType;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Encuesta controller.
@@ -164,22 +165,64 @@ class EncuestaController extends Controller {
         }
 
 
+        $agrupadoresOriginales = new ArrayCollection();
+        $preguntasOriginales = new ArrayCollection();
+
+        // Create an ArrayCollection of the current Tag objects in the database
+        foreach ($entity->getAgrupador() as $agrupador) {
+            $agrupadoresOriginales->add($agrupador);
+            // Create an ArrayCollection of the current Tag objects in the database
+            foreach ($agrupador->getPreguntas() as $pregunta) {
+                $preguntasOriginales->add($pregunta);
+            }
+        }
+
         $editForm = $this->createForm(new EncuestaType(), $entity);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $agrupadores = $entity->getAgrupador();
 
+            //Borro las preguntas y/o los agrupadores
+            foreach ($agrupadoresOriginales as $agrupador) {
+                if (false === $entity->getAgrupador()->contains($agrupador)) {
+
+                    $em->remove($agrupador);
+                }
+            }
+
+            /* creo una coleccion con lo que viene el form para comparar despues
+             * con las preguntas
+             */
+            $aCPreguntas = new ArrayCollection();
+            foreach ($editForm->getData()->getAgrupador() as $agrupador) {
+                foreach ($agrupador->getPreguntas() as $pregunta) {
+                    $aCPreguntas->add($pregunta);
+                }
+            }
+
+            /**
+             * si hay alguna pregunta candidata para ser borrada la remueve
+             */
+            foreach ($preguntasOriginales as $pregunta) {
+                if (!$aCPreguntas->contains($pregunta) && null !== $pregunta->getId()) {
+                    $em->remove($pregunta);
+                }
+            }
+
+            //se hacen las asociaciones de los agrupadores y las preguntas
             foreach ($entity->getAgrupador() as $oAgrupador) {
                 $oAgrupador->setEncuesta($entity);
-                foreach ($oAgrupador->getPreguntas() as $pregunta) {
-                    $pregunta->setAgrupadorPregunta($oAgrupador);
+                foreach ($oAgrupador->getPreguntas() as $oPregunta) {
+                    $oPregunta->setAgrupadorPregunta($oAgrupador);
+                    foreach ($oPregunta->getOpcionRespuesta() as $opcionRespuesta) {
+                        $opcionRespuesta->setPreguntas($oPregunta);
+                    }
                 }
             }
 
             $em->flush();
             $this->get('session')->getFlashBag()->add(
-                    'success', 'Encuesta Actualizado correctamente.'
+                    'success', 'Encuesta Actualizada correctamente.'
             );
 
             return $this->redirect($this->generateUrl('campania_encuesta_edit', array('id' => $id)));
