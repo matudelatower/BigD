@@ -1,3 +1,3 @@
-function bootstrapCollectionBorrarItem (ele){
-    $(ele).parent().parent().remove();
+function bootstrapCollectionBorrarItem (item){
+    $(item).parent().parent().remove();
 }

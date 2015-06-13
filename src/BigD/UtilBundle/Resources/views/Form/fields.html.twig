@@ -140,19 +140,19 @@
                                     $('#{{form.vars.id}} .bootstrapcollection-agregar-otro-item').click(function() {
 
                                     var itemList = $('#{{form.vars.id}} table');
-                                    if (itemList.find('tbody tr').length < {{ max_items_add }}){
+                                            if (itemList.find('tbody tr').length < {{ max_items_add }}){
 
-                                        var newWidget = itemList.data('prototype');
-                                        newWidget = newWidget.replace(/__name__/g, itemCant{{form.vars.id}});
-                                        var newTr = $('<tr item="'+itemCant{{form.vars.id}}+'"></tr>').html(newWidget);
-                                        itemCant{{form.vars.id}}++;
-                                        newTr.appendTo(itemList);
+                                    var newWidget = itemList.data('prototype');
+                                            newWidget = newWidget.replace(/__name__/g, itemCant{{form.vars.id}});
+                                            var newTr = $('<tr item="' + itemCant{{form.vars.id}} + '"></tr>').html(newWidget);
+                                            itemCant{{form.vars.id}}++;
+                                            newTr.appendTo(itemList);
                                     }
 
                                     $(this).trigger('clicked');
                                             return false;
                                     });
-                                                                      
+                                    
                                     });</script>    
                                     {#{% endblock javascripts%}#}
 
@@ -166,7 +166,7 @@
                                             </td>
                                         {% endfor %}
                                         <td class="cell-center"><a class="btn btn-default" title="Borrar item" href="javascript:void(0)" onclick="bootstrapCollectionBorrarItem(this);"><i class="fa fa-fw fa-trash-o"></i></a></td>
-                                    {% endset %}
+                                            {% endset %}
 
                                     <div id="{{form.vars.id}}">
 
@@ -176,7 +176,7 @@
                                                 <tr>
                                                     {% for widget_prototype in form.vars.prototype %}
                                                         <th>
-                                                            {{ widget_prototype.vars.label |default(widget_prototype.vars.name)}}
+                                                            {{ widget_prototype.vars.label |default(widget_prototype.vars.name|humanize)}}
                                                         </th>
                                                     {% endfor%}  
                                                     <th style="width: 50px;">Accion</th>
@@ -195,111 +195,115 @@
                                                         {% endfor %} 
 
                                                         {% if child.vars.valid %}
-                                                            <td></td>
+                                                            <td class="cell-center">
+                                                                {% if form.vars.allow_delete %}
+                                                                    <a class="btn btn-default" title="Borrar item" href="javascript:void(0)" onclick="bootstrapCollectionBorrarItem(this);"><i class="fa fa-fw fa-trash-o"></i></a>
+                                                                    {% endif %}
+                                                            </td>
                                                         {% else %}
-                                                            <td class="cell-center"><a class="btn btn-default" title="Remove a item" href="javascript:void(0)" onclick="bootstrapCollectionBorrarItem(this);"><i class="fa fa-fw fa-trash-o"></i></a></td>
+                                                            <td class="cell-center"><a class="btn btn-default" title="Borrar item" href="javascript:void(0)" onclick="bootstrapCollectionBorrarItem(this);"><i class="fa fa-fw fa-trash-o"></i></a></td>
                                                         {% endif %} 
                                                     </tr>
-                                                {% endfor %}  
+                                                        {% endfor %}  
 
-                                            </tbody>
+                                                        </tbody>
 
-                                        </table>
+                                                    </table>
 
-                                        {#                                        <a class="btn btn-blue margin-top-2 bootstrapcollection-agregar-otro-item" href="#" ><i class="icon-plus"></i> Agregar otro Item</a>#}
-                                        <div class="box-footer clearfix no-border">
-                                            <a class="btn btn-default pull-right bootstrapcollection-agregar-otro-item" href="#"><i class="fa fa-plus"></i> Agregar</a>
-                                        </div>
-                                        <br>
-                                    </div>
-                                {% endspaceless %}        
-                            {% endblock %}    
+                                                    {#                                        <a class="btn btn-blue margin-top-2 bootstrapcollection-agregar-otro-item" href="#" ><i class="icon-plus"></i> Agregar otro Item</a>#}
+                                                    <div class="box-footer clearfix no-border">
+                                                        <a class="btn btn-default pull-right bootstrapcollection-agregar-otro-item" href="#"><i class="fa fa-plus"></i> Agregar</a>
+                                                    </div>
+                                                    <br>
+                                                </div>
+                                                {% endspaceless %}        
+                                                    {% endblock %}    
 
-                            {% block jqueryautocompletetext_widget %}
-                                {% spaceless %}
-                                    <script type="text/javascript">
-                                                /*
-                                                 * @author sergio
-                                                 */
+                                                        {% block jqueryautocompletetext_widget %}
+                                                            {% spaceless %}
+                                                                <script type="text/javascript">
+                                                                            /*
+                                                                             * @author sergio
+                                                                             */
 
 
-                                                jQuery(document).ready(function($) {
-                                        $('#suggest_{{ id }}').autocomplete({
-                                        source: function(request, response) {
-                                        block_prevent = true;
-                                                $.getJSON(
-                                                        "{{path(route_name)}}",
-                                                {
-                                                term: this.term
-                                        {% if extraParams is defined  %}
-                                            {#,extraParams: {{extraParams | raw}}#}
-                                                                , extraParams:{% for key, value in extraParams %}
-                                                                "{{ key }}" : {{ value | raw}} ,{% endfor %}
+                                                                            jQuery(document).ready(function($) {
+                                                                    $('#suggest_{{ id }}').autocomplete({
+                                                                    source: function(request, response) {
+                                                                    block_prevent = true;
+                                                                            $.getJSON(
+                                                                                    "{{path(route_name)}}",
+                                                                            {
+                                                                            term: this.term
+                                                                    {% if extraParams is defined  %}
+                                                                        {#,extraParams: {{extraParams | raw}}#}
+                                                                                            , extraParams:{% for key, value in extraParams %}
+                                                                                            "{{ key }}" : {{ value | raw}} ,{% endfor %}
+                                                                                    }
+                                                                    {% endif %}
+                                                                                },
+                                                                                        response
+                                                                                        );
+                                                                                block_prevent = false;
+                                                                        },
+                                                                                minLength: 1,
+                                                                                change: function(event, ui) {
+                                                                                //console.log(ui);
+                                                                                if (($('#suggest_{{ id}}').val() == '') || (ui.item == null)){
+                                                                                $('#{{ id}}').val('').trigger('clear');
+                                                                                        $('#suggest_{{ id}}').val('');
+                                                                                        $('#{{ id}}').trigger('change');
+                                                                                }
+                                                                                },{#close: function(event, ui){
+                                                        if (  $('#suggest_{{ id}}').val()==''){
+                                                        $('#{{ id}}').val('').trigger('clear');
+                                                        $('#suggest_{{ id}}').val('');
+                                                        $('#{{ id}}').trigger('change');
                                                         }
-                                        {% endif %}
-                                                    },
-                                                            response
-                                                            );
-                                                    block_prevent = false;
-                                            },
-                                                    minLength: 1,
-                                                    change: function(event, ui) {
-                                                    //console.log(ui);
-                                                    if (($('#suggest_{{ id}}').val() == '') || (ui.item == null)){
-                                                    $('#{{ id}}').val('').trigger('clear');
-                                                            $('#suggest_{{ id}}').val('');
-                                                            $('#{{ id}}').trigger('change');
-                                                    }
-                                                    },{#close: function(event, ui){
-                            if (  $('#suggest_{{ id}}').val()==''){
-                            $('#{{ id}}').val('').trigger('clear');
-                            $('#suggest_{{ id}}').val('');
-                            $('#{{ id}}').trigger('change');
-                            }
                     
-                            },#}
-                                                    select: function(event, ui) {
-                                                    //console.log(ui);
-                                                    var array = new Array();
-                                                            $('.' + $('#{{ id}}').attr('class')).each(function(){
-                                                    array.push(parseInt($(this).val()));
-                                                    });
-                                                            if (array.indexOf(ui.item.id) == - 1){
+                                                        },#}
+                                                                                select: function(event, ui) {
+                                                                                //console.log(ui);
+                                                                                var array = new Array();
+                                                                                        $('.' + $('#{{ id}}').attr('class')).each(function(){
+                                                                                array.push(parseInt($(this).val()));
+                                                                                });
+                                                                                        if (array.indexOf(ui.item.id) == - 1){
 
-                                                    if (ui.item == null) {
-                                                    $('#{{ id}}').val('');
-                                                            $('#{{ id}}').trigger('clear');
-                                                            $('#suggest_{{ id}}').val('');
-                                                    } else {
+                                                                                if (ui.item == null) {
+                                                                                $('#{{ id}}').val('');
+                                                                                        $('#{{ id}}').trigger('clear');
+                                                                                        $('#suggest_{{ id}}').val('');
+                                                                                } else {
 
-                                                    $('#{{ id}}').val(ui.item.id).trigger('change');
-                                                    }
-                                                    } else{
-                                                    $('#{{ id}}').val('');
-                                                            $('#{{ id}}').trigger('clear');
-                                                            $('#suggest_{{ id}}').val('');
-                                                            generarNoty('bottomRight', 'warning', 3000, 'Atención!', 'Ya ha ingresado un item con este id.');
-                                                            return false;
-                                                    }
-                                                    }
-                                            })
-                                            });
+                                                                                $('#{{ id}}').val(ui.item.id).trigger('change');
+                                                                                }
+                                                                                } else{
+                                                                                $('#{{ id}}').val('');
+                                                                                        $('#{{ id}}').trigger('clear');
+                                                                                        $('#suggest_{{ id}}').val('');
+                                                                                        generarNoty('bottomRight', 'warning', 3000, 'Atención!', 'Ya ha ingresado un item con este id.');
+                                                                                        return false;
+                                                                                }
+                                                                                }
+                                                                        })
+                                                                        });
 
-                                    </script>
-                                    <style>
-                                        .ui-autocomplete-loading {
-                                            background: transparent url('{{asset('bundles/sonataadmin/ajax-loader.gif')}}') right center no-repeat !important;
-                                        }
-                                        .ui-autocomplete{
-                                            position: absolute;
-                                            z-index: 99999;
-                                        }
-                                    </style>
-                                {% endspaceless %}
-                                {{ block('hidden_widget') }}
+                                                                </script>
+                                                                <style>
+                                                                    .ui-autocomplete-loading {
+                                                                        background: transparent url('{{asset('bundles/sonataadmin/ajax-loader.gif')}}') right center no-repeat !important;
+                                                                    }
+                                                                    .ui-autocomplete{
+                                                                        position: absolute;
+                                                                        z-index: 99999;
+                                                                    }
+                                                                </style>
+                                                            {% endspaceless %}
+                                                            {{ block('hidden_widget') }}
 
-                                {% set id = 'suggest_'~id %}
-                                {% set full_name = 'suggest_'~full_name %}
-                                {% set value = suggest_value %}
-                                <input type="text" class="span12" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
-                            {% endblock %}
+                                                            {% set id = 'suggest_'~id %}
+                                                            {% set full_name = 'suggest_'~full_name %}
+                                                            {% set value = suggest_value %}
+                                                            <input type="text" class="span12" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+                                                        {% endblock %}
