@@ -36,16 +36,16 @@ class AgrupadorPregunta
     private $descripcion;
 
     /**
-     * @var string
+     * @var boolean
      *
-     * @ORM\Column(name="multiple", type="string", length=255)
+     * @ORM\Column(name="multiple", type="boolean", nullable=true)
      */
     private $multiple;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="slug", type="string", length=255)
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
      */
     private $slug;
 
@@ -93,7 +93,8 @@ class AgrupadorPregunta
      * @ORM\OrderBy({"id" = "ASC"})
      */
     private $preguntas;
-    
+
+
     /**
      * Constructor
      */
@@ -161,7 +162,7 @@ class AgrupadorPregunta
     /**
      * Set multiple
      *
-     * @param string $multiple
+     * @param boolean $multiple
      * @return AgrupadorPregunta
      */
     public function setMultiple($multiple)
@@ -174,7 +175,7 @@ class AgrupadorPregunta
     /**
      * Get multiple
      *
-     * @return string 
+     * @return boolean 
      */
     public function getMultiple()
     {
