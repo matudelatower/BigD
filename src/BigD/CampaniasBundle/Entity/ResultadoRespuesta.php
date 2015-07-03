@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * ResultadoRespuesta
  *
- * @ORM\Table(name="campania_encuesta_resultado_respuesa")
+ * @ORM\Table(name="campania_encuesta_resultado_respuesta")
  * @ORM\Entity
  */
 class ResultadoRespuesta
@@ -25,15 +25,19 @@ class ResultadoRespuesta
     /**
      * @var string
      *
-     * @ORM\Column(name="textoRespuesta", type="string", length=255)
+     * @ORM\Column(name="textoRespuesta", type="text")
      */
     private $textoRespuesta;
 
     /** @ORM\ManyToOne(targetEntity="OpcionesRespuesta")
-     *  @ORM\JoinColumn(name="campania_encuesta_opcion_respuesta_id", referencedColumnName="id", nullable=false)
+     *  @ORM\JoinColumn(name="campania_encuesta_opcion_respuesta_id", referencedColumnName="id", nullable=true)
      */
     private $opcionesRespuesta;
 
+    /** @ORM\ManyToOne(targetEntity="ResultadoCabecera")
+     *  @ORM\JoinColumn(name="campania_encuesta_resultado_cabecera_id", referencedColumnName="id", nullable=false)
+     */
+    private $resultadoCabecera;
     /**
      * @var datetime $creado
      *
@@ -214,5 +218,28 @@ class ResultadoRespuesta
     public function getActualizadoPor()
     {
         return $this->actualizadoPor;
+    }
+
+    /**
+     * Set resultadoCabecera
+     *
+     * @param \BigD\CampaniasBundle\Entity\ResultadoCabecera $resultadoCabecera
+     * @return ResultadoRespuesta
+     */
+    public function setResultadoCabecera(\BigD\CampaniasBundle\Entity\ResultadoCabecera $resultadoCabecera)
+    {
+        $this->resultadoCabecera = $resultadoCabecera;
+
+        return $this;
+    }
+
+    /**
+     * Get resultadoCabecera
+     *
+     * @return \BigD\CampaniasBundle\Entity\ResultadoCabecera 
+     */
+    public function getResultadoCabecera()
+    {
+        return $this->resultadoCabecera;
     }
 }

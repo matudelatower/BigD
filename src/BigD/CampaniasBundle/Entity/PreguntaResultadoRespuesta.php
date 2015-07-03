@@ -25,7 +25,7 @@ class PreguntaResultadoRespuesta
     /** @ORM\ManyToOne(targetEntity="Preguntas")
      *  @ORM\JoinColumn(name="campania_encuesta_pregunta_id", referencedColumnName="id", nullable=false)
      */
-    private $preuntas;
+    private $preguntas;
 
     /** @ORM\ManyToOne(targetEntity="ResultadoRespuesta")
      *  @ORM\JoinColumn(name="campania_encuesta_resultado_respuesta_id", referencedColumnName="id", nullable=false)
@@ -123,26 +123,26 @@ class PreguntaResultadoRespuesta
     }
 
     /**
-     * Set preuntas
+     * Set preguntas
      *
-     * @param \BigD\CampaniasBundle\Entity\Preguntas $preuntas
+     * @param \BigD\CampaniasBundle\Entity\Preguntas $preguntas
      * @return PreguntaResultadoRespuesta
      */
-    public function setPreuntas(\BigD\CampaniasBundle\Entity\Preguntas $preuntas)
+    public function setPreguntas(\BigD\CampaniasBundle\Entity\Preguntas $preguntas)
     {
-        $this->preuntas = $preuntas;
+        $this->preguntas = $preguntas;
 
         return $this;
     }
 
     /**
-     * Get preuntas
+     * Get preguntas
      *
      * @return \BigD\CampaniasBundle\Entity\Preguntas 
      */
-    public function getPreuntas()
+    public function getPreguntas()
     {
-        return $this->preuntas;
+        return $this->preguntas;
     }
 
     /**
