@@ -12,31 +12,40 @@ use Symfony\Component\HttpFoundation\Request;
  * Encuesta controller.
  *
  */
-class EncuestaController extends Controller {
+class EncuestaController extends Controller
+{
 
     /**
      * Lists all Encuesta entities.
      *
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('CampaniasBundle:Encuesta')->findAll();
 
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
-                $entities, $this->get('request')->query->get('page', 1)/* page number */, 10/* limit per page */
+            $entities,
+            $this->get('request')->query->get('page', 1)/* page number */,
+            10/* limit per page */
         );
-        return $this->render('CampaniasBundle:Encuesta:index.html.twig', array(
-                    'entities' => $entities,
-        ));
+
+        return $this->render(
+            'CampaniasBundle:Encuesta:index.html.twig',
+            array(
+                'entities' => $entities,
+            )
+        );
     }
 
     /**
      * Creates a new Encuesta entity.
      *
      */
-    public function createAction(Request $request) {
+    public function createAction(Request $request)
+    {
         $entity = new Encuesta();
         $form = $this->createForm(new EncuestaType(), $entity);
         $form->handleRequest($request);
@@ -46,16 +55,20 @@ class EncuestaController extends Controller {
             $em->persist($entity);
             $em->flush();
             $this->get('session')->getFlashBag()->add(
-                    'success', 'Encuesta Creado correctamente.'
+                'success',
+                'Encuesta Creado correctamente.'
             );
 
             return $this->redirect($this->generateUrl('campania_encuesta_edit', array('id' => $entity->getId())));
         }
 
-        return $this->render('CampaniasBundle:Encuesta:new.html.twig', array(
-                    'entity' => $entity,
-                    'form' => $form->createView(),
-        ));
+        return $this->render(
+            'CampaniasBundle:Encuesta:new.html.twig',
+            array(
+                'entity' => $entity,
+                'form' => $form->createView(),
+            )
+        );
     }
 
     /**
@@ -65,11 +78,16 @@ class EncuestaController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Encuesta $entity) {
-        $form = $this->createForm(new EncuestaType(), $entity, array(
-            'action' => $this->generateUrl('campania_encuesta_create'),
-            'method' => 'POST',
-        ));
+    private function createCreateForm(Encuesta $entity)
+    {
+        $form = $this->createForm(
+            new EncuestaType(),
+            $entity,
+            array(
+                'action' => $this->generateUrl('campania_encuesta_create'),
+                'method' => 'POST',
+            )
+        );
 
         $form->add('submit', 'submit', array('label' => 'Create'));
 
@@ -80,42 +98,63 @@ class EncuestaController extends Controller {
      * Displays a form to create a new Encuesta entity.
      *
      */
-    public function newAction() {
+    public function newAction()
+    {
         $entity = new Encuesta();
         $form = $this->createForm(new EncuestaType(), $entity);
 
-        return $this->render('CampaniasBundle:Encuesta:new.html.twig', array(
-                    'entity' => $entity,
-                    'form' => $form->createView(),
-        ));
+        return $this->render(
+            'CampaniasBundle:Encuesta:new.html.twig',
+            array(
+                'entity' => $entity,
+                'form' => $form->createView(),
+            )
+        );
     }
 
     /**
      * Finds and displays a Encuesta entity.
      *
      */
-    public function showAction($id) {
+    public function showAction($id, Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('CampaniasBundle:Encuesta')->find($id);
 
+
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Encuesta entity.');
+            throw $this->createNotFoundException('No se encontro la encuesta.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
+        /* @var $managerEncuestas \BigD\CampaniasBundle\Services\EncuestasManager */
+        $managerEncuestas = $this->get('manager.encuestas');
 
-        return $this->render('CampaniasBundle:Encuesta:show.html.twig', array(
-                    'entity' => $entity,
-                    'delete_form' => $deleteForm->createView(),
-        ));
+        $encuestas = $managerEncuestas->getAEncuestas($id);
+
+        $paginator = $this->get('knp_paginator');
+        $encuestas['tabla'] = $paginator->paginate(
+            $encuestas['tabla'], $this->get('request')->query->get('page', 1)/* page number */, 10/* limit per page */
+        );
+
+
+        return $this->render(
+            'CampaniasBundle:Encuesta:show.html.twig',
+            array(
+                'entity' => $entity,
+                'encuestas' => $encuestas,
+
+
+            )
+        );
     }
 
     /**
      * Displays a form to edit an existing Encuesta entity.
      *
      */
-    public function editAction($id) {
+    public function editAction($id)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('CampaniasBundle:Encuesta')->find($id);
@@ -127,10 +166,13 @@ class EncuestaController extends Controller {
         $editForm = $this->createForm(new EncuestaType(), $entity);
 
 
-        return $this->render('CampaniasBundle:Encuesta:edit.html.twig', array(
-                    'entity' => $entity,
-                    'form' => $editForm->createView(),
-        ));
+        return $this->render(
+            'CampaniasBundle:Encuesta:edit.html.twig',
+            array(
+                'entity' => $entity,
+                'form' => $editForm->createView(),
+            )
+        );
     }
 
     /**
@@ -140,11 +182,16 @@ class EncuestaController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(Encuesta $entity) {
-        $form = $this->createForm(new EncuestaType(), $entity, array(
-            'action' => $this->generateUrl('campania_encuesta_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-        ));
+    private function createEditForm(Encuesta $entity)
+    {
+        $form = $this->createForm(
+            new EncuestaType(),
+            $entity,
+            array(
+                'action' => $this->generateUrl('campania_encuesta_update', array('id' => $entity->getId())),
+                'method' => 'PUT',
+            )
+        );
 
         $form->add('submit', 'submit', array('label' => 'Update'));
 
@@ -155,7 +202,8 @@ class EncuestaController extends Controller {
      * Edits an existing Encuesta entity.
      *
      */
-    public function updateAction(Request $request, $id) {
+    public function updateAction(Request $request, $id)
+    {
         $em = $this->getDoctrine()->getManager();
         /* @var $entity Encuesta */
         $entity = $em->getRepository('CampaniasBundle:Encuesta')->find($id);
@@ -222,23 +270,28 @@ class EncuestaController extends Controller {
 
             $em->flush();
             $this->get('session')->getFlashBag()->add(
-                    'success', 'Encuesta Actualizada correctamente.'
+                'success',
+                'Encuesta Actualizada correctamente.'
             );
 
             return $this->redirect($this->generateUrl('campania_encuesta_edit', array('id' => $id)));
         }
 
-        return $this->render('CampaniasBundle:Encuesta:edit.html.twig', array(
-                    'entity' => $entity,
-                    'form' => $editForm->createView(),
-        ));
+        return $this->render(
+            'CampaniasBundle:Encuesta:edit.html.twig',
+            array(
+                'entity' => $entity,
+                'form' => $editForm->createView(),
+            )
+        );
     }
 
     /**
      * Deletes a Encuesta entity.
      *
      */
-    public function deleteAction(Request $request, $id) {
+    public function deleteAction(Request $request, $id)
+    {
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
@@ -264,13 +317,40 @@ class EncuestaController extends Controller {
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id) {
+    private function createDeleteForm($id)
+    {
         return $this->createFormBuilder()
-                        ->setAction($this->generateUrl('campania_encuesta_delete', array('id' => $id)))
-                        ->setMethod('DELETE')
-                        ->add('submit', 'submit', array('label' => 'Delete'))
-                        ->getForm()
-        ;
+            ->setAction($this->generateUrl('campania_encuesta_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->getForm();
+    }
+
+    public function exportarResultadoEncuestaAction($id)
+    {
+
+
+        $filename = "resultados_encuestas.xls";
+
+        /* @var $exportExcel \BigD\UtilBundle\Services\ExcelTool */
+        $exportExcel = $this->get('excel.tool');
+        $exportExcel->setTitle('Resultado Encuestas');
+        $exportExcel->setDescripcion('Listado de encuestas exportadas');
+
+        /* @var $managerEncuestas \BigD\CampaniasBundle\Services\EncuestasManager */
+        $managerEncuestas = $this->get('manager.encuestas');
+        $preguntas = $managerEncuestas->getPreguntasPorIdEncuesta($id);
+        $preguntasRespuesta = $managerEncuestas->getPreguntasRespuestaPorIdEncuesta($id);
+
+
+        $response = $exportExcel->buildSheetResultadosEncuesta($preguntas, $preguntasRespuesta, $id);
+
+        $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment;filename='.$filename.'');
+        $response->headers->set('Pragma', 'public');
+        $response->headers->set('Cache-Control', 'maxage=1');
+
+        return $response;
     }
 
 }

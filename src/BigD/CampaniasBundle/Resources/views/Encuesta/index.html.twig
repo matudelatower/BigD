@@ -66,7 +66,10 @@
                                     <td>{% if entity.creado %}{{ entity.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
                                     <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
                                     <td>
-                                                                                <a class="btn btn-default" href="{{ path('campania_encuesta_edit', { 'id': entity.id }) }}"><i class="fa fa-fw fa-edit"></i></a>
+                                        <a class="btn btn-default" href="{{ path('campania_encuesta_edit', { 'id': entity.id }) }}"><i class="fa fa-fw fa-edit"></i></a>
+                                        <a class="btn btn-default" href="{{ path('campania_encuesta_show', { 'id': entity.id }) }}"><i class="fa fa-fw fa-eye"></i></a>
+                                        <a class="btn btn-default" href="{{ path('exportar_resultados_encuesta', { 'id': entity.id }) }}" target="_blank"><i class="fa fa-fw icon-excel-black"></i></a>
+
                                     </td>
                                 </tr>
                                 {% endfor %}

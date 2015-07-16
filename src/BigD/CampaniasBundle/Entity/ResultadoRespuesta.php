@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * ResultadoRespuesta
  *
  * @ORM\Table(name="campania_encuesta_resultado_respuesta")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="ResultadoRespuestaRepository")
  */
 class ResultadoRespuesta
 {

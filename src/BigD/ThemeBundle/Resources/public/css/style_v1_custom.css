@@ -2249,3 +2249,49 @@ border-radius: 50%;}
     display: none;
   }
 }
+
+.icon-excel{
+    background-image: url("../img/icon-excel.png");
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    padding: 9px;
+    vertical-align: middle;
+    width: auto;
+    color: #FFF;
+    filter: invert(100%);
+}
+
+.icon-excel-black{
+    background-image: url("../img/icon-excel.png");
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    padding: 9px;
+    vertical-align: middle;
+    width: auto;
+    color: #FFFFFF;
+}
+
+.icon-excel-btn{
+    background-image: url("../img/icon-excel.png");
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    padding: 0px 9px;
+    vertical-align: middle;
+    width: auto;
+    color: #FFFFFF;
+    filter: invert(100%);
+}
+
+.icon-excel-black-btn{
+    background-image: url("../img/icon-excel.png");
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: 16px 16px;
+    padding: 0px 9px;
+    vertical-align: middle;
+    width: auto;
+    color: #FFFFFF;
+}

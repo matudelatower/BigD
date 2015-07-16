@@ -28,3 +28,7 @@ campania_encuesta_delete:
     path:     /{id}/delete
     defaults: { _controller: "CampaniasBundle:Encuesta:delete" }
     requirements: { _method: post|delete }
+
+exportar_resultados_encuesta:
+    path: /{id}/exportar_resultado_encuesta
+    defaults: { _controller: "CampaniasBundle:Encuesta:exportarResultadoEncuesta" }

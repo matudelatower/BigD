@@ -25,4 +25,10 @@ services:
         tags:
             - { name: form.type, alias: jqueryautocompletetext }
             
-        
+    excel.tool:
+            class: BigD\UtilBundle\Services\ExcelTool
+            arguments:
+                phpexcel: "@phpexcel"
+                entityManager: "@doctrine.orm.entity_manager"
+            tags:
+                - { name: excel.tool, alias: excel.tool }

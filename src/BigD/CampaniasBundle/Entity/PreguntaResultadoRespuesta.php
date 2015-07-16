@@ -22,7 +22,7 @@ class PreguntaResultadoRespuesta
      */
     private $id;
 
-    /** @ORM\ManyToOne(targetEntity="Preguntas")
+    /** @ORM\ManyToOne(targetEntity="Preguntas", inversedBy="preguntaResultadoRespuesta")
      *  @ORM\JoinColumn(name="campania_encuesta_pregunta_id", referencedColumnName="id", nullable=false)
      */
     private $preguntas;
@@ -30,7 +30,7 @@ class PreguntaResultadoRespuesta
     /** @ORM\ManyToOne(targetEntity="ResultadoRespuesta")
      *  @ORM\JoinColumn(name="campania_encuesta_resultado_respuesta_id", referencedColumnName="id", nullable=false)
      */
-    private $tipoPregunta;
+    private $resultadoRespuesta;
 
     /**
      * @var datetime $creado
@@ -65,6 +65,8 @@ class PreguntaResultadoRespuesta
      * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
      */
     private $actualizadoPor;
+
+
 
     /**
      * Get id
@@ -146,26 +148,26 @@ class PreguntaResultadoRespuesta
     }
 
     /**
-     * Set tipoPregunta
+     * Set resultadoRespuesta
      *
-     * @param \BigD\CampaniasBundle\Entity\ResultadoRespuesta $tipoPregunta
+     * @param \BigD\CampaniasBundle\Entity\ResultadoRespuesta $resultadoRespuesta
      * @return PreguntaResultadoRespuesta
      */
-    public function setTipoPregunta(\BigD\CampaniasBundle\Entity\ResultadoRespuesta $tipoPregunta)
+    public function setResultadoRespuesta(\BigD\CampaniasBundle\Entity\ResultadoRespuesta $resultadoRespuesta)
     {
-        $this->tipoPregunta = $tipoPregunta;
+        $this->resultadoRespuesta = $resultadoRespuesta;
 
         return $this;
     }
 
     /**
-     * Get tipoPregunta
+     * Get resultadoRespuesta
      *
      * @return \BigD\CampaniasBundle\Entity\ResultadoRespuesta 
      */
-    public function getTipoPregunta()
+    public function getResultadoRespuesta()
     {
-        return $this->tipoPregunta;
+        return $this->resultadoRespuesta;
     }
 
     /**

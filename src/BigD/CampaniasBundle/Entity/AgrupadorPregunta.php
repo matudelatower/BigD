@@ -8,7 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * AgrupadorPregunta
  *
  * @ORM\Table(name="campania_encuesta_agrupador_pregunta")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AgrupadorPreguntaRepository")
  */
 class AgrupadorPregunta
 {

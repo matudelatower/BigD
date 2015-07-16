@@ -1,48 +1,59 @@
-    {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
-
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+{% set title = 'Resultados Encuesta' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block stylesheets %}
+    <style>
+        .table-responsive{
+            overflow-x: auto;
+        }
+    </style>
+{% endblock %}
     {% block body -%}
-    <h1>Encuesta</h1>
+        <h4 class="page-header">{{ title }}</h4>
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Nombre</th>
-                <td>{{ entity.nombre }}</td>
-            </tr>
-            <tr>
-                <th>Descripcion</th>
-                <td>{{ entity.descripcion }}</td>
-            </tr>
-            <tr>
-                <th>Slug</th>
-                <td>{{ entity.slug }}</td>
-            </tr>
-            <tr>
-                <th>Creado</th>
-                <td>{{ entity.creado|date('Y-m-d H:i:s') }}</td>
-            </tr>
-            <tr>
-                <th>Actualizado</th>
-                <td>{{ entity.actualizado|date('Y-m-d H:i:s') }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-        <ul class="record_actions">
-    <li>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-name">
+                            <i class="fa fa-table"></i>
+                            <span>Encuestas</span>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped table-hover table-heading table-datatable dataTable datatable-custom">
+                            <thead>
+                            <tr>
+                                {% for cabecera in  encuestas.cabecera %}
+                                    <th>
+                                        {{ cabecera }}
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for fila in encuestas.tabla %}
+                                <tr>
+                                    {% for columna in fila %}
+                                        <td>
+                                            {{ columna }}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-content">
+            {{ knp_pagination_render(encuestas.tabla) }}
+        </div>
         <a href="{{ path('campania_encuesta') }}">
-            Back to the list
+            Volver
         </a>
-    </li>
-    <li>
-        <a href="{{ path('campania_encuesta_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+
     {% endblock %}
