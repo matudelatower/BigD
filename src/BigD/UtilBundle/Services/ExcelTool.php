@@ -138,10 +138,12 @@ class ExcelTool
         $this->doctrine = $doctrine;
     }
 
-    public function buildSheetResultadosEncuesta($preguntas, $preguntasRespuesta, $idEncuesta)
+    public function buildSheetResultadosEncuesta($encuestas)
     {
+        ini_set('display_errors', true);
         set_time_limit(0);
-        ini_set("memory_limit", "2000M");
+        ini_set("memory_limit", "-1");
+
         $phpExcelObject = $this->phpexcel->createPHPExcelObject();
         $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);
         $phpExcelObject->getProperties()->setTitle($this->title);
@@ -151,67 +153,24 @@ class ExcelTool
         $phpExcelObject->setActiveSheetIndex(0);
 
 
-        $arrayCabecera = array();
-        $arrayRespuesta = array();
-        $arrayRespuestas = array();
-
-        $oEncuesta = $this->doctrine->getRepository('CampaniasBundle:Encuesta')->findOneById($idEncuesta);
-
-        $cantidadMaximaRespuesta = null;
-
-
-        foreach ($oEncuesta->getAgrupador() as $agrupador) {
-
-            if ($agrupador->getMultiple()) {
-                $cantidadMaximaRespuesta = $this->doctrine->getRepository(
-                    'CampaniasBundle:ResultadoRespuesta'
-                )->getMaximoRespuestaPorId($agrupador->getPreguntas()->first()->getId());
-
-            } else {
-                $cantidadMaximaRespuesta = 0;
-            }
-
-            for ($i = 0; $i <= $cantidadMaximaRespuesta; $i++) {
-
-                foreach ($agrupador->getPreguntas() as $pregunta) {
-                    $arrayCabecera[] = $pregunta->getTextoPregunta();
-
-                    $arrayRespuesta = $this->doctrine->getRepository(
-                        'CampaniasBundle:ResultadoRespuesta'
-                    )->getRespuestasPorPreguntaId($pregunta->getId());
-
-
-//                    foreach ($pregunta->getPreguntaResultadoRespuesta() as $preguntaResultadoRespuesta) {
-//                        $arrayRespuesta[] = $preguntaResultadoRespuesta->getResultadoRespuesta()->getTextoRespuesta();
-//                    }
-                    $arrayRespuestas[] = $arrayRespuesta;
-                    unset($arrayRespuesta);
-                    $this->doctrine->clear();
-
-                }
-            }
-
-
-        }
         $i = 0;
-        $fila = 2;
-        $columnaRta = 0;
-        foreach ($arrayCabecera as $key => $cabecera) {
+
+        foreach ($encuestas['cabecera'] as $cabecera) {
             $phpExcelObject->getActiveSheet()->setCellValueByColumnAndRow($i, 1, $cabecera);
-            foreach ($arrayRespuestas as $rta) {
-                foreach ($rta as $item) {
-                    $phpExcelObject->getActiveSheet()->setCellValueByColumnAndRow(
-                        $columnaRta,
-                        $fila,
-                        $item['texto_respuesta']
-                    );
-                    $fila++;
-                }
-                $fila = 2;
-                $columnaRta++;
-            }
             $i++;
-            $columnaRta=0;
+        }
+        $iFila = 2;
+
+        foreach ($encuestas['tabla'] as $fila) {
+            $iColumna = 0;
+            foreach ($fila as $columna) {
+                $phpExcelObject->getActiveSheet()->setCellValueByColumnAndRow($iColumna, $iFila, $columna);
+                $iColumna++;
+            }
+
+            $iFila++;
+
+
         }
 
 

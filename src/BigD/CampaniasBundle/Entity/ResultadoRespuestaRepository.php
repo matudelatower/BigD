@@ -56,24 +56,25 @@ class ResultadoRespuestaRepository extends EntityRepository
         return $stmt->fetchAll();
     }
 
-    public function getRespuestasPorAgrupadorId( $idAgrupador)
+    public function getRespuestasPorAgrupadorId($idAgrupador, $idResultadoCabecera)
     {
         $db = $this->getEntityManager()->getConnection();
 
 
-        $query = "select agru.id,pre.texto_pregunta,res.textorespuesta
-               from campania_encuesta_agrupador_pregunta agru
-               inner join campania_encuesta_preguntas pre on agru.id=pre.campania_encuesta_agrupador_pregunta_id
-               inner join campania_encuesta_pregunta_resultado_respuesta med
-               on med.campania_encuesta_pregunta_id=pre.id
+        $query = "select agru.id,pre.texto_pregunta,res.textorespuesta,agru.multiple,pre.id as pregunta_id
 
-               inner join campania_encuesta_resultado_respuesta res
-               on res.id=med.campania_encuesta_resultado_respuesta_id
+                from campania_encuesta_agrupador_pregunta agru
+                inner join campania_encuesta_preguntas pre on agru.id=pre.campania_encuesta_agrupador_pregunta_id
+                inner join campania_encuesta_pregunta_resultado_respuesta med
+                on med.campania_encuesta_pregunta_id=pre.id
 
-               inner join campania_encuesta_resultado_cabecera cab
-               on res.campania_encuesta_resultado_cabecera_id=cab.id
-               where agru.id=$idAgrupador
-               order by res.id";
+                inner join campania_encuesta_resultado_respuesta res
+                on res.id=med.campania_encuesta_resultado_respuesta_id
+
+                inner join campania_encuesta_resultado_cabecera cab
+                on res.campania_encuesta_resultado_cabecera_id=cab.id
+                where cab.id=$idResultadoCabecera and agru.id=$idAgrupador
+                order by res.id";
 
         $stmt = $db->prepare($query);
         $stmt->execute();

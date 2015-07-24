@@ -88,15 +88,15 @@ ORDER BY
 
         $db = $this->getEntityManager()->getConnection();
         $query = "select max(conteo)
-               from(select pre.id pregunta,cab.id cabecera,count(med.id) as conteo
-                   from  campania_encuesta enc
-                   inner join campania_encuesta_agrupador_pregunta agru on enc.id=agru.campania_encuesta_id
-                   inner join campania_encuesta_preguntas pre  on agru.id=pre.campania_encuesta_agrupador_pregunta_id
-                   inner join campania_encuesta_pregunta_resultado_respuesta med on pre.id=med.campania_encuesta_pregunta_id
-                   inner join campania_encuesta_resultado_respuesta res on res.id=med.campania_encuesta_resultado_respuesta_id
-                   inner join campania_encuesta_resultado_cabecera cab on cab.id=res.campania_encuesta_resultado_cabecera_id
-                   where agru.id=$idAgrupador
-                   group by cab.id,pre.id) as conteo";
+                from(select pre.id pregunta,cab.id cabecera,count(med.id) as conteo
+                    from  campania_encuesta enc
+                    inner join campania_encuesta_agrupador_pregunta agru on enc.id=agru.campania_encuesta_id
+                    inner join campania_encuesta_preguntas pre  on agru.id=pre.campania_encuesta_agrupador_pregunta_id
+                    inner join campania_encuesta_pregunta_resultado_respuesta med on pre.id=med.campania_encuesta_pregunta_id
+                    inner join campania_encuesta_resultado_respuesta res on res.id=med.campania_encuesta_resultado_respuesta_id
+                    inner join campania_encuesta_resultado_cabecera cab on cab.id=res.campania_encuesta_resultado_cabecera_id
+                    where agru.id=$idAgrupador
+                    group by cab.id,pre.id) as conteo";
         $stmt = $db->prepare($query);
         $stmt->execute();
 

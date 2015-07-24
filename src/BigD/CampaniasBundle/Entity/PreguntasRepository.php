@@ -34,16 +34,38 @@ class PreguntasRepository extends EntityRepository
     public function getPreguntasPorAgrupadorId($idAgrupador)
     {
         $db = $this->getEntityManager()->getConnection();
-        $query = "select pre.texto_pregunta
-                   from campania_encuesta_agrupador_pregunta agru
-                   inner join campania_encuesta_preguntas pre  on agru.id=pre.campania_encuesta_agrupador_pregunta_id
-                   where agru.id=$idAgrupador
-                   order by pre.id";
+        $query = "select pre.texto_pregunta,campania_encuesta_agrupador_pregunta_id,pre.id as pregunta_id
+                    from   campania_encuesta_preguntas pre
+                    where pre.campania_encuesta_agrupador_pregunta_id=$idAgrupador";
 
         $stmt = $db->prepare($query);
         $stmt->execute();
 
         return $stmt->fetchAll();
+    }
+
+    public function getCantidadPreguntasPorAgrupadorIdParaPosadasPremia($idResultadoCabecera)
+    {
+
+        $db = $this->getEntityManager()->getConnection();
+
+        $query = "select count(distinct(pre.id))
+                from campania_encuesta_preguntas pre
+                inner join campania_encuesta_pregunta_resultado_respuesta med
+                on med.campania_encuesta_pregunta_id=pre.id
+
+                inner join campania_encuesta_resultado_respuesta res
+                on res.id=med.campania_encuesta_resultado_respuesta_id
+
+                inner join campania_encuesta_resultado_cabecera cab
+                on res.campania_encuesta_resultado_cabecera_id=cab.id
+                where cab.id=$idResultadoCabecera";
+
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+
     }
 
 }

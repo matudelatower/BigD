@@ -339,11 +339,11 @@ class EncuestaController extends Controller
 
         /* @var $managerEncuestas \BigD\CampaniasBundle\Services\EncuestasManager */
         $managerEncuestas = $this->get('manager.encuestas');
-        $preguntas = $managerEncuestas->getPreguntasPorIdEncuesta($id);
-        $preguntasRespuesta = $managerEncuestas->getPreguntasRespuestaPorIdEncuesta($id);
+
+        $encuestas = $managerEncuestas->getAEncuestas($id);
 
 
-        $response = $exportExcel->buildSheetResultadosEncuesta($preguntas, $preguntasRespuesta, $id);
+        $response = $exportExcel->buildSheetResultadosEncuesta($encuestas);
 
         $response->headers->set('Content-Type', 'text/vnd.ms-excel; charset=utf-8');
         $response->headers->set('Content-Disposition', 'attachment;filename='.$filename.'');
