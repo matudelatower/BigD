@@ -143,7 +143,7 @@ class EncuestasManager
                     $contadorPreguntasAgrupador = 0;
                     foreach ($respuestasAgrupador as $respuestaAgrupador) {
 
-                        if ($contadorPreguntasAgrupador < $cantidadPreguntasAgrupador) {
+                    if ($contadorPreguntasAgrupador < $cantidadPreguntasAgrupador['cantidad']) {
                             //mientras sea el primer modulo de este agrupador puedo sacar als posiciones por id
                             $ordenCorrecto = $arrayOrden[$respuestaAgrupador['pregunta_id']];
                             $fila[$ordenCorrecto] = $respuestaAgrupador['textorespuesta'];
@@ -169,7 +169,7 @@ class EncuestasManager
                     }
                 } else {
                     foreach ($respuestasAgrupador as $respuestaAgrupador) {
-                        $ordenCorrecto = $arrayOrden[$respuestaAgrupador['id']];
+                        $ordenCorrecto = $arrayOrden[$respuestaAgrupador['pregunta_id']];
                         if ($cantidadPreguntasEncuesta[0]['count'] == 52 && $respuestaAgrupador['pregunta_id'] == 34) {
                             //si es la encuesta de 52 preguntas y es el id de pregunta 34, osea un id menos del id que falta, lo
                             //relleno con blanco
@@ -186,7 +186,7 @@ class EncuestasManager
             }
             $fila1 = ksort($fila);
             $tabla[] = $fila;
-            $em->clear();
+//            $em->clear();
         }
 
         return array(
