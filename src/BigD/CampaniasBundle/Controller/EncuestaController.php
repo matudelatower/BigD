@@ -3,6 +3,7 @@
 namespace BigD\CampaniasBundle\Controller;
 
 use BigD\CampaniasBundle\Entity\Encuesta;
+use BigD\CampaniasBundle\Form\EncuestaFilterType;
 use BigD\CampaniasBundle\Form\EncuestaType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,6 +26,9 @@ class EncuestaController extends Controller
 
         $entities = $em->getRepository('CampaniasBundle:Encuesta')->findAll();
 
+        $form = $this->createForm(new EncuestaFilterType());
+
+
         $paginator = $this->get('knp_paginator');
         $entities = $paginator->paginate(
             $entities,
@@ -36,6 +40,7 @@ class EncuestaController extends Controller
             'CampaniasBundle:Encuesta:index.html.twig',
             array(
                 'entities' => $entities,
+                'filter_form' => $form->createView(),
             )
         );
     }
@@ -134,7 +139,9 @@ class EncuestaController extends Controller
 
         $paginator = $this->get('knp_paginator');
         $encuestas['tabla'] = $paginator->paginate(
-            $encuestas['tabla'], $this->get('request')->query->get('page', 1)/* page number */, 10/* limit per page */
+            $encuestas['tabla'],
+            $this->get('request')->query->get('page', 1)/* page number */,
+            10/* limit per page */
         );
 
 
@@ -326,11 +333,22 @@ class EncuestaController extends Controller
             ->getForm();
     }
 
-    public function exportarResultadoEncuestaAction($id)
+    public function exportarResultadoEncuestaAction($id, Request $request)
     {
+
+//        $filtros = $request->get('bigd_campaniasbundle_campaniaencuesta_filter_type');
+
+        $form = $this->createForm(new EncuestaFilterType());
+        $form->handleRequest($request);
+        if ($request->isMethod("post")) {
+            if ($form->isValid()) {
+                $filtros = $form->getData();
+            }
+        }
 
 
         $filename = "resultados_encuestas.xls";
+
 
         /* @var $exportExcel \BigD\UtilBundle\Services\ExcelTool */
         $exportExcel = $this->get('excel.tool');
@@ -340,7 +358,7 @@ class EncuestaController extends Controller
         /* @var $managerEncuestas \BigD\CampaniasBundle\Services\EncuestasManager */
         $managerEncuestas = $this->get('manager.encuestas');
 
-        $encuestas = $managerEncuestas->getAEncuestas($id);
+        $encuestas = $managerEncuestas->getAEncuestas($id, $filtros);
 
 
         $response = $exportExcel->buildSheetResultadosEncuesta($encuestas);

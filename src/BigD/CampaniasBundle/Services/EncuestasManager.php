@@ -33,7 +33,7 @@ class EncuestasManager {
         return $preguntas;
     }
 
-    public function getAEncuestas($id) {
+    public function getAEncuestas($id, $filtros = null) {
         ini_set('display_errors', true);
         set_time_limit(0);
         ini_set("memory_limit", "-1");
@@ -46,7 +46,7 @@ class EncuestasManager {
         $tabla = array();
 
         //Traigo los agrupadores
-        $agrupadores = $em->getRepository('CampaniasBundle:AgrupadorPregunta')->getAgrupadoresPorEncuestaId($id);
+        $agrupadores = $em->getRepository('CampaniasBundle:AgrupadorPregunta')->getAgrupadoresPorEncuestaId($id, $filtros);
 
         foreach ($agrupadores as $agrupador) {
             if (!$agrupador['multiple']) {

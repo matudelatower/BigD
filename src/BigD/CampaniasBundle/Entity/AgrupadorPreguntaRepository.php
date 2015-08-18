@@ -9,21 +9,51 @@
 namespace BigD\CampaniasBundle\Entity;
 
 
+use BigD\UtilBundle\lib\DateTools;
 use Doctrine\ORM\EntityRepository;
 
 class AgrupadorPreguntaRepository extends EntityRepository
 {
-    public function getAgrupadoresPorEncuestaId($idEncuesta)
+    public function getAgrupadoresPorEncuestaId($idEncuesta, $filtros = null)
     {
 
+        //agregar fecha
         $db = $this->getEntityManager()->getConnection();
 
+        $where = "";
+//TODO        cuando funcione, borrar esto!
         $query = "select agru.id as agrupador_id,agru.multiple
                   from  campania_encuesta_agrupador_pregunta agru
                   WHERE agru.campania_encuesta_id=$idEncuesta
-                  order by agru.id asc";
+                  ";
 
-        $stmt = $db->prepare($query);
+        $query = "SELECT
+     campania_encuesta_agrupador_pregunta.id AS agrupador_id,
+     campania_encuesta_agrupador_pregunta.multiple AS multiple
+FROM
+     campania_encuesta_agrupador_pregunta campania_encuesta_agrupador_pregunta INNER JOIN campania_encuesta_preguntas campania_encuesta_preguntas ON campania_encuesta_agrupador_pregunta.id = campania_encuesta_preguntas.campania_encuesta_agrupador_pregunta_id
+     INNER JOIN campania_encuesta_pregunta_resultado_respuesta campania_encuesta_pregunta_resultado_respuesta ON campania_encuesta_preguntas.id = campania_encuesta_pregunta_resultado_respuesta.campania_encuesta_pregunta_id
+     INNER JOIN campania_encuesta_resultado_respuesta campania_encuesta_resultado_respuesta ON campania_encuesta_pregunta_resultado_respuesta.campania_encuesta_resultado_respuesta_id = campania_encuesta_resultado_respuesta.id
+     INNER JOIN campania_encuesta_resultado_cabecera campania_encuesta_resultado_cabecera ON campania_encuesta_resultado_respuesta.campania_encuesta_resultado_cabecera_id = campania_encuesta_resultado_cabecera.id
+WHERE
+campania_encuesta_agrupador_pregunta.campania_encuesta_id = $idEncuesta";
+
+        if ($filtros['fechaDesde']) {
+            $fechaMinima = $filtros['fechaDesde']->format('Y-m-d');
+        } else {
+            $fechaMinima = DateTools::getFechaMinima();
+        }
+        if ($filtros['fechaHasta']) {
+            $fechaMaxima = $filtros['fechaHasta']->format('Y-m-d');
+        } else {
+            $fechaMaxima = DateTools::getFechaMaxima();
+        }
+
+        $where .= " AND campania_encuesta_resultado_cabecera.fecha BETWEEN '$fechaMinima' and '$fechaMaxima'";
+        $orderBy = " ORDER BY campania_encuesta_agrupador_pregunta.id asc";
+
+        $sql = $query.$where.$orderBy;
+        $stmt = $db->prepare($sql);
         $stmt->execute();
 
         return $stmt->fetchAll();
