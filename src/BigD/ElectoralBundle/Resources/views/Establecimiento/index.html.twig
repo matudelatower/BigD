@@ -1,0 +1,217 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+{% set title = 'Establecimiento' %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('.datatable-custom').dataTable({
+            "searching": false,
+            "columnDefs": [{"targets": 0, "orderable": false}],
+            "paging": false,
+            "aaSorting": [[1, "asc"]],
+            "lengthMenu": false,
+            "oLanguage": {
+                "sEmptyTable": "Sin Resultados",
+                "sInfo": "",
+                "sInfoEmpty": ""
+            }
+        });
+        $(document).ready(function () {
+
+            {% set formFilter = app.request.request.get('bigd_electoralbundle_establecimiento_filter_type') %}
+
+            {% if formFilter is not null %}
+            $('.pagination li a').click(function () {
+
+                $('#form-filtro-establecimientos').attr('action', this.href);
+                {% for row in form %}
+                $('#{{row.vars.id}}').val('{{formFilter[row.vars.name]}}');
+                {% endfor %}
+
+                $('#form-filtro-establecimientos').submit();
+                return false;
+            });
+            {% endif %}
+
+
+            $('.btn-ver-ubicaciones').click(function () {
+                $('#form-listado-establecimientos').submit();
+            });
+
+            $('#select_all').change(function () {
+                var checkboxes = $(this).closest('form').find(':checkbox');
+                if ($(this).is(':checked')) {
+                    checkboxes.prop('checked', true);
+                } else {
+                    checkboxes.prop('checked', false);
+                }
+            });
+        })
+        ;
+    </script>
+{% endblock %}
+    {% block body -%}
+        <h4 class="page-header">{{ title }}</h4>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box ui-draggable ui-droppable">
+                    <div class="box-header">
+                        <div class="box-name ui-draggable-handle">
+                            <i class="fa fa-search"></i>
+                            <span>Filtros</span>
+                        </div>
+                    </div>
+                    <div class="box-content">
+                        <form class="form-horizontal" id="form-filtro-establecimientos" role="form" method="post">
+                            <div class="form-group">
+                                {{ form_label(form.descripcion) }}
+                                <div class="col-sm-4">
+                                    {{ form_widget(form.descripcion) }}
+                                </div>
+                                {{ form_label(form.codigo) }}
+                                <div class="col-sm-4">
+                                    {{ form_widget(form.codigo) }}
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-4">
+                                    <button class="btn btn-primary btn-label-left" type="submit">
+                                    <span>
+                                        <i class="fa fa-filter"></i>
+                                    </span>
+                                        Buscar
+                                    </button>
+                                    <button class="btn btn-default" type="reset">
+                                    <span>
+                                        <i></i>
+                                    </span>
+                                        Limpiar
+                                    </button>
+                                    <button class="btn btn-default btn-ver-ubicaciones" type="button">
+                                    <span>
+                                        <i class="fa fa-map-marker"></i>
+                                    </span>
+                                        Ver Ubicaciones
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box ui-draggable ui-droppable">
+                    <div class="box-header">
+                        <div class="box-name ui-draggable-handle">
+                            <i class="fa fa-table"></i>
+                            <span>Listado {{ title }}</span>
+                        </div>
+                    </div>
+                    <div class="box-content no-padding">
+                        <div id="datatable-1_wrapper" class="dataTables_wrapper form-inline">
+                            <form id="form-listado-establecimientos" target="_blank" method="post"
+                                  action="{{ path('establecimientos_show_reporte_direccion') }}">
+                                <table class="table table-bordered table-striped table-hover table-heading table-datatable dataTable datatable-custom"
+                                       role="grid" aria-describedby="datatable-1_info">
+                                    <thead>
+                                    <tr role="row">
+                                        <th>
+                                            <div class="checkbox" style="width: 45px;padding-left: 0;margin: -13px;">
+                                                <label>
+                                                    <input type="checkbox" id="select_all"
+                                                           style="clip: rect(0px, 0px, 0px, 0px);position: absolute">
+                                                    <i class="fa fa-square-o"></i>
+                                                </label>
+                                            </div>
+                                        </th>
+                                        <th class="sorting_asc" tabindex="0" aria-controls="datatable-1" rowspan="1"
+                                            colspan="1" style="width: 46px;" aria-sort="ascending" aria-label="Id">Id
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1"
+                                            colspan="1"
+                                            style="width: 200px;" aria-label="Codigo">Codigo
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1"
+                                            colspan="1"
+                                            style="width: 200px;" aria-label="Descripcion">Descripcion
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1"
+                                            colspan="1"
+                                            style="width: 200px;" aria-label="Direccion">Direccion
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1"
+                                            colspan="1"
+                                            style="width: 200px;" aria-label="Creado">Creado
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1"
+                                            colspan="1"
+                                            style="width: 200px;" aria-label="Actualizado">Actualizado
+                                        </th>
+                                        <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
+                                            style="width: 200px;" aria-label="">Acciones
+                                        </th>
+
+                                    </tr>
+                                    </thead>
+                                    <tbody role="alert" aria-live="polite" aria-relevant="all">
+                                    {% for entity in entities %}
+                                        <tr class="{% if loop.index is odd %} odd {% else %} even {% endif %}">
+                                            <td>
+
+                                                <div class="checkbox" style="padding-left: 0;margin: -13px;">
+                                                    <label>
+                                                        <input type="checkbox" name="establecimientos[]"
+                                                               value="{{ entity.id }}"
+                                                               style="clip: rect(0px, 0px, 0px, 0px);position: absolute">
+                                                        <i class="fa fa-square-o"></i>
+                                                    </label>
+                                                </div>
+
+                                            </td>
+                                            <td>{{ entity.id }}</td>
+                                            <td>{{ entity.codigo }}</td>
+                                            <td>{{ entity.descripcion }}</td>
+                                            <td>{{ entity.direccion }}</td>
+                                            <td>{% if entity.creado %}{{ entity.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                            <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                            <td>
+                                                <a class="btn btn-default"
+                                                   href="{{ path('establecimientos_edit', { 'id': entity.id }) }}"><i
+                                                            class="fa fa-fw fa-edit"></i></a>
+                                                <a class="btn btn-default"
+                                                   href="{{ path('establecimientos_show', { 'id': entity.id }) }}"><i
+                                                            class="fa fa-fw fa-eye"></i></a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </form>
+                            <div class="box-content">
+                                {{ knp_pagination_render(entities) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <a class="btn btn-primary" href="{{ path('establecimientos_new') }}">
+                    Nuevo
+                </a>
+                <button class="btn btn-default btn-ver-ubicaciones" type="button">
+                <span>
+                    <i class="fa fa-map-marker"></i>
+                </span>
+                    Ver Ubicaciones
+                </button>
+
+
+            </div>
+        </div>
+
+    {% endblock %}

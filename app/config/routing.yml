@@ -1,3 +1,7 @@
+electoral:
+    resource: "@ElectoralBundle/Resources/config/routing.yml"
+    prefix:   /
+
 campanias:
     resource: "@CampaniasBundle/Resources/config/routing.yml"
     prefix:   /campanias

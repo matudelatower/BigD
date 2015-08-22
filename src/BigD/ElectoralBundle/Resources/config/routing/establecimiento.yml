@@ -1,0 +1,34 @@
+establecimientos:
+    path:     /
+    defaults: { _controller: "ElectoralBundle:Establecimiento:index" }
+
+establecimientos_show:
+    path:     /{id}/show
+    defaults: { _controller: "ElectoralBundle:Establecimiento:show" }
+
+establecimientos_new:
+    path:     /new
+    defaults: { _controller: "ElectoralBundle:Establecimiento:new" }
+
+establecimientos_create:
+    path:     /create
+    defaults: { _controller: "ElectoralBundle:Establecimiento:create" }
+    requirements: { _method: post }
+
+establecimientos_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ElectoralBundle:Establecimiento:edit" }
+
+establecimientos_update:
+    path:     /{id}/update
+    defaults: { _controller: "ElectoralBundle:Establecimiento:update" }
+    requirements: { _method: post|put }
+
+establecimientos_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ElectoralBundle:Establecimiento:delete" }
+    requirements: { _method: post|delete }
+
+establecimientos_show_reporte_direccion:
+    path:     /establecimientos_show_reporte_direccion
+    defaults: { _controller: "ElectoralBundle:Establecimiento:showReporteDirecciones" }

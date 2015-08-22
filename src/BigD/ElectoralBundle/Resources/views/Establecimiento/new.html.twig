@@ -1,0 +1,61 @@
+    {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+{% set title = 'Alta Establecimiento' %}
+{% block title %}
+{{ title }}
+{% endblock %}
+    {% block body -%}
+
+    <h4 class="page-header">Establecimiento</h4>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">            
+            <div class="box-header">
+                <div class="box-name ui-draggable-handle">
+                    <i class="fa fa-search"></i>
+                    <span>Alta de Establecimiento</span>
+                </div>
+            </div>
+            <div class="box-content">
+                <h4 class="page-header">{{ title }}</h4>
+                <form class="form-horizontal" role="form" action="{{ path('establecimientos_create') }}" role="form" method="post">
+                    <div class="box-body">
+                        <div class="form-group">
+                            {{ form_label(form.codigo) }}
+                            <div class="col-sm-4">
+                                {{ form_widget(form.codigo) }}
+                            </div>
+                            {{ form_label(form.descripcion) }}
+                            <div class="col-sm-4">
+                                {{ form_widget(form.descripcion) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.direccion) }}
+                            <div class="col-sm-4">
+                                {{ form_widget(form.direccion) }}
+                            </div>
+                            {{ form_label(form.localidad) }}
+                            <div class="col-sm-4">
+                                {{ form_widget(form.localidad) }}
+                            </div>
+                        </div>
+                        {{ form_widget(form) }}
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3">
+                            <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Guardar</button>
+
+                            <a class="btn btn-success" href="{{ path('establecimientos') }}">
+                                Volver
+                            </a>
+
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+
+            {% endblock %}

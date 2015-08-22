@@ -1,0 +1,196 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+
+    {% block body -%}
+        <div class="row">
+            <div class="col-xs-8">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-name">
+                            <i class="fa fa-building-o"></i>
+                            <span>Establecimiento</span>
+                        </div>
+                        <div class="box-icons">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="expand-link">
+                                <i class="fa fa-expand"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                        <div class="no-move"></div>
+                    </div>
+                    <div class="box-content">
+                        <div class="card">
+                            <h4 class="page-header">{{ entity.descripcion }}</h4>
+
+                            <p>
+                                <span><strong>Código</strong></span> <br>
+                                <span>{{ entity.codigo }}</span> <br>
+
+                            </p>
+
+                            {#<p>#}
+                            {#<span><strong>CUIT/CUIL</strong></span> <br>#}
+                            {#<span>{{ entity.cuitCuil }}</span> <br>#}
+
+                            {#</p>#}
+
+                            {#<p>#}
+                            {#<span><strong>Fecha de Nacimiento</strong></span> <br>#}
+                            {#<span>{{ entity.fechaNacimiento|date('d-m-Y ') }}</span> <br>#}
+
+                            {#</p>#}
+
+                            {#<p>#}
+                            {#<span><strong>Sexo</strong></span> <br>#}
+                            {#<span>{{ entity.sexo }}</span> <br>#}
+                            {#</p>#}
+
+                        </div>
+                        {#<div class="card address">#}
+
+                        {#<h4 class="page-header">Contacto:</h4>#}
+
+                        {#<p>#}
+                        {#<span><strong>Numero</strong></span> <br>#}
+                        {#<span></span> <br>#}
+                        {#</p>#}
+
+                        {#</div>#}
+
+                        <div class="card address">
+                            <h4 class="page-header">Dirección:</h4>
+
+                            <p>
+
+                                <span>{{ entity.direccion }} </span> , <span>{{ entity.localidad }}
+                                    , {{ entity.localidad.departamento.provincia }}
+                                    , {{ entity.localidad.departamento.provincia.pais }} </span>
+                                 <br>
+
+                            </p>
+
+
+                            <div class="map" id="map-1" style="height: 400px;"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6 col-sm-offset-5">
+                    <a class="btn btn-default" href="{{ path('establecimientos') }}">
+                        Volver
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        {#<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false;language=es"></script>#}
+
+        <script>
+
+            function initMap() {
+                var map = new google.maps.Map(document.getElementById('map-1'), {
+                    zoom: 13,
+                    center: {lat: -27.379169, lng: -55.918122}
+                });
+
+                var ctaLayer = new google.maps.KmlLayer({
+//                    url: 'http://192.168.56.101/BigD/web/bundles/electoral/kml/circuitos-posadas.kml',
+//                    url: 'http://192.168.56.101/BigD/web/bundles/electoral/kml/cta.kml',
+//                    url: 'http://googlemaps.github.io/js-v2-samples/ggeoxml/cta.kml',
+                    url: 'https://dl.dropboxusercontent.com/u/7777639/circuitos-posadas.kml',
+                    map: map
+                });
+            }
+
+            function initialize(parameters) {
+                address = '{{entity.direccion}}, {{ entity.localidad.descripcion }}, {{entity.localidad.departamento.provincia.descripcion}}, {{entity.localidad.departamento.provincia.pais.descripcion}}';
+                // I create a new google maps object to handle the request and we pass the address to it
+                console.log(address)
+                var geoCoder = new google.maps.Geocoder(address)
+                // a new object for the request I called "request" , you can put there other parameters to specify a better search (check google api doc for details) ,
+                // on this example im going to add just the address
+                var request = {address: address};
+
+                // I make the request
+                geoCoder.geocode(request, function (result, status) {
+                    // as a result i get two parameters , result and status.
+                    // results is an  array tha contenis objects with the results founds for the search made it.
+                    // to simplify the example i take only the first result "result[0]" but you can use more that one if you want
+
+                    // So , using the first result I need to create a  latlng object to be pass later to the map
+                    if (result[0] === undefined) {
+                        return;
+                    }
+
+                    var latlng = new google.maps.LatLng(result[0].geometry.location.lat(), result[0].geometry.location.lng());
+
+                    // some initial values to the map
+                    var myOptions = {
+                        zoom: 15,
+                        center: latlng,
+//                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+
+
+                    // the map is created with all the information
+                    var map = new google.maps.Map(document.getElementById("map-1"), myOptions);
+
+                    var ctaLayer = new google.maps.KmlLayer({
+                        url: 'https://dl.dropboxusercontent.com/u/7777639/circuitos-posadas.kml',
+                        map: map
+                    });
+
+
+                    var popup = new google.maps.InfoWindow({
+                        content: 'Nombre: {{ entity.descripcion }}',
+                        position: map.getCenter()
+                    });
+
+                    var marker = new google.maps.Marker({
+                        // definimos la poisicion de nuestra marca en el mapa
+                        position: map.getCenter(),
+                        map: map,
+                        // titulo que aparecera cuando pongamos el cursor encima
+                        title: 'Titulo',
+                        icon: 'icon.png',
+                        cursor: 'default',
+                        draggable: false
+                    });
+
+                    // an extra step is need it to add the mark pointing to the place selected.
+                    var marker = new google.maps.Marker({position: latlng, map: map, title: 'title'});
+
+                    google.maps.event.addListener(marker, 'click', function () {
+                        popup.open(map, marker);
+                    });
+
+                })
+
+            }
+
+            $(document).ready(function () {
+
+                {#initialize({{parametro|json_encode|raw}});#}
+
+                $('.ver-direccion').click(function (e) {
+                    e.preventDefault();
+                    initialize($(this).data('address'));
+                });
+
+
+            });
+        </script>
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?signed_in=false&callback=initialize">
+        </script>
+
+    {% endblock %}
+

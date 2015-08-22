@@ -1,0 +1,129 @@
+{% extends 'ThemeBundle:Default:layout_base.html.twig' %}
+
+{% block body -%}
+    <div class="row">
+        <div class="col-xs-8">
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-name">
+                        <i class="fa fa-users"></i>
+                        <span>Direcciones</span>
+                    </div>
+                    <div class="box-icons">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="expand-link">
+                            <i class="fa fa-expand"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                    <div class="no-move"></div>
+                </div>
+                <div class="box-content">
+
+                    <div class="card address">
+                        <h4 class="page-header">Dirección:</h4>
+
+
+                        <div class="map" id="map-1" style="height: 400px;"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="form-group">
+                <div class="col-sm-9 col-sm-offset-3">
+                    <a class="btn btn-default" href="{{ path('establecimientos') }}">
+                        Volver
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block javascripts %}
+
+    <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript"
+            src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
+
+
+    <script>
+        function initialize() {
+            var mapOptions = {
+                center: new google.maps.LatLng(-27.3762488, -55.9153999),
+                zoom: 10,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document.getElementById("map-1"),
+                    mapOptions);
+        }
+
+        function inicializar(parameters) {
+            console.log(parameters)
+            address = parameters.direccion + ', ' + parameters.ciudad + ', ' + parameters.provincia + ',' + parameters.pais;
+            // I create a new google maps object to handle the request and we pass the address to it
+            var geoCoder = new google.maps.Geocoder(address)
+            // a new object for the request I called "request" , you can put there other parameters to specify a better search (check google api doc for details) ,
+            // on this example im going to add just the address 
+            var request = {address: address};
+
+            // I make the request
+            geoCoder.geocode(request, function (result, status) {
+                // as a result i get two parameters , result and status.
+                // results is an  array tha contenis objects with the results founds for the search made it.
+                // to simplify the example i take only the first result "result[0]" but you can use more that one if you want
+
+                // So , using the first result I need to create a  latlng object to be pass later to the map
+                if (result[0] === undefined) {
+                    return;
+                }
+                var latlng = new google.maps.LatLng(result[0].geometry.location.lat(), result[0].geometry.location.lng());
+
+
+                var popup = new google.maps.InfoWindow({
+                    content: 'Establecimiento: ' + parameters.nombre,
+                    position: map.getCenter()
+                });
+
+                var ctaLayer = new google.maps.KmlLayer({
+                    url: 'https://dl.dropboxusercontent.com/u/7777639/circuitos-posadas.kml',
+                    map: map
+                });
+
+                // an extra step is need it to add the mark pointing to the place selected.
+                var marker = new google.maps.Marker({position: latlng, map: map, title: 'title'});
+                markers.push(marker);
+                google.maps.event.addListener(marker, 'click', function () {
+                    popup.open(map, marker);
+                });
+
+            })
+        }
+
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            markers = [];
+            initialize();
+
+            var arrayAddress = {{arrayEstablecimientos|raw}};
+            $.each(arrayAddress, function (k, v) {
+                inicializar(arrayAddress[k]);
+            });
+        });
+
+        $(window).load(function () {
+            var markerCluster = new MarkerClusterer(map, markers);
+        });
+    </script>
+
+{% endblock javascripts %}

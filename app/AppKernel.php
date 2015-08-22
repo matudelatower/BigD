@@ -27,6 +27,7 @@ class AppKernel extends Kernel
             new BigD\AppBundle\AppBundle(),
             new BigD\UtilBundle\UtilBundle(),
             new BigD\CampaniasBundle\CampaniasBundle(),
+            new BigD\ElectoralBundle\ElectoralBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {            

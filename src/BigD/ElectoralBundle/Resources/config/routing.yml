@@ -1,0 +1,7 @@
+electoral_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: ElectoralBundle:Default:index }
+
+ElectoralBundle_establecimientos:
+        resource: "@ElectoralBundle/Resources/config/routing/establecimiento.yml"
+        prefix:   /establecimientos
