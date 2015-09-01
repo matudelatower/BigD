@@ -13,9 +13,24 @@ use Doctrine\ORM\EntityRepository;
 class ResultadoCabeceraRepository extends EntityRepository
 {
 
-    public function getResultadoCabeceraPorEncuesta($idEncuesta)
+    public function getResultadoCabeceraPorEncuesta($idEncuesta, $filtros = null)
     {
         $db = $this->getEntityManager()->getConnection();
+
+        $where = '';
+
+        if ($filtros['fechaDesde']) {
+            $fechaMinima = $filtros['fechaDesde']->format('Y-m-d');
+        } else {
+            $fechaMinima = DateTools::getFechaMinima();
+        }
+        if ($filtros['fechaHasta']) {
+            $fechaMaxima = $filtros['fechaHasta']->format('Y-m-d');
+        } else {
+            $fechaMaxima = DateTools::getFechaMaxima();
+        }
+
+        $where .= " AND campania_encuesta_resultado_cabecera.fecha BETWEEN '$fechaMinima' and '$fechaMaxima'";
 
         $query = "SELECT DISTINCT
                  campania_encuesta_resultado_cabecera.id AS resultado_cabecera_id
@@ -26,6 +41,7 @@ class ResultadoCabeceraRepository extends EntityRepository
                  INNER JOIN campania_encuesta_resultado_cabecera campania_encuesta_resultado_cabecera ON campania_encuesta_resultado_respuesta.campania_encuesta_resultado_cabecera_id = campania_encuesta_resultado_cabecera.id
             WHERE
                  campania_encuesta_agrupador_pregunta.campania_encuesta_id =$idEncuesta
+                 $where
             ORDER BY campania_encuesta_resultado_cabecera.id
                  ";
 

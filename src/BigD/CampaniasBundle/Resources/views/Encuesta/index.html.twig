@@ -151,13 +151,18 @@
                                             <a class="btn btn-default"
                                                href="{{ path('campania_encuesta_edit', { 'id': entity.id }) }}"><i
                                                         class="fa fa-fw fa-edit"></i></a>
-                                            <a class="btn btn-default"
-                                               href="{{ path('campania_encuesta_show', { 'id': entity.id }) }}"><i
-                                                        class="fa fa-fw fa-eye"></i></a>
+                                            {#<a class="btn btn-default"#}
+                                               {#href="{{ path('campania_encuesta_show', { 'id': entity.id }) }}"><i#}
+                                                        {#class="fa fa-fw fa-eye"></i></a>#}
                                             <a class="btn btn-default btn-modal-encuesta"
                                                data-url="{{ path('exportar_resultados_encuesta', { 'id': entity.id }) }}"
                                                data-toggle="modal" data-target="#modalFecha"><i
                                                         class="fa fa-fw icon-excel-black"></i></a>
+
+                                            <a class="btn btn-default"
+                                            href="{{ path('nueva_respuesta', { 'idEncuesta': entity.id }) }}"><i
+                                            class="fa fa-fw fa-file-o"></i></a>
+
                                             {#<a class="btn btn-default"#}
                                             {#href="{{ path('exportar_resultados_encuesta', { 'id': entity.id }) }}"#}
                                             {#target="_blank"><i class="fa fa-fw icon-excel-black"></i></a>#}

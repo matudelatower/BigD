@@ -36,7 +36,9 @@ class PreguntasRepository extends EntityRepository
         $db = $this->getEntityManager()->getConnection();
         $query = "select pre.texto_pregunta,campania_encuesta_agrupador_pregunta_id,pre.id as pregunta_id
                     from   campania_encuesta_preguntas pre
-                    where pre.campania_encuesta_agrupador_pregunta_id=$idAgrupador";
+                    where pre.campania_encuesta_agrupador_pregunta_id=$idAgrupador
+                    ORDER BY pre.id ASC
+                    ";
 
         $stmt = $db->prepare($query);
         $stmt->execute();
@@ -66,6 +68,17 @@ class PreguntasRepository extends EntityRepository
 
         return $stmt->fetchAll();
 
+    }
+
+    public function getPreguntasPorEncuesta($encuesta)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->join('p.agrupadorPregunta', 'agp');
+        $qb->join('agp.encuesta', 'enc');
+        $qb->andWhere('enc.id = :encuestaId');
+        $qb->setParameter('encuestaId', $encuesta);
+
+        return $qb->getQuery()->getResult();
     }
 
 }

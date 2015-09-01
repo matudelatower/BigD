@@ -4,7 +4,9 @@ namespace BigD\CampaniasBundle\Controller;
 
 use BigD\CampaniasBundle\Entity\Encuesta;
 use BigD\CampaniasBundle\Form\EncuestaFilterType;
+use BigD\CampaniasBundle\Form\EncuestasParameterType;
 use BigD\CampaniasBundle\Form\EncuestaType;
+use BigD\CampaniasBundle\Form\Model\EncuestasParameter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -369,6 +371,58 @@ class EncuestaController extends Controller
         $response->headers->set('Cache-Control', 'maxage=1');
 
         return $response;
+    }
+
+    public function nuevaRespuestaAction(Request $request, $idEncuesta)
+    {
+        $em = $this->getDoctrine()->getManager();
+//        $encuesta = $em->getRepository('CampaniasBundle:Encuesta')->findOneById($idEncuesta);
+//
+//        $parameters = $em->getRepository("CampaniasBundle:Preguntas")->findByEncuesta($encuesta);
+        $parameters = $em->getRepository("CampaniasBundle:Preguntas")->getPreguntasPorEncuesta($idEncuesta);
+        $encuestaParameter = new EncuestasParameter($parameters);
+
+        $form = $this->createForm(new EncuestasParameterType(), $encuestaParameter);
+
+        return $this->render(
+            'CampaniasBundle:Encuesta:editRespuesta.html.twig',
+            array(
+//                'encuesta' => $encuesta,
+                'encuestaId' => $idEncuesta,
+                'entity' => $parameters,
+                'form' => $form->createView(),
+            )
+        );
+    }
+
+    public function crearRespuestaAction(Request $request, $idEncuesta)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $parameters = $em->getRepository("CampaniasBundle:Preguntas")->getPreguntasPorEncuesta($idEncuesta);
+        $encuestaParameter = new EncuestasParameter($parameters);
+
+        $form = $this->createForm(new EncuestasParameterType(), $encuestaParameter);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($parameters);
+            $em->flush();
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'Respuesta Cargada correctamente.'
+            );
+
+            return $this->redirect($this->generateUrl('campania_encuesta'));
+        }
+
+        return $this->render(
+            'CampaniasBundle:Encuesta:editRespuesta.html.twig',
+            array(
+                'entity' => $parameters,
+                'form' => $form->createView(),
+            )
+        );
     }
 
 }

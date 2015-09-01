@@ -46,7 +46,7 @@ class EncuestasManager {
         $tabla = array();
 
         //Traigo los agrupadores
-        $agrupadores = $em->getRepository('CampaniasBundle:AgrupadorPregunta')->getAgrupadoresPorEncuestaId($id, $filtros);
+        $agrupadores = $em->getRepository('CampaniasBundle:AgrupadorPregunta')->getAgrupadoresPorEncuestaId($id);
 
         foreach ($agrupadores as $agrupador) {
             if (!$agrupador['multiple']) {
@@ -97,7 +97,7 @@ class EncuestasManager {
         $fila1 = ksort($arrayOrden);
 
         $encuestasResultado = $em->getRepository('CampaniasBundle:ResultadoCabecera')->getResultadoCabeceraPorEncuesta(
-                $id
+                $id, $filtros
         );
 
         foreach ($encuestasResultado as $encuestaResultado) {
