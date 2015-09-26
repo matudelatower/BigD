@@ -89,5 +89,16 @@ class AgrupadorPreguntaRepository extends EntityRepository
 
     }
 
+    public function getOAgrupadoresPorEncuestaId($encuesta)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->join('a.encuesta', 'enc');
+
+        $qb->andWhere('enc.id = :encuestaId');
+        $qb->setParameter('encuestaId', $encuesta);
+
+        return $qb->getQuery()->getResult();
+    }
+
 
 }

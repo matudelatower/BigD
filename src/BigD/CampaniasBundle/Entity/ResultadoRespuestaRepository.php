@@ -61,7 +61,9 @@ class ResultadoRespuestaRepository extends EntityRepository
         $db = $this->getEntityManager()->getConnection();
 
 
-        $query = "select agru.id,pre.texto_pregunta,res.textorespuesta,agru.multiple,pre.id as pregunta_id
+        $query = "select agru.id,pre.texto_pregunta,res.textorespuesta, res.campania_encuesta_opcion_respuesta_id as id_opcion_respuesta,
+                  agru.multiple,pre.id as pregunta_id,
+                  res_resp.slug
 
                 from campania_encuesta_agrupador_pregunta agru
                 inner join campania_encuesta_preguntas pre on agru.id=pre.campania_encuesta_agrupador_pregunta_id
@@ -73,6 +75,10 @@ class ResultadoRespuestaRepository extends EntityRepository
 
                 inner join campania_encuesta_resultado_cabecera cab
                 on res.campania_encuesta_resultado_cabecera_id=cab.id
+
+                left join campania_encuesta_opciones_respuesta res_resp
+		        on res.campania_encuesta_opcion_respuesta_id = res_resp.id
+
                 where cab.id=$idResultadoCabecera and agru.id=$idAgrupador
                 order by res.id";
 

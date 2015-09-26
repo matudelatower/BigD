@@ -3,10 +3,19 @@
 namespace BigD\CampaniasBundle\Controller;
 
 use BigD\CampaniasBundle\Entity\Encuesta;
+use BigD\CampaniasBundle\Entity\PreguntaResultadoRespuesta;
+use BigD\CampaniasBundle\Entity\ResultadoRespuesta;
+use BigD\CampaniasBundle\Form\AgrupadorParameterType;
 use BigD\CampaniasBundle\Form\EncuestaFilterType;
 use BigD\CampaniasBundle\Form\EncuestasParameterType;
 use BigD\CampaniasBundle\Form\EncuestaType;
+use BigD\CampaniasBundle\Form\Model\AgrupadorParameter;
 use BigD\CampaniasBundle\Form\Model\EncuestasParameter;
+use BigD\CampaniasBundle\Form\Model\PreguntasParameter;
+use BigD\CampaniasBundle\Form\PreguntaResultadoRespuestaType;
+use BigD\CampaniasBundle\Form\Preguntas2ParameterType;
+use BigD\CampaniasBundle\Form\PreguntasParameterType;
+use BigD\CampaniasBundle\Form\ResultadoRespuestaType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -376,21 +385,19 @@ class EncuestaController extends Controller
     public function nuevaRespuestaAction(Request $request, $idEncuesta)
     {
         $em = $this->getDoctrine()->getManager();
+        /* @var $encuesta \BigD\CampaniasBundle\Entity\Encuesta */
 //        $encuesta = $em->getRepository('CampaniasBundle:Encuesta')->findOneById($idEncuesta);
-//
-//        $parameters = $em->getRepository("CampaniasBundle:Preguntas")->findByEncuesta($encuesta);
-        $parameters = $em->getRepository("CampaniasBundle:Preguntas")->getPreguntasPorEncuesta($idEncuesta);
-        $encuestaParameter = new EncuestasParameter($parameters);
 
-        $form = $this->createForm(new EncuestasParameterType(), $encuestaParameter);
+        $agrupadores = $em->getRepository("CampaniasBundle:AgrupadorPregunta")->getOAgrupadoresPorEncuestaId(
+            $idEncuesta
+        );
+
 
         return $this->render(
             'CampaniasBundle:Encuesta:editRespuesta.html.twig',
             array(
-//                'encuesta' => $encuesta,
                 'encuestaId' => $idEncuesta,
-                'entity' => $parameters,
-                'form' => $form->createView(),
+                'agrupadores' => $agrupadores,
             )
         );
     }
@@ -423,6 +430,26 @@ class EncuestaController extends Controller
                 'form' => $form->createView(),
             )
         );
+    }
+
+    public function getFormPorAgrupadorAction($id)
+    {
+        $idAgrupador = $id;
+        $em = $this->getDoctrine()->getManager();
+        $agrupadorPregunta = $em->getRepository('CampaniasBundle:AgrupadorPregunta')->findOneById($idAgrupador);
+        $preguntas = $em->getRepository('CampaniasBundle:Preguntas')->findByAgrupadorPregunta($agrupadorPregunta);
+        $preguntasParameter = new PreguntasParameter($preguntas);
+        $form = $this->createForm(new PreguntasParameterType(), $preguntasParameter);
+
+        return $this->render(
+            'CampaniasBundle:Ajax:formPreguntas.html.twig',
+            array(
+//                'entity' => $entity,
+                'form' => $form->createView(),
+            )
+        );
+
+
     }
 
 }

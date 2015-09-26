@@ -3,15 +3,20 @@
 namespace BigD\CampaniasBundle\Controller;
 
 use BigD\CampaniasBundle\Entity\Preguntas;
+use BigD\CampaniasBundle\Form\Model\PreguntasParameter;
+use BigD\CampaniasBundle\Form\Preguntas2ParameterType;
+use BigD\CampaniasBundle\Form\PreguntasParameterType;
 use BigD\CampaniasBundle\Form\PreguntasType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AjaxController extends Controller {
+class AjaxController extends Controller
+{
 
-    public function agregarPreguntasAction(Request $request) {
+    public function agregarPreguntasAction(Request $request)
+    {
 
         $agrupadorId = $request->get("agrupadorId");
         $itemId = $request->get("itemId");
@@ -20,14 +25,18 @@ class AjaxController extends Controller {
         $form = $this->createForm(new PreguntasType(), $pregunta);
 
 
-        return $this->render('CampaniasBundle:Ajax:agregarPreguntas.html.twig', array(
-                    "form" => $form->createView(),
-                    "agrupadorId" => $agrupadorId,
-                    "itemId" => $itemId,
-        ));
+        return $this->render(
+            'CampaniasBundle:Ajax:agregarPreguntas.html.twig',
+            array(
+                "form" => $form->createView(),
+                "agrupadorId" => $agrupadorId,
+                "itemId" => $itemId,
+            )
+        );
     }
 
-    public function guardarPreguntasAction(Request $request) {
+    public function guardarPreguntasAction(Request $request)
+    {
         $agrupadorId = $request->get("agrupador_id");
         $itemId = $request->get("item_id");
 
@@ -46,12 +55,12 @@ class AjaxController extends Controller {
         }
 
 
-
-
-        $html = $this->render("CampaniasBundle:Ajax:tpl_preguntas.html.twig", array(
-                    "form" => $form->createView(),
-                ))->getContent()
-        ;
+        $html = $this->render(
+            "CampaniasBundle:Ajax:tpl_preguntas.html.twig",
+            array(
+                "form" => $form->createView(),
+            )
+        )->getContent();
         $valor = "bigd_campaniasbundle_campaniaencuesta[agrupador][$agrupadorId][preguntas][$cantidadPreguntas]";
 
         $pregunta = str_replace($form->getName(), $valor, $html);

@@ -85,7 +85,10 @@ class ResultadoCabecera
     private $actualizadoPor;
 
 
-
+    public function __toString()
+    {
+        return $this->nroCuestionario;
+    }
 
     /**
      * Get id

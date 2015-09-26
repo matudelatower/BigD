@@ -75,6 +75,11 @@ class OpcionesRespuesta {
      */
     private $preguntas;
 
+    public function __toString()
+    {
+        return $this->textoOpcion;
+    }
+
     /**
      * Get id
      *

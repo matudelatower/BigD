@@ -9,31 +9,36 @@
 
 namespace BigD\CampaniasBundle\Services;
 
-class EncuestasManager {
+class EncuestasManager
+{
 
     private $container;
     private $em;
 
-    public function __construct($container) {
+    public function __construct($container)
+    {
         $this->container = $container;
         $this->em = $container->get('doctrine')->getManager();
     }
 
-    public function getPreguntasPorIdEncuesta($id) {
+    public function getPreguntasPorIdEncuesta($id)
+    {
         $em = $this->em;
         $preguntas = $em->getRepository('CampaniasBundle:Encuesta')->getPreguntasPorIdEncuesta($id);
 
         return $preguntas;
     }
 
-    public function getPreguntasRespuestaPorIdEncuesta($id) {
+    public function getPreguntasRespuestaPorIdEncuesta($id)
+    {
         $em = $this->em;
         $preguntas = $em->getRepository('CampaniasBundle:Encuesta')->getPreguntasRespuestaPorIdEncuesta($id);
 
         return $preguntas;
     }
 
-    public function getAEncuestas($id, $filtros = null) {
+    public function getAEncuestas($id, $filtros = null)
+    {
         ini_set('display_errors', true);
         set_time_limit(0);
         ini_set("memory_limit", "-1");
@@ -51,7 +56,7 @@ class EncuestasManager {
         foreach ($agrupadores as $agrupador) {
             if (!$agrupador['multiple']) {
                 $preguntas = $em->getRepository('CampaniasBundle:Preguntas')->getPreguntasPorAgrupadorId(
-                        $agrupador['agrupador_id']
+                    $agrupador['agrupador_id']
                 );
                 foreach ($preguntas as $pregunta) {
                     $cabecera[] = $pregunta['texto_pregunta'];
@@ -62,14 +67,14 @@ class EncuestasManager {
             } else {
 
                 $cantidadAgrupador = $em->getRepository('CampaniasBundle:Encuesta')->getMaxCamposEncuestaPorAgrupadorId(
-                        $agrupador['agrupador_id']
+                    $agrupador['agrupador_id']
                 );
 
                 //traigo las preguntas de este agrupador y las creo la cantidad de $cantidadAgrupador
                 $preguntasPorAgrupador = $em->getRepository(
-                                'CampaniasBundle:AgrupadorPregunta'
-                        )->getPreguntasMultiplesPorAgrupadorId(
-                        $agrupador['agrupador_id']
+                    'CampaniasBundle:AgrupadorPregunta'
+                )->getPreguntasMultiplesPorAgrupadorId(
+                    $agrupador['agrupador_id']
                 );
 
                 $cabeceraAgrupador = array();
@@ -97,46 +102,52 @@ class EncuestasManager {
         $fila1 = ksort($arrayOrden);
 
         $encuestasResultado = $em->getRepository('CampaniasBundle:ResultadoCabecera')->getResultadoCabeceraPorEncuesta(
-                $id, $filtros
+            $id,
+            $filtros
         );
 
         foreach ($encuestasResultado as $encuestaResultado) {
             //consulto cuantas preguntas tiene la encuesta para saber si es la encuesta con error de 52 o la de 53
             $cantidadPreguntasEncuesta = $em->getRepository(
-                            'CampaniasBundle:Preguntas'
-                    )->getCantidadPreguntasPorAgrupadorIdParaPosadasPremia($encuestaResultado['resultado_cabecera_id']);
+                'CampaniasBundle:Preguntas'
+            )->getCantidadPreguntasPorAgrupadorIdParaPosadasPremia($encuestaResultado['resultado_cabecera_id']);
 
             $fila = array();
 
             foreach ($cantidadPorAgrupador as $aAgrupador) {
                 //consulto cantidad de preguntas que tiene el agrupador
                 $cantidadPreguntasAgrupador = $em->getRepository(
-                                'CampaniasBundle:AgrupadorPregunta'
-                        )->getCantidadPreguntasPorAgrupadorId(
-                                $aAgrupador['id']
-                        )[0];
+                    'CampaniasBundle:AgrupadorPregunta'
+                )->getCantidadPreguntasPorAgrupadorId(
+                    $aAgrupador['id']
+                )[0];
 
                 //consulto si el agrupador es multiple
                 $multiple = $em->getRepository(
-                                'CampaniasBundle:AgrupadorPregunta'
-                        )->esAgrupadorMultiple(
-                        $aAgrupador['id'], $encuestaResultado['resultado_cabecera_id']
+                    'CampaniasBundle:AgrupadorPregunta'
+                )->esAgrupadorMultiple(
+                    $aAgrupador['id'],
+                    $encuestaResultado['resultado_cabecera_id']
                 );
 
                 $respuestasAgrupador = $em->getRepository(
-                                'CampaniasBundle:ResultadoRespuesta'
-                        )->getRespuestasPorAgrupadorId(
-                        $aAgrupador['id'], $encuestaResultado['resultado_cabecera_id']
+                    'CampaniasBundle:ResultadoRespuesta'
+                )->getRespuestasPorAgrupadorId(
+                    $aAgrupador['id'],
+                    $encuestaResultado['resultado_cabecera_id']
                 );
 
                 if ($multiple[0]['multiple']) {
                     $contadorPreguntasAgrupador = 0;
                     foreach ($respuestasAgrupador as $respuestaAgrupador) {
 
+//                        TODO aca corregir en casode que no este bien exportar con codigos
+                        $textoRespuesta = $respuestaAgrupador['slug'] ? $respuestaAgrupador['slug'] : $respuestaAgrupador['textorespuesta'];
+
                         if ($contadorPreguntasAgrupador < $cantidadPreguntasAgrupador['cantidad']) {
                             //mientras sea el primer modulo de este agrupador puedo sacar als posiciones por id
                             $ordenCorrecto = $arrayOrden[$respuestaAgrupador['pregunta_id']];
-                            $fila[$ordenCorrecto] = $respuestaAgrupador['textorespuesta'];
+                            $fila[$ordenCorrecto] = $textoRespuesta;
                             $contadorPreguntasAgrupador++;
                             $ordenCorrectoMultiple = $ordenCorrecto;
                             //guardo la ultima posicion de orden_correcto en orden_correcto_multiple para despues
@@ -144,7 +155,7 @@ class EncuestasManager {
                         } else {
                             //cuando ya no puedo sacar el orden por array_orden lo saco sumando posiciones
                             $ordenCorrectoMultiple++;
-                            $fila[$ordenCorrectoMultiple] = ($respuestaAgrupador['textorespuesta']);
+                            $fila[$ordenCorrectoMultiple] = $textoRespuesta;
                             $contadorPreguntasAgrupador++;
                         }
                     }
@@ -174,7 +185,9 @@ class EncuestasManager {
                 }
             }
 
-            $fechaCreado = $em->getRepository('CampaniasBundle:ResultadoCabecera')->findOneById($encuestaResultado['resultado_cabecera_id']);
+            $fechaCreado = $em->getRepository('CampaniasBundle:ResultadoCabecera')->findOneById(
+                $encuestaResultado['resultado_cabecera_id']
+            );
             $fila[] = $fechaCreado->getFecha()->format('d/m/Y');
             $fila1 = ksort($fila);
             $tabla[] = $fila;

@@ -1,0 +1,10 @@
+{% form_theme form 'ThemeBundle:Default:forms_rows.html.twig' %}
+
+{% for item in form.children %}
+    <div class="form-group">
+        {{ form_label(item) }}
+        <div class="col-sm-6">
+            {{ form_widget(item) }}
+        </div>
+    </div>
+{% endfor %}

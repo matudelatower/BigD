@@ -1,43 +1,33 @@
 {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
-{% set title = 'Edicion Respuesta' %}
+{% set title = 'Nueva Respuesta' %}
 {% block title %}
     {{ title }}
 {% endblock %}
 
     {% block body -%}
 
-        <h4 class="page-header">Preguntas</h4>
+        <h4 class="page-header">{{ title }}</h4>
         <div class="row">
             <div class="col-xs-12 col-sm-12">
                 <div class="box-header">
                     <div class="box-name ui-draggable-handle">
-                        <i class="fa fa-search"></i>
-                        <span>Alta de Preguntas</span>
+                        <i class="fa fa-file-text-o"></i>
+                        <span>Preguntas</span>
                     </div>
                 </div>
                 <div class="box-content">
-                    <h4 class="page-header">{{ title }}</h4>
+                    {#<h4 class="page-header">{{ title }}</h4>#}
 
                     <form class="form-horizontal" action="{{ path('crear_respuesta', { 'encuestaId': encuestaId }) }}"
                           role="form"
                           method="post">
-                        {#<div class="box-body">#}
-                        <div class="form-group">
-                            {% for item in form.children %}
+                        {% for agrupador in agrupadores %}
+                            <fieldset>
+                                <legend>{{ agrupador.nombre | humanize }}</legend>
+                                {% render controller('CampaniasBundle:Encuesta:getFormPorAgrupador', {'id': agrupador.id}) %}
+                            </fieldset>
+                        {% endfor %}
 
-                            {{ form_label(item) }}
-                            <div class="col-sm-4">
-                                {{ form_widget(item) }}
-                            </div>
-                            {% if loop.index is divisible by(2) %}
-                        </div>
-                        <div class="form-group">
-                            {% endif %}
-
-                            {% endfor %}
-                        </div>
-                        {{ form_widget(form) }}
-                        {#</div>#}
                         <div class="form-group">
                             <div class="col-sm-9 col-sm-offset-3">
                                 <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Guardar
@@ -58,5 +48,12 @@
 
 
     {% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+
+        });
+    </script>
+{% endblock %}
 
 

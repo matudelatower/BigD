@@ -93,6 +93,10 @@ class Preguntas {
      */
     private $preguntaResultadoRespuesta;
 
+    public function __toString()
+    {
+        return $this->textoPregunta;
+    }
 
     /**
      * Constructor
