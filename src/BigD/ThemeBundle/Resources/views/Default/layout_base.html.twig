@@ -218,21 +218,7 @@
                     }
                 });
 
-                $(document).ready(function () {
-
-
-//ajax start
-                    $(document).ajaxStart(function () {
-                        $.blockUI(
-                                {
-                                    message: '<div class="progress progress-striped active"><div class="progress-bar progress-bar-info" style="width: 100%"></div></div>',
-                                    css: {backgroundColor: 'none', border: 'none'},
-                                    baseZ: 2002,
-                                }
-                        )
-                    });
-                    $(document).ajaxStop($.unblockUI);
-
+                function inicializarFecha(){
                     //Datepicker
                     $(".datepicker").datepicker({
                         onSelect: function (dateText, inst) {
@@ -253,6 +239,24 @@
                     });
 
                     $(".datepicker").datepicker("option", "showAnim", 'slideDown');
+                }
+
+                $(document).ready(function () {
+
+                    inicializarFecha();
+//ajax start
+                    $(document).ajaxStart(function () {
+                        $.blockUI(
+                                {
+                                    message: '<div class="progress progress-striped active"><div class="progress-bar progress-bar-info" style="width: 100%"></div></div>',
+                                    css: {backgroundColor: 'none', border: 'none'},
+                                    baseZ: 2002,
+                                }
+                        )
+                    });
+                    $(document).ajaxStop($.unblockUI);
+
+
 
                     $('body').on('click', '.show-sidebar', function (e) {
                         e.preventDefault();

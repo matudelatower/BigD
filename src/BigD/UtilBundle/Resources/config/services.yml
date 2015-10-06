@@ -32,3 +32,11 @@ services:
                 entityManager: "@doctrine.orm.entity_manager"
             tags:
                 - { name: excel.tool, alias: excel.tool }
+
+    form.type.verticalcollection:
+        class: BigD\UtilBundle\Form\Type\VerticalCollectionType
+        arguments:
+            entityManager: "@doctrine.orm.entity_manager"
+        tags:
+            - { name: form.type, alias: verticalcollection }
+

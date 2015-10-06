@@ -27,7 +27,7 @@ class PreguntaResultadoRespuesta
      */
     private $preguntas;
 
-    /** @ORM\ManyToOne(targetEntity="ResultadoRespuesta")
+    /** @ORM\ManyToOne(targetEntity="ResultadoRespuesta", cascade={"persist"})
      *  @ORM\JoinColumn(name="campania_encuesta_resultado_respuesta_id", referencedColumnName="id", nullable=false)
      */
     private $resultadoRespuesta;

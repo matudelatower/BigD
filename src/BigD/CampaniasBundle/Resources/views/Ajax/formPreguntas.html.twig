@@ -1,7 +1,7 @@
 {% form_theme form 'ThemeBundle:Default:forms_rows.html.twig' %}
 
 {% for item in form.children %}
-    <div class="form-group">
+    <div class="form-group has-feedback">
         {{ form_label(item) }}
         <div class="col-sm-6">
             {{ form_widget(item) }}

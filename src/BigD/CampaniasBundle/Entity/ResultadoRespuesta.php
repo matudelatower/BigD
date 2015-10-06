@@ -25,17 +25,17 @@ class ResultadoRespuesta
     /**
      * @var string
      *
-     * @ORM\Column(name="textoRespuesta", type="text")
+     * @ORM\Column(name="texto_respuesta", type="text")
      */
     private $textoRespuesta;
 
     /** @ORM\ManyToOne(targetEntity="OpcionesRespuesta")
-     *  @ORM\JoinColumn(name="campania_encuesta_opcion_respuesta_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="campania_encuesta_opcion_respuesta_id", referencedColumnName="id", nullable=true)
      */
     private $opcionesRespuesta;
 
-    /** @ORM\ManyToOne(targetEntity="ResultadoCabecera")
-     *  @ORM\JoinColumn(name="campania_encuesta_resultado_cabecera_id", referencedColumnName="id", nullable=false)
+    /** @ORM\ManyToOne(targetEntity="ResultadoCabecera",cascade={"persist"})
+     * @ORM\JoinColumn(name="campania_encuesta_resultado_cabecera_id", referencedColumnName="id", nullable=false)
      */
     private $resultadoCabecera;
     /**
@@ -75,7 +75,7 @@ class ResultadoRespuesta
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -98,7 +98,7 @@ class ResultadoRespuesta
     /**
      * Get textoRespuesta
      *
-     * @return string 
+     * @return string
      */
     public function getTextoRespuesta()
     {
@@ -121,7 +121,7 @@ class ResultadoRespuesta
     /**
      * Get creado
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreado()
     {
@@ -144,7 +144,7 @@ class ResultadoRespuesta
     /**
      * Get actualizado
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getActualizado()
     {
@@ -167,7 +167,7 @@ class ResultadoRespuesta
     /**
      * Get opcionesRespuesta
      *
-     * @return \BigD\CampaniasBundle\Entity\OpcionesRespuesta 
+     * @return \BigD\CampaniasBundle\Entity\OpcionesRespuesta
      */
     public function getOpcionesRespuesta()
     {
@@ -190,7 +190,7 @@ class ResultadoRespuesta
     /**
      * Get creadoPor
      *
-     * @return \BigD\UsuariosBundle\Entity\Usuario 
+     * @return \BigD\UsuariosBundle\Entity\Usuario
      */
     public function getCreadoPor()
     {
@@ -213,7 +213,7 @@ class ResultadoRespuesta
     /**
      * Get actualizadoPor
      *
-     * @return \BigD\UsuariosBundle\Entity\Usuario 
+     * @return \BigD\UsuariosBundle\Entity\Usuario
      */
     public function getActualizadoPor()
     {
@@ -236,7 +236,7 @@ class ResultadoRespuesta
     /**
      * Get resultadoCabecera
      *
-     * @return \BigD\CampaniasBundle\Entity\ResultadoCabecera 
+     * @return \BigD\CampaniasBundle\Entity\ResultadoCabecera
      */
     public function getResultadoCabecera()
     {

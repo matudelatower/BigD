@@ -25,7 +25,7 @@ class ResultadoCabecera
     /**
      * @var integer
      *
-     * @ORM\Column(name="idExterna", type="integer")
+     * @ORM\Column(name="id_externa", type="integer", nullable=true)
      */
     private $idExterna;
 
@@ -39,14 +39,14 @@ class ResultadoCabecera
     /**
      * @var string
      *
-     * @ORM\Column(name="infoExterna", type="string", length=255)
+     * @ORM\Column(name="info_externa", type="string", length=255, nullable=true)
      */
     private $infoExterna;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="nroCuestionario", type="string", length=255)
+     * @ORM\Column(name="nro_cuestionario", type="string", length=255, nullable=true)
      */
     private $nroCuestionario;
 
@@ -87,13 +87,13 @@ class ResultadoCabecera
 
     public function __toString()
     {
-        return $this->nroCuestionario;
+        return $this->nroCuestionario ? $this->nroCuestionario : '';
     }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -116,7 +116,7 @@ class ResultadoCabecera
     /**
      * Get idExterna
      *
-     * @return integer 
+     * @return integer
      */
     public function getIdExterna()
     {
@@ -139,7 +139,7 @@ class ResultadoCabecera
     /**
      * Get fecha
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getFecha()
     {
@@ -162,7 +162,7 @@ class ResultadoCabecera
     /**
      * Get infoExterna
      *
-     * @return string 
+     * @return string
      */
     public function getInfoExterna()
     {
@@ -185,7 +185,7 @@ class ResultadoCabecera
     /**
      * Get nroCuestionario
      *
-     * @return string 
+     * @return string
      */
     public function getNroCuestionario()
     {
@@ -208,7 +208,7 @@ class ResultadoCabecera
     /**
      * Get creado
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreado()
     {
@@ -231,7 +231,7 @@ class ResultadoCabecera
     /**
      * Get actualizado
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getActualizado()
     {
@@ -254,7 +254,7 @@ class ResultadoCabecera
     /**
      * Get creadoPor
      *
-     * @return \BigD\UsuariosBundle\Entity\Usuario 
+     * @return \BigD\UsuariosBundle\Entity\Usuario
      */
     public function getCreadoPor()
     {
@@ -277,7 +277,7 @@ class ResultadoCabecera
     /**
      * Get actualizadoPor
      *
-     * @return \BigD\UsuariosBundle\Entity\Usuario 
+     * @return \BigD\UsuariosBundle\Entity\Usuario
      */
     public function getActualizadoPor()
     {

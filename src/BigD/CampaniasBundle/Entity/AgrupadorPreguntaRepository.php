@@ -95,6 +95,7 @@ class AgrupadorPreguntaRepository extends EntityRepository
         $qb->join('a.encuesta', 'enc');
 
         $qb->andWhere('enc.id = :encuestaId');
+        $qb->orderBy('a.id','ASC');
         $qb->setParameter('encuestaId', $encuesta);
 
         return $qb->getQuery()->getResult();

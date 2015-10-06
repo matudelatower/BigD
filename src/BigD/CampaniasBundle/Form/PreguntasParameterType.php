@@ -35,10 +35,18 @@ class PreguntasParameterType extends AbstractType
                 );
                 if ($value["widgetType"] == 'choice') {
 
-                    $arrayOptions['choice_list'] = new ChoiceList(
-                        $value['choices'],
-                        $value['choices']
-                    );
+                    $aChoices = array();
+                    foreach ($value['choices'] as $key => $choice) {
+                        $aChoices[$key] = $choice;
+                    }
+                    $arrayOptions['choices'] = $aChoices;
+
+                }
+                if ($value["widgetType"] == 'date') {
+                    $arrayOptions['input'] = 'string';
+                    $arrayOptions['widget'] = 'single_text';
+                    $arrayOptions['format'] = 'dd-MM-yyyy';
+                    $arrayOptions['attr'] = array('class' => 'datepicker','data-date-format' => 'dd-mm-yyy');
                 }
                 $builder->add($k, $value["widgetType"], $arrayOptions);
 
@@ -65,7 +73,7 @@ class PreguntasParameterType extends AbstractType
                 $arrayOptions['by_reference'] = true;
                 $arrayOptions['type'] = new PreguntasParameterType($aSubPregunta);
                 $arrayOptions['mapped'] = false;
-                $builder->add($collectionName, 'bootstrapcollection', $arrayOptions);
+                $builder->add($collectionName, 'verticalcollection', $arrayOptions);
             }
         }
 

@@ -9,6 +9,11 @@
 
 namespace BigD\CampaniasBundle\Services;
 
+use BigD\CampaniasBundle\Entity\PreguntaResultadoRespuesta;
+use BigD\CampaniasBundle\Entity\ResultadoCabecera;
+use BigD\CampaniasBundle\Entity\ResultadoRespuesta;
+use Doctrine\ORM\EntityManager;
+
 class EncuestasManager
 {
 
@@ -142,7 +147,7 @@ class EncuestasManager
                     foreach ($respuestasAgrupador as $respuestaAgrupador) {
 
 //                        TODO aca corregir en casode que no este bien exportar con codigos
-                        $textoRespuesta = $respuestaAgrupador['slug'] ? $respuestaAgrupador['slug'] : $respuestaAgrupador['textorespuesta'];
+                        $textoRespuesta = $respuestaAgrupador['slug'] ? $respuestaAgrupador['slug'] : $respuestaAgrupador['texto_respuesta'];
 
                         if ($contadorPreguntasAgrupador < $cantidadPreguntasAgrupador['cantidad']) {
                             //mientras sea el primer modulo de este agrupador puedo sacar als posiciones por id
@@ -170,16 +175,19 @@ class EncuestasManager
                     }
                 } else {
                     foreach ($respuestasAgrupador as $respuestaAgrupador) {
+//                        TODO aca corregir en casode que no este bien exportar con codigos
+                        $textoRespuesta = $respuestaAgrupador['slug'] ? $respuestaAgrupador['slug'] : $respuestaAgrupador['texto_respuesta'];
+
                         $ordenCorrecto = $arrayOrden[$respuestaAgrupador['pregunta_id']];
                         if ($cantidadPreguntasEncuesta[0]['count'] == 52 && $respuestaAgrupador['pregunta_id'] == 34) {
                             //si es la encuesta de 52 preguntas y es el id de pregunta 34, osea un id menos del id que falta, lo
                             //relleno con blanco
-                            $fila[$ordenCorrecto] = $respuestaAgrupador['textorespuesta'];
+                            $fila[$ordenCorrecto] = $textoRespuesta;
                             $ordenCorrecto++;
                             $fila[$ordenCorrecto] = "";
                         } else {
 
-                            $fila[$ordenCorrecto] = $respuestaAgrupador['textorespuesta'];
+                            $fila[$ordenCorrecto] = $textoRespuesta;
                         }
                     }
                 }
@@ -199,4 +207,86 @@ class EncuestasManager
         );
     }
 
+    public function crearResultadoRespuesta($request, $idEncuesta)
+    {
+        /* @var $em EntityManager */
+        $em = $this->em;
+
+        $resultadoCabecera = new ResultadoCabecera();
+
+
+        $resultadoCabecera->setFecha(new \DateTime('now'));
+        $resultadoCabecera->setInfoExterna(2);
+
+
+        $respuestasRequest = $request->get('campanias_bundle_preguntas_parameter_type');
+
+
+        foreach ($respuestasRequest as $key => $respuesta) {
+            $preguntaResultadoRespuesta = new PreguntaResultadoRespuesta();
+            if (is_array($respuesta)) {
+                foreach ($respuesta as $indexMult => $textoRespuesta) {
+                    $this->buildRespuesta($indexMult, $textoRespuesta, $preguntaResultadoRespuesta, $resultadoCabecera);
+
+                }
+
+            } else {
+                $this->buildRespuesta($key, $respuesta, $preguntaResultadoRespuesta, $resultadoCabecera);
+            }
+
+//            $em->persist($resultadoCabecera);
+            $em->persist($preguntaResultadoRespuesta);
+
+
+        }
+
+        $em->flush();
+
+        return true;
+    }
+
+    private function buildRespuesta($key, &$textoRespuesta, &$preguntaResultadoRespuesta, &$resultadoCabecera)
+    {
+        /* @var $em EntityManager */
+        $em = $this->em;
+        $pregunta = $em->getRepository('CampaniasBundle:Preguntas')->find($key);
+        $resultadoRespuesta = new ResultadoRespuesta();
+//        si tiene opcion busco la que viene seleccionada
+        if (!is_array($textoRespuesta)) {
+            if (count($pregunta->getOpcionRespuesta()) > 0) {
+
+                $opcionSeleccionada = $em->getRepository('CampaniasBundle:OpcionesRespuesta')->findOneById(
+                    $textoRespuesta
+                );
+
+                $resultadoRespuesta->setTextoRespuesta(
+                    $opcionSeleccionada->getTextoOpcion()
+                );
+                $resultadoRespuesta->setOpcionesRespuesta($opcionSeleccionada);
+            } else {
+                $resultadoRespuesta->setTextoRespuesta($textoRespuesta);
+            }
+
+            $resultadoRespuesta->setResultadoCabecera($resultadoCabecera);
+            $preguntaResultadoRespuesta->setPreguntas($pregunta);
+            $preguntaResultadoRespuesta->setResultadoRespuesta($resultadoRespuesta);
+        } else {
+            foreach ($textoRespuesta as $indiceAgrupador => $valorRespuesta) {
+                $this->buildRespuesta(
+                    $indiceAgrupador,
+                    $valorRespuesta,
+                    $preguntaResultadoRespuesta,
+                    $resultadoCabecera
+                );
+            }
+
+        }
+
+        return array(
+            'resultadoRespuesta' => $resultadoRespuesta,
+            'preguntaResultadoRespuesta' => $preguntaResultadoRespuesta,
+            'resultadoCabecera' => $resultadoCabecera,
+
+        );
+    }
 }

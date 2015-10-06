@@ -402,34 +402,15 @@ class EncuestaController extends Controller
         );
     }
 
-    public function crearRespuestaAction(Request $request, $idEncuesta)
+    public function crearRespuestaAction(Request $request, $encuestaId)
     {
-        $em = $this->getDoctrine()->getManager();
-        $parameters = $em->getRepository("CampaniasBundle:Preguntas")->getPreguntasPorEncuesta($idEncuesta);
-        $encuestaParameter = new EncuestasParameter($parameters);
+        $encuestasManager = $this->get('manager.encuestas');
 
-        $form = $this->createForm(new EncuestasParameterType(), $encuestaParameter);
-        $form->handleRequest($request);
+        $encuestasManager->crearResultadoRespuesta($request, $encuestaId);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($parameters);
-            $em->flush();
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                'Respuesta Cargada correctamente.'
-            );
+        return $this->redirect('campania_encuesta');
 
-            return $this->redirect($this->generateUrl('campania_encuesta'));
-        }
 
-        return $this->render(
-            'CampaniasBundle:Encuesta:editRespuesta.html.twig',
-            array(
-                'entity' => $parameters,
-                'form' => $form->createView(),
-            )
-        );
     }
 
     public function getFormPorAgrupadorAction($id)

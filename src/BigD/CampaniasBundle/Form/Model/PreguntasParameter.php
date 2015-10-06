@@ -19,21 +19,27 @@ class PreguntasParameter
     public function __construct($parameters, $edit = false)
     {
         if ($edit == false) {
-            $this->subPreguntas=array();
+            $this->subPreguntas = array();
             foreach ($parameters as $k => $value) {
                 /* @var $value \BigD\CampaniasBundle\Entity\Preguntas */
 
                 if ($value->getAgrupadorPregunta()->getMultiple()) {
                     $fieldName = ucwords(
-                        preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '', $value->getAgrupadorPregunta()->getNombre()))
+                        preg_replace(
+                            '/[^A-Za-z0-9\-]/',
+                            '',
+                            str_replace(' ', '', $value->getAgrupadorPregunta()->getNombre())
+                        )
                     );
-                    $this->subPreguntas[$fieldName][]=$this->buildFieldPregunta($value);
+                    $this->subPreguntas[$fieldName][] = $this->buildFieldPregunta($value);
                 } else {
 
                     $name = $value->getId();
                     $widgetType = 'text';
                     if ($value->getTipoPregunta()->getMuestraOpciones()) {
                         $widgetType = 'choice';
+                    } elseif ($value->getTipoPregunta()->getSlug() == 'tipo-pregunta-date') {
+                        $widgetType = 'date';
                     }
                     $this->data[$name] = array(
                         "widgetType" => $widgetType,
@@ -65,12 +71,14 @@ class PreguntasParameter
 
     public function buildFieldPregunta($pregunta)
     {
-        $aPregunta=array();
+        $aPregunta = array();
 
         $name = $pregunta->getId();
         $widgetType = 'text';
         if ($pregunta->getTipoPregunta()->getMuestraOpciones()) {
             $widgetType = 'choice';
+        } elseif ($pregunta->getTipoPregunta()->getSlug() == 'tipo-pregunta-date') {
+            $widgetType = 'date';
         }
         $aPregunta[$name] = array(
             "widgetType" => $widgetType,
@@ -94,7 +102,9 @@ class PreguntasParameter
     {
         return $this->data;
     }
-    public function getSubPreguntas(){
+
+    public function getSubPreguntas()
+    {
         return $this->subPreguntas;
     }
 }
