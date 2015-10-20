@@ -226,15 +226,21 @@ class EncuestasManager
             $preguntaResultadoRespuesta = new PreguntaResultadoRespuesta();
             if (is_array($respuesta)) {
                 foreach ($respuesta as $indexMult => $textoRespuesta) {
-                    $this->buildRespuesta($indexMult, $textoRespuesta, $preguntaResultadoRespuesta, $resultadoCabecera);
-
+                    foreach ($textoRespuesta as $keyPregunta => $aRespuesta) {
+                        $this->buildRespuesta(
+                            $keyPregunta,
+                            $aRespuesta,
+                            $preguntaResultadoRespuesta,
+                            $resultadoCabecera
+                        );
+                        $em->persist($preguntaResultadoRespuesta);
+                    }
                 }
 
             } else {
                 $this->buildRespuesta($key, $respuesta, $preguntaResultadoRespuesta, $resultadoCabecera);
             }
-
-//            $em->persist($resultadoCabecera);
+            
             $em->persist($preguntaResultadoRespuesta);
 
 
@@ -255,13 +261,19 @@ class EncuestasManager
         if (!is_array($textoRespuesta)) {
             if (count($pregunta->getOpcionRespuesta()) > 0) {
 
-                $opcionSeleccionada = $em->getRepository('CampaniasBundle:OpcionesRespuesta')->findOneById(
-                    $textoRespuesta
+                $textoOpcion = "";
+                $opcionSeleccionada = null;
+                if ($textoRespuesta != "") {
+                    $opcionSeleccionada = $em->getRepository('CampaniasBundle:OpcionesRespuesta')->findOneById(
+                        $textoRespuesta
+                    );
+                    $textoOpcion = $opcionSeleccionada->getTextoOpcion();
+
+                }
+                $resultadoRespuesta->setTextoRespuesta(
+                    $textoOpcion
                 );
 
-                $resultadoRespuesta->setTextoRespuesta(
-                    $opcionSeleccionada->getTextoOpcion()
-                );
                 $resultadoRespuesta->setOpcionesRespuesta($opcionSeleccionada);
             } else {
                 $resultadoRespuesta->setTextoRespuesta($textoRespuesta);

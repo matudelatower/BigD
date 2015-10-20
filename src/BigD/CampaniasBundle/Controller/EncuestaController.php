@@ -406,9 +406,15 @@ class EncuestaController extends Controller
     {
         $encuestasManager = $this->get('manager.encuestas');
 
-        $encuestasManager->crearResultadoRespuesta($request, $encuestaId);
+        if ($encuestasManager->crearResultadoRespuesta($request, $encuestaId)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                'Respuesta creada correctamente.'
+            );
+        }
 
-        return $this->redirect('campania_encuesta');
+
+        return $this->redirect($this->generateUrl('campania_encuesta'));
 
 
     }

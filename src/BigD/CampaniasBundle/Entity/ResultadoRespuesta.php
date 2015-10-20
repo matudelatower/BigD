@@ -72,10 +72,12 @@ class ResultadoRespuesta
      */
     private $actualizadoPor;
 
+
+
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -98,7 +100,7 @@ class ResultadoRespuesta
     /**
      * Get textoRespuesta
      *
-     * @return string
+     * @return string 
      */
     public function getTextoRespuesta()
     {
@@ -121,7 +123,7 @@ class ResultadoRespuesta
     /**
      * Get creado
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getCreado()
     {
@@ -144,7 +146,7 @@ class ResultadoRespuesta
     /**
      * Get actualizado
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getActualizado()
     {
@@ -157,7 +159,7 @@ class ResultadoRespuesta
      * @param \BigD\CampaniasBundle\Entity\OpcionesRespuesta $opcionesRespuesta
      * @return ResultadoRespuesta
      */
-    public function setOpcionesRespuesta(\BigD\CampaniasBundle\Entity\OpcionesRespuesta $opcionesRespuesta)
+    public function setOpcionesRespuesta(\BigD\CampaniasBundle\Entity\OpcionesRespuesta $opcionesRespuesta = null)
     {
         $this->opcionesRespuesta = $opcionesRespuesta;
 
@@ -167,11 +169,34 @@ class ResultadoRespuesta
     /**
      * Get opcionesRespuesta
      *
-     * @return \BigD\CampaniasBundle\Entity\OpcionesRespuesta
+     * @return \BigD\CampaniasBundle\Entity\OpcionesRespuesta 
      */
     public function getOpcionesRespuesta()
     {
         return $this->opcionesRespuesta;
+    }
+
+    /**
+     * Set resultadoCabecera
+     *
+     * @param \BigD\CampaniasBundle\Entity\ResultadoCabecera $resultadoCabecera
+     * @return ResultadoRespuesta
+     */
+    public function setResultadoCabecera(\BigD\CampaniasBundle\Entity\ResultadoCabecera $resultadoCabecera)
+    {
+        $this->resultadoCabecera = $resultadoCabecera;
+
+        return $this;
+    }
+
+    /**
+     * Get resultadoCabecera
+     *
+     * @return \BigD\CampaniasBundle\Entity\ResultadoCabecera 
+     */
+    public function getResultadoCabecera()
+    {
+        return $this->resultadoCabecera;
     }
 
     /**
@@ -190,7 +215,7 @@ class ResultadoRespuesta
     /**
      * Get creadoPor
      *
-     * @return \BigD\UsuariosBundle\Entity\Usuario
+     * @return \BigD\UsuariosBundle\Entity\Usuario 
      */
     public function getCreadoPor()
     {
@@ -213,33 +238,10 @@ class ResultadoRespuesta
     /**
      * Get actualizadoPor
      *
-     * @return \BigD\UsuariosBundle\Entity\Usuario
+     * @return \BigD\UsuariosBundle\Entity\Usuario 
      */
     public function getActualizadoPor()
     {
         return $this->actualizadoPor;
-    }
-
-    /**
-     * Set resultadoCabecera
-     *
-     * @param \BigD\CampaniasBundle\Entity\ResultadoCabecera $resultadoCabecera
-     * @return ResultadoRespuesta
-     */
-    public function setResultadoCabecera(\BigD\CampaniasBundle\Entity\ResultadoCabecera $resultadoCabecera)
-    {
-        $this->resultadoCabecera = $resultadoCabecera;
-
-        return $this;
-    }
-
-    /**
-     * Get resultadoCabecera
-     *
-     * @return \BigD\CampaniasBundle\Entity\ResultadoCabecera
-     */
-    public function getResultadoCabecera()
-    {
-        return $this->resultadoCabecera;
     }
 }
