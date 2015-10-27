@@ -2,6 +2,7 @@
 
 namespace BigD\CampaniasBundle\Entity;
 
+use BigD\UtilBundle\lib\DateTools;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -30,7 +31,7 @@ class ResultadoCabeceraRepository extends EntityRepository
             $fechaMaxima = DateTools::getFechaMaxima();
         }
 
-        $where .= " AND campania_encuesta_resultado_cabecera.fecha BETWEEN '$fechaMinima' and '$fechaMaxima'";
+        $where .= " AND campania_encuesta_resultado_cabecera.fecha BETWEEN '$fechaMinima 00:00:00' and '$fechaMaxima 23:59:59'";
 
         $query = "SELECT DISTINCT
                  campania_encuesta_resultado_cabecera.id AS resultado_cabecera_id
