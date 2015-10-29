@@ -1,5 +1,5 @@
 {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
-{% set title = 'Encuesta' %}
+{% set title = 'Respuestas' %}
 {% block title %}
     {{ title }}
 {% endblock %}
@@ -118,13 +118,13 @@
                                         colspan="1" style="width: 46px;" aria-sort="ascending" aria-label="Id">Id
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
-                                        style="width: 200px;" aria-label="Nombre">Nombre
+                                        style="width: 200px;" aria-label="Nombre">Numero de Cuestionario
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
-                                        style="width: 200px;" aria-label="Descripcion">Descripcion
+                                        style="width: 200px;" aria-label="Descripcion">Info Externa
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
-                                        style="width: 200px;" aria-label="Slug">Slug
+                                        style="width: 200px;" aria-label="Slug">Id Externa
                                     </th>
                                     <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
                                         style="width: 200px;" aria-label="Creado">Creado
@@ -142,33 +142,18 @@
                                 {% for entity in entities %}
                                     <tr class="{% if loop.index is odd %} odd {% else %} even {% endif %}">
                                         <td>{{ entity.id }}</td>
-                                        <td>{{ entity.nombre }}</td>
-                                        <td>{{ entity.descripcion }}</td>
-                                        <td>{{ entity.slug }}</td>
+                                        <td>{{ entity.nroCuestionario }}</td>
+                                        <td>{{ entity.infoExterna }}</td>
+                                        <td>{{ entity.idExterna }}</td>
                                         <td>{% if entity.creado %}{{ entity.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
                                         <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
                                         <td>
-                                            <a class="btn btn-default"
-                                               href="{{ path('campania_encuesta_edit', { 'id': entity.id }) }}"><i
+                                            <a class="btn btn-default" title="Editar Cabecera"
+                                               href="{{ path('resultado_cabecera_edit', {'id':entity.id}) }}"><i
                                                         class="fa fa-fw fa-edit"></i></a>
-                                            {#<a class="btn btn-default"#}
-                                               {#href="{{ path('campania_encuesta_show', { 'id': entity.id }) }}"><i#}
-                                                        {#class="fa fa-fw fa-eye"></i></a>#}
-                                            <a class="btn btn-default btn-modal-encuesta"
-                                               data-url="{{ path('exportar_resultados_encuesta', { 'id': entity.id }) }}"
-                                               data-toggle="modal" data-target="#modalFecha"><i
-                                                        class="fa fa-fw icon-excel-black"></i></a>
-
-                                            {#<a class="btn btn-default"#}
-                                            {#href="{{ path('nueva_respuesta', { 'idEncuesta': entity.id }) }}"><i#}
-                                            {#class="fa fa-fw fa-file-o"></i></a>#}
-                                            <a class="btn btn-default"
-                                            href="{{ path('ver_respuestas', { 'encuestaId': entity.id }) }}"><i
-                                            class="fa fa-fw fa-files-o"></i></a>
-
-                                            {#<a class="btn btn-default"#}
-                                            {#href="{{ path('exportar_resultados_encuesta', { 'id': entity.id }) }}"#}
-                                            {#target="_blank"><i class="fa fa-fw icon-excel-black"></i></a>#}
+                                            <a class="btn btn-default" title="Editar Respuestas"
+                                               href="{{ path('editar_respuesta', {'cabeceraId':entity.id}) }}"><i
+                                                        class="fa fa-fw fa-file-text-o"></i></a>
 
                                         </td>
                                     </tr>
@@ -183,8 +168,12 @@
                 </div>
 
 
-                <a class="btn btn-primary" href="{{ path('campania_encuesta_new') }}">
+                <a class="btn btn-primary" href="{{ path('nueva_respuesta', { 'idEncuesta': encuestaId }) }}">
                     Nuevo
+                </a>
+                <a class="btn btn-success"
+                   href="{{ path('campania_encuesta') }}">
+                    Volver
                 </a>
 
 

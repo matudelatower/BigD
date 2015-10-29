@@ -51,4 +51,20 @@ class ResultadoCabeceraRepository extends EntityRepository
 
         return $stmt->fetchAll();
     }
+
+    public function getResultadoCabeceraPorEncuestaId($encuestaId)
+    {
+        $idResultadosCabeceras = $this->getResultadoCabeceraPorEncuesta($encuestaId);
+
+        $qb = $this->createQueryBuilder('rc');
+        $qb->where('rc.id in (:ids)')
+            ->setParameter('ids',$idResultadosCabeceras);
+
+        $qb->orderBy('rc.id','DESC');
+
+        $result = $qb->getQuery()->getResult();
+
+        return $result;
+
+    }
 }

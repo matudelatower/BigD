@@ -439,4 +439,77 @@ class EncuestaController extends Controller
 
     }
 
+    public function verRespuestasAction($encuestaId)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('CampaniasBundle:ResultadoCabecera')->getResultadoCabeceraPorEncuestaId(
+            $encuestaId
+        );
+
+        $form = $this->createForm(new EncuestaFilterType());
+
+
+        $paginator = $this->get('knp_paginator');
+        $entities = $paginator->paginate(
+            $entities,
+            $this->get('request')->query->get('page', 1)/* page number */,
+            10/* limit per page */
+        );
+
+        return $this->render(
+            'CampaniasBundle:Encuesta:indexRespuestas.html.twig',
+            array(
+                'entities' => $entities,
+                'filter_form' => $form->createView(),
+                'encuestaId' => $encuestaId,
+            )
+        );
+    }
+
+    public function editarRespuestaAction(Request $request, $cabeceraId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /* @var $encuesta \BigD\CampaniasBundle\Entity\Encuesta */
+
+        $agrupadores = $em->getRepository("CampaniasBundle:AgrupadorPregunta")->getOAgrupadoresPorResultadoCabeceraId(
+            $cabeceraId
+        );
+
+
+        $idEncuesta = $agrupadores[0]->getEncuesta()->getId();
+
+
+        return $this->render(
+            'CampaniasBundle:Encuesta:editarRespuesta.html.twig',
+            array(
+                'encuestaId' => $idEncuesta,
+                'agrupadores' => $agrupadores,
+            )
+        );
+    }
+
+    public function getFormPorAgrupadorEditAction($id)
+    {
+
+        //TODO  deberia traer los campos cargadas para actualizar el form
+        $idAgrupador = $id;
+        $em = $this->getDoctrine()->getManager();
+        $agrupadorPregunta = $em->getRepository('CampaniasBundle:AgrupadorPregunta')->findOneById($idAgrupador);
+        $preguntas = $em->getRepository('CampaniasBundle:Preguntas')->findByAgrupadorPregunta($agrupadorPregunta);
+        $preguntasParameter = new PreguntasParameter($preguntas);
+        $form = $this->createForm(new PreguntasParameterType(), $preguntasParameter);
+
+        return $this->render(
+            'CampaniasBundle:Ajax:formPreguntas.html.twig',
+            array(
+//                'entity' => $entity,
+                'form' => $form->createView(),
+            )
+        );
+
+
+    }
+
+
 }

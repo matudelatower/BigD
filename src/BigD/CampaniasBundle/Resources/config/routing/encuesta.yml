@@ -40,3 +40,15 @@ nueva_respuesta:
 crear_respuesta:
     path: /{encuestaId}/crear_respuesta
     defaults: { _controller: "CampaniasBundle:Encuesta:crearRespuesta" }
+
+ver_respuestas:
+    path: /{encuestaId}/ver_respuestas
+    defaults: { _controller: "CampaniasBundle:Encuesta:verRespuestas" }
+
+editar_respuesta:
+    path: /{cabeceraId}/editar_respuesta
+    defaults: { _controller: "CampaniasBundle:Encuesta:editarRespuesta" }
+
+actualizar_respuesta:
+    path: /{cabeceraId}/actualizar_respuesta
+    defaults: { _controller: "CampaniasBundle:Encuesta:actualizarRespuesta" }

@@ -26,4 +26,6 @@ CampaniasBundle_ajax:
         resource: "@CampaniasBundle/Resources/config/routing/ajax.yml"
         prefix:   /ajax
         
-
+CampaniasBundle_resultado_cabecera:
+        resource: "@CampaniasBundle/Resources/config/routing/resultadocabecera.yml"
+        prefix:   /resultado_cabecera

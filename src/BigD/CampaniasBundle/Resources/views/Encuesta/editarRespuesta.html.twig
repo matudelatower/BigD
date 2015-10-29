@@ -1,5 +1,5 @@
 {% extends 'ThemeBundle:Default:layout_base.html.twig' %}
-{% set title = 'Nueva Respuesta' %}
+{% set title = 'Editar Respuesta' %}
 {% block title %}
     {{ title }}
 {% endblock %}
@@ -24,7 +24,7 @@
                         {% for agrupador in agrupadores %}
                             <fieldset>
                                 <legend>{{ agrupador.nombre | humanize }}</legend>
-                                {% render controller('CampaniasBundle:Encuesta:getFormPorAgrupador', {'id': agrupador.id}) %}
+                                {% render controller('CampaniasBundle:Encuesta:getFormPorAgrupadorEdit', {'id': agrupador.id}) %}
                             </fieldset>
                         {% endfor %}
 

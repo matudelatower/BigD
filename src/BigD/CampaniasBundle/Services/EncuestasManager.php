@@ -142,7 +142,7 @@ class EncuestasManager
                     $encuestaResultado['resultado_cabecera_id']
                 );
 
-                if ($multiple[0]['multiple']) {
+                if (isset($multiple[0]) && $multiple[0]['multiple']) {
                     $contadorPreguntasAgrupador = 0;
                     foreach ($respuestasAgrupador as $respuestaAgrupador) {
 
@@ -212,6 +212,28 @@ class EncuestasManager
         /* @var $em EntityManager */
         $em = $this->em;
 
+        $encuesta = $em->getRepository('CampaniasBundle:Encuesta')->find($idEncuesta);
+
+        /**
+         * armo las preguntas para saber despues cuales son las que faltan
+         */
+        $aPreguntasEnEncuesta = array();
+
+        foreach ($encuesta->getAgrupador() as $agrupador) {
+            if ($agrupador->getMultiple()) {
+                foreach ($agrupador->getPreguntas() as $pregunta) {
+                    $aPreguntasEnEncuesta[][ucwords(
+                        preg_replace(
+                            '/[^A-Za-z0-9\-]/',
+                            '',
+                            str_replace(' ', '', $agrupador->getNombre())
+                        )
+                    )][$pregunta->getId()] = '';
+                }
+            }
+        }
+
+
         $resultadoCabecera = new ResultadoCabecera();
 
 
@@ -223,41 +245,69 @@ class EncuestasManager
 
 
         foreach ($respuestasRequest as $key => $respuesta) {
-            $preguntaResultadoRespuesta = new PreguntaResultadoRespuesta();
+
+            /**
+             *  desaocio el array para saber cuantas preguntas me faltan competar
+             */
+            unset($aPreguntasEnEncuesta[$key]);
+
             if (is_array($respuesta)) {
                 foreach ($respuesta as $indexMult => $textoRespuesta) {
                     foreach ($textoRespuesta as $keyPregunta => $aRespuesta) {
+
                         $this->buildRespuesta(
                             $keyPregunta,
                             $aRespuesta,
-                            $preguntaResultadoRespuesta,
                             $resultadoCabecera
                         );
-                        $em->persist($preguntaResultadoRespuesta);
+
                     }
                 }
 
             } else {
-                $this->buildRespuesta($key, $respuesta, $preguntaResultadoRespuesta, $resultadoCabecera);
-            }
-            
-            $em->persist($preguntaResultadoRespuesta);
+                $this->buildRespuesta($key, $respuesta, $resultadoCabecera);
 
+            }
 
         }
+
+        /**
+         * completo las preguntas con el mismo bucle de arriba
+         */
+        foreach ($aPreguntasEnEncuesta as $key => $respuesta) {
+
+            if (is_array($respuesta)) {
+                foreach ($respuesta as $indexMult => $textoRespuesta) {
+                    foreach ($textoRespuesta as $keyPregunta => $aRespuesta) {
+
+                        $this->buildRespuesta(
+                            $keyPregunta,
+                            $aRespuesta,
+                            $resultadoCabecera
+                        );
+
+                    }
+                }
+
+            }
+        }
+
 
         $em->flush();
 
         return true;
     }
 
-    private function buildRespuesta($key, &$textoRespuesta, &$preguntaResultadoRespuesta, &$resultadoCabecera)
+    private function buildRespuesta($key, &$textoRespuesta, &$resultadoCabecera)
     {
         /* @var $em EntityManager */
         $em = $this->em;
         $pregunta = $em->getRepository('CampaniasBundle:Preguntas')->find($key);
         $resultadoRespuesta = new ResultadoRespuesta();
-//        si tiene opcion busco la que viene seleccionada
+        $preguntaResultadoRespuesta = new PreguntaResultadoRespuesta();
+        /**
+         * si tiene opcion busco la que viene seleccionada
+         */
         if (!is_array($textoRespuesta)) {
             if (count($pregunta->getOpcionRespuesta()) > 0) {
 
@@ -279,9 +329,12 @@ class EncuestasManager
                 $resultadoRespuesta->setTextoRespuesta($textoRespuesta);
             }
 
+            $resultadoRespuesta->addPreguntaResultadoRespuestum($preguntaResultadoRespuesta);
+
             $resultadoRespuesta->setResultadoCabecera($resultadoCabecera);
             $preguntaResultadoRespuesta->setPreguntas($pregunta);
             $preguntaResultadoRespuesta->setResultadoRespuesta($resultadoRespuesta);
+
         } else {
             foreach ($textoRespuesta as $indiceAgrupador => $valorRespuesta) {
                 $this->buildRespuesta(
@@ -293,6 +346,8 @@ class EncuestasManager
             }
 
         }
+
+        $em->persist($resultadoRespuesta);
 
         return array(
             'resultadoRespuesta' => $resultadoRespuesta,

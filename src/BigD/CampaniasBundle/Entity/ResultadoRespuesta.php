@@ -72,7 +72,19 @@ class ResultadoRespuesta
      */
     private $actualizadoPor;
 
+    /**
+     * @ORM\OneToMany(targetEntity="PreguntaResultadoRespuesta", mappedBy="resultadoRespuesta",cascade={"remove", "persist"})
+     *
+     */
+    private $preguntaResultadoRespuesta;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->preguntaResultadoRespuesta = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -243,5 +255,38 @@ class ResultadoRespuesta
     public function getActualizadoPor()
     {
         return $this->actualizadoPor;
+    }
+
+    /**
+     * Add preguntaResultadoRespuesta
+     *
+     * @param \BigD\CampaniasBundle\Entity\PreguntaResultadoRespuesta $preguntaResultadoRespuesta
+     * @return ResultadoRespuesta
+     */
+    public function addPreguntaResultadoRespuestum(\BigD\CampaniasBundle\Entity\PreguntaResultadoRespuesta $preguntaResultadoRespuesta)
+    {
+        $this->preguntaResultadoRespuesta[] = $preguntaResultadoRespuesta;
+
+        return $this;
+    }
+
+    /**
+     * Remove preguntaResultadoRespuesta
+     *
+     * @param \BigD\CampaniasBundle\Entity\PreguntaResultadoRespuesta $preguntaResultadoRespuesta
+     */
+    public function removePreguntaResultadoRespuestum(\BigD\CampaniasBundle\Entity\PreguntaResultadoRespuesta $preguntaResultadoRespuesta)
+    {
+        $this->preguntaResultadoRespuesta->removeElement($preguntaResultadoRespuesta);
+    }
+
+    /**
+     * Get preguntaResultadoRespuesta
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getPreguntaResultadoRespuesta()
+    {
+        return $this->preguntaResultadoRespuesta;
     }
 }

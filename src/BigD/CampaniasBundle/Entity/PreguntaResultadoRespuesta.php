@@ -27,7 +27,7 @@ class PreguntaResultadoRespuesta
      */
     private $preguntas;
 
-    /** @ORM\ManyToOne(targetEntity="ResultadoRespuesta", cascade={"persist"})
+    /** @ORM\ManyToOne(targetEntity="ResultadoRespuesta", inversedBy="preguntaResultadoRespuesta")
      *  @ORM\JoinColumn(name="campania_encuesta_resultado_respuesta_id", referencedColumnName="id", nullable=false)
      */
     private $resultadoRespuesta;
@@ -65,7 +65,6 @@ class PreguntaResultadoRespuesta
      * @ORM\JoinColumn(name="actualizado_por", referencedColumnName="id", nullable=true)
      */
     private $actualizadoPor;
-
 
 
     /**

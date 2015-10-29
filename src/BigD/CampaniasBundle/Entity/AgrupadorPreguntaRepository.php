@@ -101,5 +101,20 @@ class AgrupadorPreguntaRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function getOAgrupadoresPorResultadoCabeceraId($cabeceraId)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->join('a.preguntas','preg');
+        $qb->join('preg.preguntaResultadoRespuesta','prr');
+        $qb->join('prr.resultadoRespuesta','rr');
+        $qb->join('rr.resultadoCabecera','rc');
+
+        $qb->andWhere('rc.id = :cabeceraId');
+        $qb->orderBy('a.id','ASC');
+        $qb->setParameter('cabeceraId', $cabeceraId);
+
+        return $qb->getQuery()->getResult();
+    }
+
 
 }
