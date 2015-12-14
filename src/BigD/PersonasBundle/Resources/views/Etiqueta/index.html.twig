@@ -32,7 +32,7 @@
                                     </span>
                                     Limpiar
                                 </button>
-                            </div>                            
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -50,23 +50,40 @@
                 </div>
                 <div class="box-content no-padding">
                     <div id="datatable-1_wrapper" class="dataTables_wrapper form-inline">
-                        <table  class="table table-bordered table-striped table-hover table-heading table-datatable dataTable datatable-1" role="grid" aria-describedby="datatable-1_info">
+                        <table class="table table-bordered table-striped table-hover table-heading table-datatable dataTable datatable-1"
+                               role="grid" aria-describedby="datatable-1_info">
                             <thead>
-                                <tr role="row">                                    <th class="sorting_asc" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 46px;" aria-sort="ascending" aria-label="Id">Id</th>                                    <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="Nombre">Nombre</th>                                    <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="Color">Color</th>                                                                        <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Actions</th>
+                            <tr role="row">
+                                <th class="sorting_asc" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
+                                    style="width: 46px;" aria-sort="ascending" aria-label="Id">Id
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
+                                    style="width: 200px;" aria-label="Nombre">Nombre
+                                </th>
+                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
+                                    style="width: 200px;" aria-label="Color">Color
+                                </th>
+                                <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
+                                    style="width: 200px;" aria-label="">Actions
+                                </th>
 
-                                </tr>
+                            </tr>
                             </thead>
                             <tbody role="alert" aria-live="polite" aria-relevant="all">
-                                {% for entity in entities %}
-                                    <tr class="{% if loop.index is odd %} odd {% else %} even {% endif %}">
-                                        <td>{{ entity.id }}</td>
-                                        <td>{{ entity.nombre }}</td>
-                                        <td>{{ entity.color }}</td>                                    
-                                        <td>
-                                            <a class="btn btn-default" href="{{ path('etiquetas_edit', { 'id': entity.id }) }}"><i class="fa fa-fw fa-edit"></i></a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
+                            {% for entity in entities %}
+                                <tr class="{% if loop.index is odd %} odd {% else %} even {% endif %}">
+                                    <td>{{ entity.id }}</td>
+                                    <td>{{ entity.nombre }}</td>
+                                    <td>
+                                        <p style="background-color: {{ entity.color }}; color:#fff"> {{ entity.color }}</p>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-default"
+                                           href="{{ path('etiquetas_edit', { 'id': entity.id }) }}"><i
+                                                    class="fa fa-fw fa-edit"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                         <div class="box-content">

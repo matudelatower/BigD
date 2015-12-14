@@ -18,13 +18,13 @@
                 <div class="box-content">
                     {#<h4 class="page-header">{{ title }}</h4>#}
 
-                    <form class="form-horizontal" action="{{ path('crear_respuesta', { 'encuestaId': encuestaId }) }}"
+                    <form class="form-horizontal" action="{{ actionUrl }}"
                           role="form"
                           method="post">
                         {% for agrupador in agrupadores %}
                             <fieldset>
                                 <legend>{{ agrupador.nombre | humanize }}</legend>
-                                {% render controller('CampaniasBundle:Encuesta:getFormPorAgrupadorEdit', {'id': agrupador.id}) %}
+                                {% render controller('CampaniasBundle:Encuesta:getFormPorAgrupadorEdit', {'id': agrupador.id, 'cabeceraId':cabeceraId}) %}
                             </fieldset>
                         {% endfor %}
 

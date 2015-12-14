@@ -126,38 +126,4 @@ class Tools {
         return false;
     }
 
-    public static function getSessionDominioId() {
-        $session = new \Symfony\Component\HttpFoundation\Session\Session();
-        //return isset($_SESSION['_sf2_attributes']['sel_dominio.id']) ? $_SESSION['_sf2_attributes']['sel_dominio.id'] : null;
-        return $session->get('sel_dominio.id');
-    }
-
-    public static function getSessionUsuarioId() {
-        $session = new \Symfony\Component\HttpFoundation\Session\Session();
-        //return isset($_SESSION['_sf2_attributes']['usuario.id']) ? $_SESSION['_sf2_attributes']['usuario.id'] : null;
-        return $session->get('usuario_log.id');
-    }
-
-    public static function getSessionAppIdByAppUrl($appUrl) {
-        $session = new \Symfony\Component\HttpFoundation\Session\Session();
-
-        $aplicativos = $session->get('aplicativos');
-
-        if(!$aplicativos) 
-            return null;
-
-        foreach ($aplicativos as $aplicativo) {
-            if ($aplicativo['prefijoUrl'] == $appUrl) {
-                return $aplicativo['id'];
-            }
-        }
-        return null;
-        //return isset($_SESSION['_sf2_attributes']['aplicativo.id']) ? $_SESSION['_sf2_attributes']['aplicativo.id'] : null;
-        //return $session->get('aplicativo.id');
-    }
-
-    public static function getSessionPersonaId() {
-        return isset($_SESSION['_sf2_attributes']['persona.id']) ? $_SESSION['_sf2_attributes']['persona.id'] : null;
-    }
-
 }

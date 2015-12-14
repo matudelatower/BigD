@@ -8,11 +8,18 @@
         $(".colorpicker").colorpicker();
     </script>
 {% endblock %}
+{% block stylesheets %}
+    <style>
+        .colorpicker::before {
+            top: unset !important;
+        }
+    </style>
+{% endblock %}
 {% block body -%}
 
     <h4 class="page-header">Etiqueta</h4>
     <div class="row">
-        <div class="col-xs-12 col-sm-12">            
+        <div class="col-xs-12 col-sm-12">
             <div class="box-header">
                 <div class="box-name ui-draggable-handle">
                     <i class="fa fa-search"></i>
@@ -21,25 +28,31 @@
             </div>
             <div class="box-content">
                 <h4 class="page-header">{{ title }}</h4>
-                <form action="{{ path('etiquetas_update', { 'id': entity.id }) }}" role="form" method="post">
+
+                <form class="form-horizontal" action="{{ path('etiquetas_update', { 'id': entity.id }) }}" role="form"
+                      method="post">
                     <div class="box-body">
                         <div class="form-group">
                             {{ form_label(form.nombre) }}
                             <div class="col-sm-4">
                                 {{ form_widget(form.nombre) }}
                             </div>
+
                         </div>
                         <div class="form-group">
                             {{ form_label(form.color) }}
-                            <div class="input-group  col-sm-4 colorpicker">
+                            <div class="input-group col-sm-4 colorpicker">
                                 {{ form_widget(form.color) }}
                                 <span class="input-group-addon"><i></i></span>
                             </div>
                         </div>
 
+                        {{ form_rest(form) }}
+
                         <div class="form-group">
                             <div class="col-sm-9 col-sm-offset-3">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Guardar</button>
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Guardar
+                                </button>
 
                                 <a class="btn btn-success" href="{{ path('etiquetas') }}">
                                     Volver

@@ -18,33 +18,37 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @author santiago.semhan
  */
 class BootstrapCollectionType extends AbstractType {
-    
-     /**
-     * {@inheritdoc}
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options) {
-       
-        $view->vars = array_replace($view->vars, array(
-            'max_items_add' => $options['max_items_add'],         
-            'display_history' => $options['display_history']         
-        ));
-    }
-    
-    
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
 
-        $resolver->setDefaults(array(
-            'max_items_add' => 99999,
-            'display_history' => true
-        ));
-    }
-    
-    public function getParent() {
-        return 'collection';
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function buildView( FormView $view, FormInterface $form, array $options ) {
 
-    public function getName() {
-        return 'bootstrapcollection';
-    }
+		$view->vars = array_replace( $view->vars,
+			array(
+				'max_items_add'   => $options['max_items_add'],
+				'display_history' => $options['display_history'],
+				'count_start'     => $options['count_start']
+			) );
+	}
+
+
+	public function setDefaultOptions( OptionsResolverInterface $resolver ) {
+
+		$resolver->setDefaults( array(
+			'max_items_add'   => 99999,
+			'display_history' => true,
+			'count_start'     => 0,
+
+		) );
+	}
+
+	public function getParent() {
+		return 'collection';
+	}
+
+	public function getName() {
+		return 'bootstrapcollection';
+	}
 
 }

@@ -336,7 +336,7 @@
                                                         {% endblock %}
 {% block verticalcollection_widget %}
 
-    {% set itemsCount = form.vars.data is not null ? form  | length : 0 %}
+    {% set itemsCount = form.vars.data is not null ? form  | length : count_start %}
 
     <script type="text/javascript">
 
