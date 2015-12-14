@@ -23,6 +23,7 @@
             $('.btn-ver-ubicaciones').click(function () {
                 $('#form-listado-personas').submit();
             });
+
             $('#select_all').change(function () {
                 var checkboxes = $(this).closest('form').find(':checkbox');
                 if ($(this).is(':checked')) {
@@ -31,58 +32,19 @@
                     checkboxes.prop('checked', false);
                 }
             });
-            $('#btn-modal-etiquetar').click(function () {
-                datos = $('#form-listado-personas').serialize();
-                url = '{{path('etiquetar_persona_listado')}}';
-                $.ajax({
-                    type: 'post',
-                    dataType: 'json',
-                    cache: true,
-                    url: url + "?" + datos + "&etiqueta=" + document.getElementById('bigd_personasbundle_etiqueta_nombre').value,
-                    success: function (json) {
-                        $('#modalEtiqueta').modal('hide');
-                        modalAlert('La operación se realizó con exito');
-                        },
-                    });
-                });
-            });
+
+            $('.btn-modal-exportar').click(function () {
+                $('#form-filtros').attr('action', '{{ path('exportar_personas_etiquetadas')}}');
+                $('#form-filtros').attr('target', '_blank');
+                $('#form-filtros').submit();
+                $('#form-filtros').removeAttr('action');
+                $('#form-filtros').removeAttr('target');
+            })
+
+        });
     </script>
 {% endblock %}
 {% block body -%}
-
-    <!-- Modal -->
-    <div id="modalEtiqueta" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Seleccione la etiqueta a aplicar</h4>
-                </div>
-                <div class="modal-body">
-                    {#                    <div class="form-inline">#}
-                    <div class="form-group">
-                        <div class="col-sm-2"> 
-                            {{ form_label(form_etiqueta.nombre)}}
-                        </div>
-                        <div class="col-sm-6"> 
-                            {{ form_widget(form_etiqueta.nombre,{ 'attr': { 'class': 'form-control' } }) }}
-                        </div>
-                    </div>
-                    {#                    </div>#}
-                </div>
-                <div class="hidden">
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" id="btn-modal-etiquetar" class="btn btn-primary">Aceptar</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-
     <h4 class="page-header">{{ title }}</h4>
     <div class="row">
         <div class="col-xs-12">
@@ -94,33 +56,11 @@
                     </div>
                 </div>
                 <div class="box-content">
-                    <form class="form-horizontal" id="form_listado" role="form" method="post">
-                        <div class="form-group">
-                            {{ form_label(form.nombre) }}
-                            <div class="col-sm-4">
-                                {{ form_widget(form.nombre) }}
-                            </div>
-                            {{ form_label(form.apellido) }}
-                            <div class="col-sm-4">
-                                {{ form_widget(form.apellido) }}
-                            </div>
+                    <form id="form-filtros"   class="form-horizontal" role="form" method="post">
+                        <div class="col-sm-offset-0 col-sm-4">
+                            {{form_row(form.etiquetas)}}
                         </div>
-                        <div class="form-group">
-                            {{ form_label(form.numeroDocumento) }}
-                            <div class="col-sm-4">
-                                {{ form_widget(form.numeroDocumento) }}
-                            </div>
-                            {{ form_label(form.sexo) }}
-                            <div class="col-sm-4">
-                                {{ form_widget(form.sexo) }}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(form.personaConDomicilioPrincipal) }}
-                            <div class="col-sm-4">
-                                {{ form_widget(form.personaConDomicilioPrincipal) }}
-                            </div>                            
-                        </div>
+
                         <div class="clearfix"></div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-4">
@@ -129,31 +69,16 @@
                                         <i class="fa fa-filter"></i>
                                     </span>
                                     Buscar
-                                </button>
-                                <button class="btn btn-default" type="reset">
-                                    <span>
-                                        <i></i>
-                                    </span>
-                                    Limpiar
-                                </button>
+                                </button>                                
                                 <button class="btn btn-default btn-ver-ubicaciones" type="button">
                                     <span>
                                         <i class="fa fa-map-marker"></i>
                                     </span>
                                     Ver Ubicaciones
                                 </button>
-                                <button class="btn btn-default btn-etiquetar" type="button" data-toggle="modal" data-target="#modalEtiqueta">
-                                    <span>
-                                        <i class="fa fa-tags"></i>
-                                    </span>
-                                    Etiquetar
-                                </button> 
-
-                                <a class="btn btn-default btn-modal-encuesta"
-                                   data-url=""
-                                   data-toggle="modal" data-target="#modalFecha"><i
+                                <a class="btn btn-default btn-modal-exportar"
+                                   data-toggle="modal" data-target=""><i
                                         class="fa fa-fw icon-excel-black"></i></a>
-
                             </div>                            
                         </div>
                     </form>
@@ -230,7 +155,7 @@
                                         </tr>
                                     {% endfor %}
                                 </tbody>
-                            </table>                           
+                            </table>
                         </form>
                         <div class="box-content">
                             {{ knp_pagination_render(entities) }}

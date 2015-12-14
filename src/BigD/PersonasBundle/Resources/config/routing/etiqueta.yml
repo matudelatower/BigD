@@ -1,0 +1,30 @@
+etiquetas:
+    path:     /
+    defaults: { _controller: "PersonasBundle:Etiqueta:index" }
+
+etiquetas_show:
+    path:     /{id}/show
+    defaults: { _controller: "PersonasBundle:Etiqueta:show" }
+
+etiquetas_new:
+    path:     /new
+    defaults: { _controller: "PersonasBundle:Etiqueta:new" }
+
+etiquetas_create:
+    path:     /create
+    defaults: { _controller: "PersonasBundle:Etiqueta:create" }
+    requirements: { _method: post }
+
+etiquetas_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "PersonasBundle:Etiqueta:edit" }
+
+etiquetas_update:
+    path:     /{id}/update
+    defaults: { _controller: "PersonasBundle:Etiqueta:update" }
+    requirements: { _method: post|put }
+
+etiquetas_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "PersonasBundle:Etiqueta:delete" }
+    requirements: { _method: post|delete }

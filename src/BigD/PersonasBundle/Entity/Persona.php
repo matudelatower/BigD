@@ -107,11 +107,16 @@ class Persona {
      * @ORM\OneToMany(targetEntity="Domicilio", mappedBy="persona")
      */
     private $domicilio;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Rodado", mappedBy="persona")
      */
     private $rodado;
+
+    /**
+     * @ORM\OneToMany(targetEntity="PersonaEtiqueta", mappedBy="persona", cascade={"persist"})
+     */
+    private $etiquetas;
 
     /**
      * Get id
@@ -356,9 +361,9 @@ class Persona {
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->domicilio = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->etiquetas = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -367,8 +372,7 @@ class Persona {
      * @param \BigD\PersonasBundle\Entity\Domicilio $domicilio
      * @return Persona
      */
-    public function addDomicilio(\BigD\PersonasBundle\Entity\Domicilio $domicilio)
-    {
+    public function addDomicilio(\BigD\PersonasBundle\Entity\Domicilio $domicilio) {
         $this->domicilio[] = $domicilio;
 
         return $this;
@@ -379,8 +383,7 @@ class Persona {
      *
      * @param \BigD\PersonasBundle\Entity\Domicilio $domicilio
      */
-    public function removeDomicilio(\BigD\PersonasBundle\Entity\Domicilio $domicilio)
-    {
+    public function removeDomicilio(\BigD\PersonasBundle\Entity\Domicilio $domicilio) {
         $this->domicilio->removeElement($domicilio);
     }
 
@@ -389,8 +392,7 @@ class Persona {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getDomicilio()
-    {
+    public function getDomicilio() {
         return $this->domicilio;
     }
 
@@ -400,8 +402,7 @@ class Persona {
      * @param \BigD\PersonasBundle\Entity\Rodado $rodado
      * @return Persona
      */
-    public function addRodado(\BigD\PersonasBundle\Entity\Rodado $rodado)
-    {
+    public function addRodado(\BigD\PersonasBundle\Entity\Rodado $rodado) {
         $this->rodado[] = $rodado;
 
         return $this;
@@ -412,8 +413,7 @@ class Persona {
      *
      * @param \BigD\PersonasBundle\Entity\Rodado $rodado
      */
-    public function removeRodado(\BigD\PersonasBundle\Entity\Rodado $rodado)
-    {
+    public function removeRodado(\BigD\PersonasBundle\Entity\Rodado $rodado) {
         $this->rodado->removeElement($rodado);
     }
 
@@ -422,8 +422,49 @@ class Persona {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getRodado()
-    {
+    public function getRodado() {
         return $this->rodado;
+    }
+
+    /**
+     * Add personaEtiquetas
+     *
+     * @param \BigD\PersonasBundle\Entity\personaEtiqueta $personaEtiquetas
+     * @return Persona
+     */
+   
+
+
+    /**
+     * Add etiquetas
+     *
+     * @param \BigD\PersonasBundle\Entity\personaEtiqueta $etiquetas
+     * @return Persona
+     */
+    public function addEtiqueta(\BigD\PersonasBundle\Entity\personaEtiqueta $etiquetas)
+    {
+        $this->etiquetas[] = $etiquetas;
+
+        return $this;
+    }
+
+    /**
+     * Remove etiquetas
+     *
+     * @param \BigD\PersonasBundle\Entity\personaEtiqueta $etiquetas
+     */
+    public function removeEtiqueta(\BigD\PersonasBundle\Entity\personaEtiqueta $etiquetas)
+    {
+        $this->etiquetas->removeElement($etiquetas);
+    }
+
+    /**
+     * Get etiquetas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEtiquetas()
+    {
+        return $this->etiquetas;
     }
 }

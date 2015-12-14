@@ -8,28 +8,26 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Form\Util\PropertyPath;
 
-class UniqueInCollectionValidator extends ConstraintValidator {
+class UniqueInCollectionValidator extends ConstraintValidator
+{
 
-    // Se mantiene un array con los valores previamente de la coleccion
+    // We keep an array with the previously checked values of the collection
     private $collectionValues = array();
 
-    public function validate($value, Constraint $constraint) {
-        // Aplica la ruta de la propiedad si es especificada
-        if ($constraint->propertyPath) {
+    // validate is new in Symfony 2.1, in Symfony 2.0 use "isValid" (see below)
+    public function validate($value, Constraint $constraint)
+    {
+        // Apply the property path if specified
+        if($constraint->propertyPath){
             $propertyPath = new PropertyPath($constraint->propertyPath);
             $value = $propertyPath->getValue($value);
         }
 
-        // Chequea que el valor no esta en el array
-        foreach ($this->collectionValues as $aValue) {
-            if (spl_object_hash($value) == spl_object_hash($aValue) ) {
-                $this->context->addViolation($constraint->message, array());
-            }
-        }
-        //if(in_array($value, $this->collectionValues))
-        //  $this->context->addViolation($constraint->message, array());
-        // Agrega el valor en el array para los siguientes items de la validacion
+        // Check that the value is not in the array
+        if(in_array($value, $this->collectionValues))
+            $this->context->addViolation($constraint->message, array());
+
+        // Add the value in the array for next items validation
         $this->collectionValues[] = $value;
     }
-
 }

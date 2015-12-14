@@ -18,6 +18,7 @@
         {#        <link href="{{asset('bundles/theme/devoops/css/style_v1.css')}}" rel="stylesheet">#}
         <link href="{{asset('bundles/theme/css/style_v1_custom.css')}}" rel="stylesheet">
         <link href="{{asset('bundles/theme/devoops/plugins/chartist/chartist.min.css')}}" rel="stylesheet">
+        <link href="{{asset('bundles/theme/js/colorpicker/bootstrap-colorpicker.min.css')}}" rel="stylesheet">
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!--[if lt IE 9]>
                         <script src="http://getbootstrap.com/docs-assets/js/html5shiv.js"></script>
@@ -38,11 +39,35 @@
         <script src="{{asset('bundles/theme/devoops/plugins/datatables/dataTables.bootstrap.js')}}"></script>
         <script src="{{asset('bundles/theme/js/BigD.js')}}" type="text/javascript"></script>
         <script src="{{asset('bundles/theme/js/jquery.blockUI.js')}}" type="text/javascript"></script>
+        <script src="{{asset('bundles/theme/js/colorpicker/bootstrap-colorpicker.min.js')}}" type="text/javascript"></script>       
+
         {% if form is defined %}
             {% form_theme form 'ThemeBundle:Default:forms_rows.html.twig' %}
         {% endif %}
     </head>
     <body>
+        <div id="modal-alert" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Atencion</h4>
+                    </div>
+                    <div class="modal-body">
+
+
+                    </div>
+                    <div class="hidden">
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
         <!--Start Header-->
         <div id="screensaver">
             <canvas id="canvas"></canvas>
@@ -218,7 +243,7 @@
                     }
                 });
 
-                function inicializarFecha(){
+                function inicializarFecha() {
                     //Datepicker
                     $(".datepicker").datepicker({
                         onSelect: function (dateText, inst) {

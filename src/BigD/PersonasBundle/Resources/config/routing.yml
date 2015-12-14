@@ -9,3 +9,8 @@ PersonasBundle_persona:
 PersonasBundle_tipo_documento:
         resource: "@PersonasBundle/Resources/config/routing/tipodocumento.yml"
         prefix:   /tipo_documento
+
+PersonasBundle_etiquetas:
+        resource: "@PersonasBundle/Resources/config/routing/etiqueta.yml"
+        prefix:   /etiquetas
+     

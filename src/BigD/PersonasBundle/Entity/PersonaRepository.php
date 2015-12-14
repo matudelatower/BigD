@@ -54,6 +54,32 @@ class PersonaRepository extends EntityRepository {
         return $qb->getQuery()->getResult();
     }
 
+    /*
+     * Obtiene un array de las personas que coinciden con las etiquetas seteadas
+     */
+
+    public function getAcPersonasEtiquetas($filters = null) {
+        $qb = $this->createQueryBuilder('p');
+        $qb->join('p.etiquetas', 'petiq');
+        $qb->join('petiq.etiqueta', 'etiq');
+        $i=0;
+        if ($filters['etiquetas']) {
+            foreach ($filters['etiquetas'] as $etiqueta) {
+                $nombre = $etiqueta->getNombre();
+                if ($nombre != '') {
+                    $qb->orWhere('upper(etiq.nombre) LIKE upper(:' . "a".$i . ')')
+                            ->setParameter("a$i", '%' . $nombre . '%');
+                } 
+                $i++;
+            }
+           
+        }
+
+        $qb->setMaxResults(1000);
+
+        return $qb->getQuery()->getResult();
+    }
+
     /**
      * Obtiene los datos del padron de ingresos brutos por id de persona
      * 

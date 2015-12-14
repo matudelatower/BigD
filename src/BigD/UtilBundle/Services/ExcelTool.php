@@ -2,14 +2,10 @@
 
 namespace BigD\UtilBundle\Services;
 
-
 use Doctrine\ORM\EntityManager;
 use Liuggio\ExcelBundle\Factory;
 
-
-class ExcelTool
-{
-
+class ExcelTool {
 
     private $container;
     private $filename;
@@ -22,124 +18,107 @@ class ExcelTool
     /**
      * @return mixed
      */
-    public function getContainer()
-    {
+    public function getContainer() {
         return $this->container;
     }
 
     /**
      * @param mixed $container
      */
-    public function setContainer($container)
-    {
+    public function setContainer($container) {
         $this->container = $container;
     }
 
     /**
      * @return mixed
      */
-    public function getFilename()
-    {
+    public function getFilename() {
         return $this->filename;
     }
 
     /**
      * @param mixed $filename
      */
-    public function setFilename($filename)
-    {
+    public function setFilename($filename) {
         $this->filename = $filename;
     }
 
     /**
      * @return mixed
      */
-    public function getTitle()
-    {
+    public function getTitle() {
         return $this->title;
     }
 
     /**
      * @param mixed $title
      */
-    public function setTitle($title)
-    {
+    public function setTitle($title) {
         $this->title = $title;
     }
 
     /**
      * @return mixed
      */
-    public function getDescripcion()
-    {
+    public function getDescripcion() {
         return $this->descripcion;
     }
 
     /**
      * @param mixed $descripcion
      */
-    public function setDescripcion($descripcion)
-    {
+    public function setDescripcion($descripcion) {
         $this->descripcion = $descripcion;
     }
 
     /**
      * @return string
      */
-    public function getCreateby()
-    {
+    public function getCreateby() {
         return $this->createby;
     }
 
     /**
      * @param string $createby
      */
-    public function setCreateby($createby)
-    {
+    public function setCreateby($createby) {
         $this->createby = $createby;
     }
 
     /**
      * @return mixed
      */
-    public function getDoctrine()
-    {
+    public function getDoctrine() {
         return $this->doctrine;
     }
 
     /**
      * @param mixed $doctrine
      */
-    public function setDoctrine($doctrine)
-    {
+    public function setDoctrine($doctrine) {
         $this->doctrine = $doctrine;
     }
 
     /**
      * @return mixed
      */
-    public function getPhpexcel()
-    {
+    public function getPhpexcel() {
         return $this->phpexcel;
     }
 
     /**
      * @param mixed $phpexcel
      */
-    public function setPhpexcel($phpexcel)
-    {
+    public function setPhpexcel($phpexcel) {
         $this->phpexcel = $phpexcel;
     }
 
-
-    public function __construct(Factory $phpExcel, EntityManager $doctrine)
-    {
+    public function __construct(Factory $phpExcel, EntityManager $doctrine) {
         $this->phpexcel = $phpExcel;
         $this->doctrine = $doctrine;
     }
 
-    public function buildSheetResultadosEncuesta($encuestas)
-    {
+    public function buildSheetResultadosEncuesta($encuestas) {
         ini_set('display_errors', true);
         set_time_limit(0);
         ini_set("memory_limit", "-1");
@@ -169,8 +148,6 @@ class ExcelTool
             }
 
             $iFila++;
-
-
         }
 
 
@@ -179,10 +156,7 @@ class ExcelTool
         $response = $this->phpexcel->createStreamedResponse($writer);
 
         return $response;
-
-
     }
-
 
     /**
      * Arma la hoja para el listado de personas institucionales, url: http://localhost/rismi/web/app_dev.php/usuario/usuario_listado_personas_institucionales/
@@ -190,8 +164,7 @@ class ExcelTool
      * @param type $resultados
      * @return type
      */
-    public function buildSheetListPersonaInstitucional($resultados)
-    {
+    public function buildSheetListPersonaInstitucional($resultados) {
         $phpExcelObject = $this->container->get('phpexcel')->createPHPExcelObject();
         $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);
         $phpExcelObject->getProperties()->setTitle($this->title);
@@ -200,43 +173,41 @@ class ExcelTool
 
         $phpExcelObject->setActiveSheetIndex(0);
         $phpExcelObject->getActiveSheet()
-            ->setCellValue('A1', 'Id. Pers. Fed.')
-            ->setCellValue('B1', 'Id. Pers. Inst.')
-            ->setCellValue('C1', 'Nombre y Apellido')
-            ->setCellValue('D1', 'Profesion')
-            ->setCellValue('E1', 'Tipo de Matricula')
-            ->setCellValue('F1', 'Matricula')
-            ->setCellValue('G1', 'Area Jerárquica')
-            ->setCellValue('H1', 'Función');
+                ->setCellValue('A1', 'Id. Pers. Fed.')
+                ->setCellValue('B1', 'Id. Pers. Inst.')
+                ->setCellValue('C1', 'Nombre y Apellido')
+                ->setCellValue('D1', 'Profesion')
+                ->setCellValue('E1', 'Tipo de Matricula')
+                ->setCellValue('F1', 'Matricula')
+                ->setCellValue('G1', 'Area Jerárquica')
+                ->setCellValue('H1', 'Función');
 
         $i = 2;
         $j = 2;
-        if (is_array($resultados) && !empty ($resultados) || !is_null($resultados)) {
+        if (is_array($resultados) && !empty($resultados) || !is_null($resultados)) {
             foreach ($resultados as $entity) {
                 $phpExcelObject->getActiveSheet()->setCellValue(
-                    'A'.$i,
-                    $entity->getPersona()->getIdentificadorFederacion()
+                        'A' . $i, $entity->getPersona()->getIdentificadorFederacion()
                 );
-                $phpExcelObject->getActiveSheet()->setCellValue('B'.$i, $entity->getId());
-                $phpExcelObject->getActiveSheet()->setCellValue('C'.$i, $entity->getPersona()->getNombreCompleto());
+                $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $entity->getId());
+                $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $entity->getPersona()->getNombreCompleto());
 
 
                 foreach ($entity->getPersona()->getProfesiones() as $profesion) {
                     $phpExcelObject->getActiveSheet()
-                        ->setCellValue('D'.$i, $profesion->getProfesion()->getNombre());
+                            ->setCellValue('D' . $i, $profesion->getProfesion()->getNombre());
                     $phpExcelObject->getActiveSheet()
-                        ->setCellValue('E'.$i, $profesion->getParametro()->getNombre());
+                            ->setCellValue('E' . $i, $profesion->getParametro()->getNombre());
                     $phpExcelObject->getActiveSheet()
-                        ->setCellValue('F'.$i, $profesion->getNumero());
+                            ->setCellValue('F' . $i, $profesion->getNumero());
 
                     foreach ($entity->getEspecialidad() as $especialidad) {
                         $phpExcelObject->getActiveSheet()
-                            ->setCellValue('G'.$i, $especialidad->getArea()->getDescripcion());
+                                ->setCellValue('G' . $i, $especialidad->getArea()->getDescripcion());
                         $phpExcelObject->getActiveSheet()
-                            ->setCellValue('H'.$i, $especialidad->getFuncion()->getDescripcion());
+                                ->setCellValue('H' . $i, $especialidad->getFuncion()->getDescripcion());
                     }
                     $j++;
-
                 }
                 $i++;
             }
@@ -250,8 +221,6 @@ class ExcelTool
         $response = $this->container->get('phpexcel')->createStreamedResponse($writer);
 
         return $response;
-
-
     }
 
     /**
@@ -260,8 +229,7 @@ class ExcelTool
      * @param type $resultados
      * @return type
      */
-    public function buildSheetListUsers($resultados)
-    {
+    public function buildSheetListUsers($resultados) {
         $phpExcelObject = $this->container->get('phpexcel')->createPHPExcelObject();
         $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);
         $phpExcelObject->getProperties()->setTitle($this->title);
@@ -270,70 +238,65 @@ class ExcelTool
 
         $phpExcelObject->setActiveSheetIndex(0);
         $phpExcelObject->getActiveSheet()
-            ->setCellValue('A1', 'Id. Pers. Fed.')
-            ->setCellValue('B1', 'Id. Pers. Inst.')
-            ->setCellValue('C1', 'Id. Usuario')
-            ->setCellValue('D1', 'Nombre y Apellido')
-            ->setCellValue('E1', 'Usuario')
-            ->setCellValue('F1', 'Aplicativo')
-            ->setCellValue('G1', 'Grupos');
+                ->setCellValue('A1', 'Id. Pers. Fed.')
+                ->setCellValue('B1', 'Id. Pers. Inst.')
+                ->setCellValue('C1', 'Id. Usuario')
+                ->setCellValue('D1', 'Nombre y Apellido')
+                ->setCellValue('E1', 'Usuario')
+                ->setCellValue('F1', 'Aplicativo')
+                ->setCellValue('G1', 'Grupos');
 
 
         $i = 2;
         $j = 2;
-        if (is_array($resultados) && !empty ($resultados) || !is_null($resultados)) {
+        if (is_array($resultados) && !empty($resultados) || !is_null($resultados)) {
             foreach ($resultados as $usuario) {
 
-                $phpExcelObject->getActiveSheet()->setCellValue('A'.$i, $usuario->getIdentificadorFederacion());
+                $phpExcelObject->getActiveSheet()->setCellValue('A' . $i, $usuario->getIdentificadorFederacion());
                 if ($usuario->getPersonaInstitucional() != null) {
                     $phpExcelObject->getActiveSheet()->setCellValue(
-                        'B'.$i,
-                        $usuario->getPersonaInstitucional()->getId()
+                            'B' . $i, $usuario->getPersonaInstitucional()->getId()
                     );
                 } else {
-                    $phpExcelObject->getActiveSheet()->setCellValue('B'.$i, null);
+                    $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, null);
                 }
                 if ($usuario->getUsuario() != null) {
-                    $phpExcelObject->getActiveSheet()->setCellValue('C'.$i, $usuario->getUsuario()->getId());
+                    $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $usuario->getUsuario()->getId());
                 } else {
-                    $phpExcelObject->getActiveSheet()->setCellValue('C'.$i, null);
+                    $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, null);
                 }
 
-                $phpExcelObject->getActiveSheet()->setCellValue('D'.$i, $usuario->getNombreCompleto());
+                $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $usuario->getNombreCompleto());
 
                 if ($usuario->getUsuario() != null) {
-                    $phpExcelObject->getActiveSheet()->setCellValue('E'.$i, $usuario->getUsuario()->getUsername());
+                    $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, $usuario->getUsuario()->getUsername());
                 } else {
-                    $phpExcelObject->getActiveSheet()->setCellValue('E'.$i, null);
+                    $phpExcelObject->getActiveSheet()->setCellValue('E' . $i, null);
                 }
 
                 if ($usuario->getUsuario() != null) {
                     if ($usuario->getUsuario()->getPermisos() != null) {
                         foreach ($usuario->getUsuario()->getPermisos() as $permiso) {
                             $phpExcelObject->getActiveSheet()
-                                ->setCellValue('F'.$i, $permiso->getAplicativo()->getNombre());
+                                    ->setCellValue('F' . $i, $permiso->getAplicativo()->getNombre());
 
                             $phpExcelObject->getActiveSheet()
-                                ->setCellValue('G'.$i, $permiso->getGrupo()->getName());
-
+                                    ->setCellValue('G' . $i, $permiso->getGrupo()->getName());
                         }
                     }
-
-
                 }
                 $j++;
                 $i++;
             }
         }
 
-        $phpExcelObject->getActiveSheet()->setTitle($this->title);//Configura el titulo del archivo
+        $phpExcelObject->getActiveSheet()->setTitle($this->title); //Configura el titulo del archivo
 
         $writer = $this->container->get('phpexcel')->createWriter($phpExcelObject, 'Excel5');
         // create the response
         $response = $this->container->get('phpexcel')->createStreamedResponse($writer);
 
         return $response;
-
     }
 
     /**
@@ -344,8 +307,7 @@ class ExcelTool
      * @param type $areaStr
      * @return type
      */
-    public function buildSheetListArea($resultSet, $areaStr)
-    {
+    public function buildSheetListArea($resultSet, $areaStr) {
         $phpExcelObject = $this->container->get('phpexcel')->createPHPExcelObject();
         $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);
         $phpExcelObject->getProperties()->setTitle($this->title);
@@ -355,22 +317,21 @@ class ExcelTool
         $phpExcelObject->setActiveSheetIndex(0);
         $phpExcelObject->getActiveSheet()->setCellValue('A1', $areaStr);
         $phpExcelObject->getActiveSheet()
-            ->setCellValue('A2', 'Id.')
-            ->setCellValue('B2', 'Nombre y Apellido')
-            ->setCellValue('C2', 'Tipo de Documento')
-            ->setCellValue('D2', 'Numero');
+                ->setCellValue('A2', 'Id.')
+                ->setCellValue('B2', 'Nombre y Apellido')
+                ->setCellValue('C2', 'Tipo de Documento')
+                ->setCellValue('D2', 'Numero');
 
 
         $i = 3;
-        if (is_array($resultSet) && !empty ($resultSet) || !is_null($resultSet)) {
+        if (is_array($resultSet) && !empty($resultSet) || !is_null($resultSet)) {
             foreach ($resultSet as $usuario) {
-                $phpExcelObject->getActiveSheet()->setCellValue('A'.$i, $usuario['identificador']);
-                $phpExcelObject->getActiveSheet()->setCellValue('B'.$i, $usuario['nombre_completo']);
-                $phpExcelObject->getActiveSheet()->setCellValue('C'.$i, $usuario['tipo']);
-                $phpExcelObject->getActiveSheet()->setCellValue('D'.$i, $usuario['documento']);
+                $phpExcelObject->getActiveSheet()->setCellValue('A' . $i, $usuario['identificador']);
+                $phpExcelObject->getActiveSheet()->setCellValue('B' . $i, $usuario['nombre_completo']);
+                $phpExcelObject->getActiveSheet()->setCellValue('C' . $i, $usuario['tipo']);
+                $phpExcelObject->getActiveSheet()->setCellValue('D' . $i, $usuario['documento']);
                 $i++;
             }
-
         }
 
         $phpExcelObject->getActiveSheet()->setTitle($this->title);
@@ -380,7 +341,6 @@ class ExcelTool
         $response = $this->container->get('phpexcel')->createStreamedResponse($writer);
 
         return $response;
-
     }
 
     /**
@@ -390,8 +350,7 @@ class ExcelTool
      * @param type $listaCirugiaSuspendidas
      * @return type
      */
-    public function buildSheetListaCirugiaSuspendida($listaCirugiaSuspendidas)
-    {
+    public function buildSheetListaCirugiaSuspendida($listaCirugiaSuspendidas) {
 
         $phpExcelObject = $this->container->get('phpexcel')->createPHPExcelObject();
         $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);
@@ -399,46 +358,41 @@ class ExcelTool
         $phpExcelObject->getProperties()->setDescription($this->descripcion);
         $phpExcelObject->getProperties()->setCreator($this->createby);
 
-        $phpExcelObject->setActiveSheetIndex(0);;
+        $phpExcelObject->setActiveSheetIndex(0);
+        ;
         $phpExcelObject->getActiveSheet()
-            ->setCellValue('A1', 'Fecha')
-            ->setCellValue('B1', 'Id')
-            ->setCellValue('C1', 'Paciente')
-            ->setCellValue('D1', 'Tipo suspension')
-            ->setCellValue('E1', 'Sector')
-            ->setCellValue('F1', 'Observaciones');
+                ->setCellValue('A1', 'Fecha')
+                ->setCellValue('B1', 'Id')
+                ->setCellValue('C1', 'Paciente')
+                ->setCellValue('D1', 'Tipo suspension')
+                ->setCellValue('E1', 'Sector')
+                ->setCellValue('F1', 'Observaciones');
 
 
         $i = 2;
-        if (is_array($listaCirugiaSuspendidas) && !empty ($listaCirugiaSuspendidas) || !is_null(
-                $listaCirugiaSuspendidas
-            )
+        if (is_array($listaCirugiaSuspendidas) && !empty($listaCirugiaSuspendidas) || !is_null(
+                        $listaCirugiaSuspendidas
+                )
         ) {
             foreach ($listaCirugiaSuspendidas as $cirugiaSuspendida) {
                 $phpExcelObject->getActiveSheet()->setCellValue(
-                    'A'.$i,
-                    $cirugiaSuspendida->getCreado()->format('d-m-Y')
+                        'A' . $i, $cirugiaSuspendida->getCreado()->format('d-m-Y')
                 );
                 $phpExcelObject->getActiveSheet()->setCellValue(
-                    'B'.$i,
-                    $cirugiaSuspendida->getTurno()->getPersona()->getId()
+                        'B' . $i, $cirugiaSuspendida->getTurno()->getPersona()->getId()
                 );
                 $phpExcelObject->getActiveSheet()->setCellValue(
-                    'C'.$i,
-                    $cirugiaSuspendida->getTurno()->getPersona()->getApellido()
+                        'C' . $i, $cirugiaSuspendida->getTurno()->getPersona()->getApellido()
                 );
                 $phpExcelObject->getActiveSheet()->setCellValue(
-                    'D'.$i,
-                    $cirugiaSuspendida->getParamTipoSuspension()->getNombre()
+                        'D' . $i, $cirugiaSuspendida->getParamTipoSuspension()->getNombre()
                 );
                 $phpExcelObject->getActiveSheet()->setCellValue(
-                    'E'.$i,
-                    $cirugiaSuspendida->getAreaJerarquica()->getDescripcionResumida()
+                        'E' . $i, $cirugiaSuspendida->getAreaJerarquica()->getDescripcionResumida()
                 );
-                $phpExcelObject->getActiveSheet()->setCellValue('F'.$i, $cirugiaSuspendida->getObservacion());
+                $phpExcelObject->getActiveSheet()->setCellValue('F' . $i, $cirugiaSuspendida->getObservacion());
                 $i++;
             }
-
         }
 
         $phpExcelObject->getActiveSheet()->setTitle($this->title);
@@ -448,8 +402,49 @@ class ExcelTool
         $response = $this->container->get('phpexcel')->createStreamedResponse($writer);
 
         return $response;
+    }
 
+    public function buildSheetPersonasEtiquetadas($personas) {//encuesta por listado de personas
+        ini_set('display_errors', true);
+        set_time_limit(0);
+        ini_set("memory_limit", "-1");
+
+        $phpExcelObject = $this->phpexcel->createPHPExcelObject();
+        $phpExcelObject->getProperties()->setLastModifiedBy($this->createby);
+        $phpExcelObject->getProperties()->setTitle($this->title);
+        $phpExcelObject->getProperties()->setDescription($this->descripcion);
+        $phpExcelObject->getProperties()->setCreator($this->createby);
+
+        $phpExcelObject->setActiveSheetIndex(0);
+
+        $phpExcelObject->getActiveSheet()
+                ->setCellValue('A1', 'Apellido')
+                ->setCellValue('B1', 'Nombre')
+                ->setCellValue('C1', 'Tipo documento')
+                ->setCellValue('D1', 'Numero documento')
+                ->setCellValue('E1', 'Fecha nacimiento')
+                ->setCellValue('F1', 'Sexo')
+        ;
+
+        $iFila = 2;
+
+        foreach ($personas as $persona) {
+            $phpExcelObject->getActiveSheet()->setCellValueByColumnAndRow(0, $iFila, $persona->getNombre());
+            $phpExcelObject->getActiveSheet()->setCellValueByColumnAndRow(1, $iFila, $persona->getApellido());
+            $phpExcelObject->getActiveSheet()->setCellValueByColumnAndRow(2, $iFila, $persona->getTipoDocumento());
+            $phpExcelObject->getActiveSheet()->setCellValueByColumnAndRow(3, $iFila, $persona->getNumeroDocumento());
+            $phpExcelObject->getActiveSheet()->setCellValueByColumnAndRow(4, $iFila, $persona->getFechaNacimiento());
+            $phpExcelObject->getActiveSheet()->setCellValueByColumnAndRow(5, $iFila, $persona->getSexo());
+
+            $iFila++;
+        }
+
+
+        $writer = $this->phpexcel->createWriter($phpExcelObject, 'Excel5');
+        // create the response
+        $response = $this->phpexcel->createStreamedResponse($writer);
+
+        return $response;
     }
 
 }
-

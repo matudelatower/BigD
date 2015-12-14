@@ -32,3 +32,23 @@ persona_delete:
 show_reporte_defunciones:
     path:     /show_reporte_defunciones
     defaults: { _controller: "PersonasBundle:Persona:showReporteDirecciones" }
+
+persona_filtro_etiquetas:
+    path:     /persona_filtro_etiquetas
+    defaults: { _controller: "PersonasBundle:Persona:indexFiltroEtiquetas" }
+    
+etiquetar_persona_listado:
+    path:     /etiquetar_persona_listado
+    defaults: { _controller: "PersonasBundle:Persona:etiquetarPersonaListado" }    
+    
+etiquetar_personas_csv:
+    path:     /etiquetar_personas_csv
+    defaults: { _controller: "PersonasBundle:Persona:etiquetarPersonasCsv" }  
+
+update_etiquetas_personas_csv:
+    path:     /update_etiquetas_personas_csv
+    defaults: { _controller: "PersonasBundle:Persona:updateEtiquetasPersonasCsv" }    
+    
+exportar_personas_etiquetadas:
+    path:     /exportar_personas_etiquetadas/
+    defaults: { _controller: "PersonasBundle:Persona:exportarPersonasEtiquetadas" }        

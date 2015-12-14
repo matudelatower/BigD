@@ -18,7 +18,7 @@ class PersonaType extends AbstractType {
                 ->add('apellido')
                 ->add('tipoDocumento')
                 ->add('numeroDocumento')
-                ->add('cuitCuil')                
+                ->add('cuitCuil')
                 ->add('fechaNacimiento', 'date', array(
                     'widget' => 'single_text',
                     'format' => 'dd-MM-yyyy',
@@ -26,9 +26,16 @@ class PersonaType extends AbstractType {
                         'class' => 'datepicker',
                         'data-date-format' => 'dd-mm-yyy'
                     ),
-                    
                 ))
                 ->add('sexo')
+                ->add('etiquetas', 'bootstrapcollection', array(
+                    'type' => new PersonaEtiquetaType(),
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => true,
+                        )
+                )
+
         ;
     }
 

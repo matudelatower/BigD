@@ -44,6 +44,15 @@
                             <span><strong>Sexo</strong></span> <br>
                             <span>{{ entity.sexo }}</span> <br>
                         </p>
+                        <p>
+                            <span><strong>Etiquetas</strong></span> <br>
+
+                            {% for etiqueta in  entity.etiquetas %}
+                                <span style=" background-color:{{ etiqueta.etiqueta.color }};color:#FFFFFF ">{{ etiqueta.etiqueta }}</span> <br>
+                            {% endfor %}
+
+
+                        </p>
 
                     </div>
                     <div class="card address">
@@ -253,7 +262,7 @@
 
 
 
-        });    
+        });
     </script>
 
 
