@@ -52,3 +52,11 @@ update_etiquetas_personas_csv:
 exportar_personas_etiquetadas:
     path:     /exportar_personas_etiquetadas/
     defaults: { _controller: "PersonasBundle:Persona:exportarPersonasEtiquetadas" }        
+    
+importar_personas_csv:
+    path:     /importar_personas_csv
+    defaults: { _controller: "PersonasBundle:Persona:importarPersonasCsv" }
+
+update_personas_csv:
+    path:     /update_personas_csv
+    defaults: { _controller: "PersonasBundle:Persona:updatePersonasCsv" }    

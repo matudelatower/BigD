@@ -62,17 +62,16 @@ class PersonaRepository extends EntityRepository {
         $qb = $this->createQueryBuilder('p');
         $qb->join('p.etiquetas', 'petiq');
         $qb->join('petiq.etiqueta', 'etiq');
-        $i=0;
+        $i = 0;
         if ($filters['etiquetas']) {
             foreach ($filters['etiquetas'] as $etiqueta) {
                 $nombre = $etiqueta->getNombre();
                 if ($nombre != '') {
-                    $qb->orWhere('upper(etiq.nombre) LIKE upper(:' . "a".$i . ')')
+                    $qb->orWhere('upper(etiq.nombre) LIKE upper(:' . "a" . $i . ')')
                             ->setParameter("a$i", '%' . $nombre . '%');
-                } 
+                }
                 $i++;
             }
-           
         }
 
         $qb->setMaxResults(1000);
@@ -115,6 +114,19 @@ class PersonaRepository extends EntityRepository {
         $params = array();
         $stmt->execute($params);
         return $stmt->fetchAll();
+    }
+/**
+ * recibe una fecha de tipo dd-mm-yyyy y devuelve tipo yyyy-mm-dd
+ * @param type $fecha 
+ * @return boolean
+ */
+    public function getFechaComoDB($fecha) {
+        if ($fecha != "") {
+            $fecha = explode("/", $fecha);
+            return $fecha[2] . "-" . $fecha[1] . "-" . $fecha[0];
+        } else {
+            return false;
+        }
     }
 
 }

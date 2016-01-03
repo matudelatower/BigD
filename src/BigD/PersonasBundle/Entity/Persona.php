@@ -68,6 +68,11 @@ class Persona {
      *  @ORM\JoinColumn(name="tipo_documento_id", referencedColumnName="id")
      */
     private $tipoDocumento;
+    
+    /** @ORM\ManyToOne(targetEntity="FuenteDatos")
+     *  @ORM\JoinColumn(name="fuente_datos_id", referencedColumnName="id")
+     */
+    private $fuenteDatos;
 
     /**
      * @var datetime $creado
@@ -75,7 +80,7 @@ class Persona {
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(name="creado", type="datetime")
      */
-    private $creado;
+    private $creado; 
 
     /**
      * @var datetime $actualizado
@@ -466,5 +471,28 @@ class Persona {
     public function getEtiquetas()
     {
         return $this->etiquetas;
+    }
+
+    /**
+     * Set fuenteDatos
+     *
+     * @param \BigD\PersonasBundle\Entity\FuenteDatos $fuenteDatos
+     * @return Persona
+     */
+    public function setFuenteDatos(\BigD\PersonasBundle\Entity\FuenteDatos $fuenteDatos = null)
+    {
+        $this->fuenteDatos = $fuenteDatos;
+
+        return $this;
+    }
+
+    /**
+     * Get fuenteDatos
+     *
+     * @return \BigD\PersonasBundle\Entity\FuenteDatos 
+     */
+    public function getFuenteDatos()
+    {
+        return $this->fuenteDatos;
     }
 }
