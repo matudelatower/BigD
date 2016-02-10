@@ -29,8 +29,8 @@ persona_delete:
     defaults: { _controller: "PersonasBundle:Persona:delete" }
     requirements: { _method: post|delete }
 
-show_reporte_defunciones:
-    path:     /show_reporte_defunciones
+show_reporte_direcciones:
+    path:     /show_reporte_direcciones
     defaults: { _controller: "PersonasBundle:Persona:showReporteDirecciones" }
 
 persona_filtro_etiquetas:

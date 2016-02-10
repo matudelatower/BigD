@@ -24,7 +24,7 @@
                 </div>
                 <div class="box-content">
 
-                    <div class="card address">                        
+                    <div class="card address">
                         <h4 class="page-header">Dirección:</h4>
 
 
@@ -36,7 +36,7 @@
 
             </div>
             <div class="form-group">
-                <div class="col-sm-9 col-sm-offset-3">                            
+                <div class="col-sm-9 col-sm-offset-3">
                     <a class="btn btn-default" href="{{ path('persona') }}">
                         Volver
                     </a>
@@ -48,10 +48,11 @@
 
 
 {% endblock %}
-{% block javascripts %}   
+{% block javascripts %}
 
     <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
-    <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
+    <script type="text/javascript"
+            src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer.js"></script>
 
 
     <script>
@@ -81,24 +82,26 @@
                 // to simplify the example i take only the first result "result[0]" but you can use more that one if you want
 
                 // So , using the first result I need to create a  latlng object to be pass later to the map
-                if (result[0] === undefined) {
-                    return;
-                }
-                var latlng = new google.maps.LatLng(result[0].geometry.location.lat(), result[0].geometry.location.lng());
+                if (result) {
+                    if (result[0] === undefined) {
+                        return;
+                    }
+                    var latlng = new google.maps.LatLng(result[0].geometry.location.lat(), result[0].geometry.location.lng());
 
 
-                var popup = new google.maps.InfoWindow({
-                    content: 'Apellido: ' + parameters.apellido + '<br/>\n\
+                    var popup = new google.maps.InfoWindow({
+                        content: 'Apellido: ' + parameters.apellido + '<br/>\n\
                       Nombre: ' + parameters.nombre,
-                    position: map.getCenter()
-                });
+                        position: map.getCenter()
+                    });
 
-                // an extra step is need it to add the mark pointing to the place selected.
-                var marker = new google.maps.Marker({position: latlng, map: map, title: 'title'});
-                markers.push(marker);
-                google.maps.event.addListener(marker, 'click', function () {
-                    popup.open(map, marker);
-                });
+                    // an extra step is need it to add the mark pointing to the place selected.
+                    var marker = new google.maps.Marker({position: latlng, map: map, title: 'title'});
+                    markers.push(marker);
+                    google.maps.event.addListener(marker, 'click', function () {
+                        popup.open(map, marker);
+                    });
+                }
 
             })
         }
@@ -110,10 +113,10 @@
             markers = [];
             initialize();
 
-            var arrayAddress = {{arrayPersonas|raw}};
-                    $.each(arrayAddress, function (k, v) {
-                        inicializar(arrayAddress[k]);
-                    });
+            var arrayAddress = {{ arrayPersonas|raw }};
+            $.each(arrayAddress, function (k, v) {
+                inicializar(arrayAddress[k]);
+            });
         });
 
         $(window).load(function () {

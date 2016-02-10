@@ -34,11 +34,17 @@
             });
 
             $('.btn-modal-exportar').click(function () {
-                $('#form-filtros').attr('action', '{{ path('exportar_personas_etiquetadas')}}');
+                $('#form-filtros').attr('action', '{{ path('exportar_personas_etiquetadas') }}');
                 $('#form-filtros').attr('target', '_blank');
                 $('#form-filtros').submit();
                 $('#form-filtros').removeAttr('action');
                 $('#form-filtros').removeAttr('target');
+            });
+
+            $('#select-pages').change(function(){
+                console.log($(this).val());
+                $('#cant-per-page').val($(this).val());
+                $('#form-filtros').submit();
             })
 
         });
@@ -56,9 +62,10 @@
                     </div>
                 </div>
                 <div class="box-content">
-                    <form id="form-filtros"   class="form-horizontal" role="form" method="post">
+                    <form id="form-filtros" class="form-horizontal" role="form" method="post">
+                        <input name="cant-per-page" id="cant-per-page" class="hidden">
                         <div class="col-sm-offset-0 col-sm-4">
-                            {{form_row(form.etiquetas)}}
+                            {{ form_row(form.etiquetas) }}
                         </div>
 
                         <div class="clearfix"></div>
@@ -69,7 +76,7 @@
                                         <i class="fa fa-filter"></i>
                                     </span>
                                     Buscar
-                                </button>                                
+                                </button>
                                 <button class="btn btn-default btn-ver-ubicaciones" type="button">
                                     <span>
                                         <i class="fa fa-map-marker"></i>
@@ -78,8 +85,8 @@
                                 </button>
                                 <a class="btn btn-default btn-modal-exportar"
                                    data-toggle="modal" data-target=""><i
-                                        class="fa fa-fw icon-excel-black"></i></a>
-                            </div>                            
+                                            class="fa fa-fw icon-excel-black"></i></a>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -97,68 +104,103 @@
                 </div>
                 <div class="box-content no-padding">
                     <div id="datatable-1_wrapper" class="dataTables_wrapper form-inline">
-                        <form id="form-listado-personas" target="_blank"method="post" action="{{path('show_reporte_defunciones')}}">
-                            <table  class="table table-bordered table-striped table-hover table-heading table-datatable dataTable datatable-custom" role="grid" aria-describedby="datatable-1_info">
+                        <form id="form-listado-personas" target="_blank" method="post"
+                              action="{{ path('show_reporte_direcciones') }}">
+                            <table class="table table-bordered table-striped table-hover table-heading table-datatable dataTable datatable-custom"
+                                   role="grid" aria-describedby="datatable-1_info">
                                 <thead>
-                                    <tr role="row">
-                                        <th >
-                                <div class="checkbox" style="width: 45px;padding-left: 0;margin: -13px;">
-                                    <label>
-                                        <input type="checkbox" id="select_all" style="clip: rect(0px, 0px, 0px, 0px);position: absolute">
-                                        <i class="fa fa-square-o"></i>
-                                    </label>
-                                </div> 
-                                </th>
-                                <th class="sorting_asc" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 46px;" aria-sort="ascending" aria-label="Id">Id</th>
-                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Nombre</th>
-                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Apellido</th>
-                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Nº documento</th>
-                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">CUIT/CUIL</th>
-                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Fecha Nacimiento</th>
-                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Sexo</th>
-                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Creado</th>
-                                <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Actualizado</th>
-                                <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1" style="width: 200px;" aria-label="">Actions</th>
+                                <tr role="row">
+                                    <th>
+                                        <div class="checkbox" style="width: 45px;padding-left: 0;margin: -13px;">
+                                            <label>
+                                                <input type="checkbox" id="select_all"
+                                                       style="clip: rect(0px, 0px, 0px, 0px);position: absolute">
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </th>
+                                    <th class="sorting_asc" tabindex="0" aria-controls="datatable-1" rowspan="1"
+                                        colspan="1" style="width: 46px;" aria-sort="ascending" aria-label="Id">Id
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
+                                        style="width: 200px;" aria-label="">Nombre
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
+                                        style="width: 200px;" aria-label="">Apellido
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
+                                        style="width: 200px;" aria-label="">Nº documento
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
+                                        style="width: 200px;" aria-label="">CUIT/CUIL
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
+                                        style="width: 200px;" aria-label="">Fecha Nacimiento
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
+                                        style="width: 200px;" aria-label="">Sexo
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
+                                        style="width: 200px;" aria-label="">Creado
+                                    </th>
+                                    <th class="sorting" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
+                                        style="width: 200px;" aria-label="">Actualizado
+                                    </th>
+                                    <th class="" tabindex="0" aria-controls="datatable-1" rowspan="1" colspan="1"
+                                        style="width: 200px;" aria-label="">Actions
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    {% for entity in entities %}
-                                        <tr class="{% if loop.index is odd %} odd {% else %} even {% endif %}" role="row">
-                                            <td>
+                                {% for entity in entities %}
+                                    <tr class="{% if loop.index is odd %} odd {% else %} even {% endif %}" role="row">
+                                        <td>
 
-                                                <div class="checkbox" style="padding-left: 0;margin: -13px;">
-                                                    <label>
-                                                        <input type="checkbox" name="personas[]" value="{{ entity.id }}" style="clip: rect(0px, 0px, 0px, 0px);position: absolute">
-                                                        <i class="fa fa-square-o"></i>
-                                                    </label>
-                                                </div>
+                                            <div class="checkbox" style="padding-left: 0;margin: -13px;">
+                                                <label>
+                                                    <input type="checkbox" name="personas[]" value="{{ entity.id }}"
+                                                           style="clip: rect(0px, 0px, 0px, 0px);position: absolute">
+                                                    <i class="fa fa-square-o"></i>
+                                                </label>
+                                            </div>
 
-                                            </td>
-                                            <td class="sorting_1">{{ entity.id }}</td>
-                                            <td>{{ entity.nombre }}</td>
-                                            <td>{{ entity.apellido }}</td>
-                                            <td>{{ entity.numeroDocumento }}</td>
-                                            <td>{{ entity.cuitCuil }}</td>
-                                            <td>{% if entity.fechaNacimiento %}{{ entity.fechaNacimiento|date('Y-m-d') }}{% endif %}</td>
-                                            <td>{{ entity.sexo }}</td>
-                                            <td>{% if entity.creado %}{{ entity.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
-                                            <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
-                                            <td>
+                                        </td>
+                                        <td class="sorting_1">{{ entity.id }}</td>
+                                        <td>{{ entity.nombre }}</td>
+                                        <td>{{ entity.apellido }}</td>
+                                        <td>{{ entity.numeroDocumento }}</td>
+                                        <td>{{ entity.cuitCuil }}</td>
+                                        <td>{% if entity.fechaNacimiento %}{{ entity.fechaNacimiento|date('Y-m-d') }}{% endif %}</td>
+                                        <td>{{ entity.sexo }}</td>
+                                        <td>{% if entity.creado %}{{ entity.creado|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                        <td>{% if entity.actualizado %}{{ entity.actualizado|date('Y-m-d H:i:s') }}{% endif %}</td>
+                                        <td>
 
-                                                <a class="btn btn-default btn-app-sm btn-circle" href="{{ path('persona_show', { 'id': entity.id }) }}"><i class="fa fa-fw fa-eye"></i></a>
+                                            <a class="btn btn-default btn-app-sm btn-circle"
+                                               href="{{ path('persona_show', { 'id': entity.id }) }}"><i
+                                                        class="fa fa-fw fa-eye"></i></a>
 
-                                                <a class="btn btn-default btn-app-sm btn-circle" href="{{ path('persona_edit', { 'id': entity.id }) }}"><i class="fa fa-fw fa-edit"></i></a>
+                                            <a class="btn btn-default btn-app-sm btn-circle"
+                                               href="{{ path('persona_edit', { 'id': entity.id }) }}"><i
+                                                        class="fa fa-fw fa-edit"></i></a>
 
 
-
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                                 </tbody>
                             </table>
+
                         </form>
                         <div class="box-content">
                             {{ knp_pagination_render(entities) }}
+                            <div>
+                                <select name="select-pages" id="select-pages">
+                                    {% for i in range(10, 100, 10) %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
